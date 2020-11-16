@@ -22,8 +22,10 @@ public class Keeper : MonoBehaviour
                 if (transform.position.x >= 8.0)
                 {
                     Keepermove = false;
+
                     transform.Rotate(new Vector2(0, 180));
                 }
+
                 break;
 
             case false:
@@ -31,8 +33,10 @@ public class Keeper : MonoBehaviour
                 if (transform.position.x <= 4.0)
                 {
                     Keepermove = true;
+
                     transform.Rotate(new Vector2(0, -180));
                 }
+
                 break;
 
         }

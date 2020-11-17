@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Keeper : MonoBehaviour
 {
     bool Keepermove = true;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +22,10 @@ public class Keeper : MonoBehaviour
                 if (transform.position.x >= 8.0)
                 {
                     Keepermove = false;
-                    transform.Rotate(new Vector3(0, 0, 180));
-                }                
+
+                    transform.Rotate(new Vector2(0, 180));
+                }
+
                 break;
 
             case false:
@@ -31,9 +33,12 @@ public class Keeper : MonoBehaviour
                 if (transform.position.x <= 4.0)
                 {
                     Keepermove = true;
-                    transform.Rotate(new Vector3(0, 0, -180));
-                }                        
+
+                    transform.Rotate(new Vector2(0, -180));
+                }
+
                 break;
+
         }
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
 
+
   - component: {fileID: 5829751665306798840}
   - component: {fileID: 5829751665306798837}
   - component: {fileID: 5829751665306798842}
@@ -170,6 +171,7 @@ GameObject:
   m_Name: Keeper
   m_TagString: Keeper
 
+
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,6 +185,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 
+
   m_GameObject: {fileID: 5829751665969914884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6, y: -3, z: 0}
@@ -194,6 +197,7 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5829751665969914880
+
 
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -249,6 +253,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
 
+
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!61 &5829751665969914886
 BoxCollider2D:
@@ -299,11 +304,13 @@ Rigidbody2D:
   m_Constraints: 2
 --- !u!114 &5829751665969914887
 
+
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+
 
   m_GameObject: {fileID: 5829751665969914884}
   m_Enabled: 1
@@ -395,11 +402,13 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!61 &5829751666668545648
 
+
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+
 
   m_GameObject: {fileID: 5829751666668545649}
   m_Enabled: 1
@@ -409,6 +418,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+
 
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}

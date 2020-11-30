@@ -5,11 +5,11 @@ using UnityEngine;
 public class NeckCon : MonoBehaviour
 {
     Animator animator;
-    
+    public GameObject Giraffe;
     // Start is called before the first frame update
     void Start()
     {
-        this.animator = GetComponent<Animator>();
+        animator = Giraffe.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -22,9 +22,9 @@ public class NeckCon : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Namakemono"))
+        if (other.gameObject.tag=="Namakemono")
         {
             Debug.Log("触れた");
             

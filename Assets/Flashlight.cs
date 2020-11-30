@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Flashlight : MonoBehaviour
 {
-    public GameObject sloth;
+    public GameObject namakemono;
     public GameObject find;
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class Flashlight : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == sloth.name)
+        if (other.gameObject.tag == "Namakemono")
         {
             find.GetComponent<Text>();
             find.SetActive(true);

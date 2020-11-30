@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Truck : MonoBehaviour
 {
-    public GameObject namakemono;
+    public GameObject stageclear;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +23,6 @@ public class Truck : MonoBehaviour
         {
             transform.Translate(3.0f * Time.deltaTime, 0.0f,0.0f);
         }
+        stageclear.SetActive(true);
     }
 }

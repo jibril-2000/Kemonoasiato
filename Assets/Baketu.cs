@@ -28,7 +28,7 @@ public class Baketu : MonoBehaviour
         if(collision.gameObject.CompareTag("Namakemono"))
         {
             Debug.Log("触れた");
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 animator.SetBool("Falldown", true);
             }

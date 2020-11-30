@@ -23,11 +23,10 @@ public class Baketu : MonoBehaviour
         }
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D other)
     {
-        if(collision.gameObject.CompareTag("Namakemono"))
+        if(other.gameObject.CompareTag("Namakemono"))
         {
-            Debug.Log("触れた");
             if (Input.GetMouseButton(1))
             {
                 animator.SetBool("Falldown", true);

@@ -325,6 +325,8 @@ GameObject:
   - component: {fileID: 9151098628775462876}
   - component: {fileID: 9151098628775462875}
   - component: {fileID: 9151098628775462874}
+  - component: {fileID: 7294192108019392111}
+  - component: {fileID: 7458514481942149608}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -455,6 +457,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8143d890628de740a5c9338ea591083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7294192108019392111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151098628775462872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7458514481942149608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151098628775462872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Retry
+  _cueSheet: SFX
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &9151098628793696890
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,6 +502,8 @@ GameObject:
   - component: {fileID: 9151098628793696894}
   - component: {fileID: 9151098628793696893}
   - component: {fileID: 9151098628793696892}
+  - component: {fileID: 6272678302711825316}
+  - component: {fileID: 3935808659452085759}
   m_Layer: 5
   m_Name: FinishButton
   m_TagString: Untagged
@@ -574,6 +611,39 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6272678302711825316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151098628793696890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3935808659452085759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151098628793696890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Resume
+  _cueSheet: SFX
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &9151098628866842211
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +656,8 @@ GameObject:
   - component: {fileID: 9151098628866842215}
   - component: {fileID: 9151098628866842214}
   - component: {fileID: 9151098628866842213}
+  - component: {fileID: 4254653784523801202}
+  - component: {fileID: 4455488231455015397}
   m_Layer: 5
   m_Name: ControlButton
   m_TagString: Untagged
@@ -693,6 +765,39 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4254653784523801202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151098628866842211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4455488231455015397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151098628866842211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Pose
+  _cueSheet: SFX
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &9151098629114065589
 GameObject:
   m_ObjectHideFlags: 0

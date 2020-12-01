@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 6845662600840936156}
   - component: {fileID: 6427148983047080572}
   - component: {fileID: 5745734705514707572}
+  - component: {fileID: 5425749163319689293}
   - component: {fileID: 7236562478870261162}
+  - component: {fileID: 5900232138594275398}
   m_Layer: 5
   m_Name: "\u30BF\u30A4\u30C8\u30EB\u30D0\u30C3\u30AF"
   m_TagString: Untagged
@@ -131,6 +133,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5425749163319689293}
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5425749163319689293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6379066114072182953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  criAtomSource: {fileID: 5900232138594275398}
 --- !u!114 &7236562478870261162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +169,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f82126719bbc8747ab36ab75d8d36e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5900232138594275398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6379066114072182953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Pose
+  _cueSheet: SFX
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &6620763583205811465
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +320,8 @@ GameObject:
   - component: {fileID: 6620763583299912651}
   - component: {fileID: 6620763583299912650}
   - component: {fileID: 6620763583299912653}
+  - component: {fileID: 6375339470273143430}
+  - component: {fileID: 7557621435832747468}
   m_Layer: 5
   m_Name: Pause
   m_TagString: Untagged
@@ -378,7 +427,52 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6620763583299912650}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6375339470273143430}
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6375339470273143430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620763583299912652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  criAtomSource: {fileID: 7557621435832747468}
+--- !u!114 &7557621435832747468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620763583299912652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Pose
+  _cueSheet: SFX
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &6620763583735383848
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +639,8 @@ GameObject:
   - component: {fileID: 6620763584278599599}
   - component: {fileID: 6620763584278599598}
   - component: {fileID: 6620763584278599569}
+  - component: {fileID: 3628783255264785786}
+  - component: {fileID: 2042685239618369525}
   m_Layer: 5
   m_Name: Resume
   m_TagString: Untagged
@@ -651,7 +747,52 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6620763584278599598}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3628783255264785786}
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3628783255264785786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620763584278599568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  criAtomSource: {fileID: 2042685239618369525}
+--- !u!114 &2042685239618369525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6620763584278599568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Resume
+  _cueSheet: SFX
+  _use3dPositioning: 0
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &7547912294327905916
 GameObject:
   m_ObjectHideFlags: 0

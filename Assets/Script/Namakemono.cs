@@ -8,10 +8,12 @@ public class Namakemono : MonoBehaviour
     public GameObject gameover;
     public GameObject find;
     public Rigidbody2D rb2D;
+    public Vector3 Resporn;
     // Start is called before the first frame update
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
+        Resporn = this.gameObject.transform.position;
     }
 
     // Update is called once per frame

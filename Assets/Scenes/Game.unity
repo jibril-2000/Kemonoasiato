@@ -834,6 +834,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1876461441}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &385438502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385438501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6012c0951490f442930543384e1d810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minVec: {x: 2, y: 0, z: 0}
+  maxVec: {x: 2, y: 0, z: 0}
+  Moveobj: 1
 --- !u!114 &385438505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3688,6 +3703,7 @@ GameObject:
   - component: {fileID: 712230038}
   - component: {fileID: 712230037}
   - component: {fileID: 712230040}
+  - component: {fileID: 712230041}
   m_Layer: 0
   m_Name: namakemono
   m_TagString: Namakemono
@@ -3806,6 +3822,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &712230041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712230036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bbae37925c18e04fa15ba28f65f8822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  namakemono: {fileID: 0}
+  gameover: {fileID: 0}
+  find: {fileID: 0}
+  rb2D: {fileID: 0}
+  Resporn: {x: 0, y: 0, z: 0}
 --- !u!1 &752326850
 GameObject:
   m_ObjectHideFlags: 0
@@ -5869,6 +5902,7 @@ GameObject:
   - component: {fileID: 1499026818}
   - component: {fileID: 1499026820}
   - component: {fileID: 1499026819}
+  - component: {fileID: 1499026821}
   m_Layer: 0
   m_Name: Ground_
   m_TagString: Untagged
@@ -6109,6 +6143,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e2c18dfc865784c9bd76e51ce61626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1499026821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499026815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b06f7294271bc3428e3df13abd9a72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 712230036}
 --- !u!1001 &1504716628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7079,12 +7126,23 @@ PrefabInstance:
       propertyPath: Moveobj
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7820480188400906252, guid: f550d3af8b092b34596398ca9bb68ecd,
+        type: 3}
+      propertyPath: minVec.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7820480188400906252, guid: f550d3af8b092b34596398ca9bb68ecd,
+        type: 3}
+      propertyPath: maxVec.x
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7820480188400906253, guid: f550d3af8b092b34596398ca9bb68ecd,
         type: 3}
       propertyPath: m_Name
       value: GameObject
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7820480188400906252, guid: f550d3af8b092b34596398ca9bb68ecd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f550d3af8b092b34596398ca9bb68ecd, type: 3}
 --- !u!1 &1895237486
 GameObject:
@@ -7352,6 +7410,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1561022188646218435, guid: ade9aadca2b6a5143b51146063ebc8e3,
+        type: 3}
+      propertyPath: Moveobj
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561022188646218435, guid: ade9aadca2b6a5143b51146063ebc8e3,
+        type: 3}
+      propertyPath: maxVec.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561022188646218435, guid: ade9aadca2b6a5143b51146063ebc8e3,
+        type: 3}
+      propertyPath: minVec.x
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4164142407741386550, guid: ade9aadca2b6a5143b51146063ebc8e3,
         type: 3}
       propertyPath: Moveobj

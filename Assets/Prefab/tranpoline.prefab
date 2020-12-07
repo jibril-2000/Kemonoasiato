@@ -222,11 +222,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6334573864489366622}
   - component: {fileID: 6334573864489366623}
-  - component: {fileID: 4164142407741386550}
   - component: {fileID: 4832650947564132692}
   - component: {fileID: 6199242143643046254}
   - component: {fileID: 3565875898240986671}
   - component: {fileID: 4029409531445980206}
+  - component: {fileID: 1561022188646218435}
   m_Layer: 0
   m_Name: tranpoline
   m_TagString: Untagged
@@ -302,19 +302,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4164142407741386550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6334573864489366620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae0c366133a7a94099002ad4c3cda1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Moveobj: 0
 --- !u!61 &4832650947564132692
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -403,6 +390,21 @@ MonoBehaviour:
   _pitch: 0
   _androidUseLowLatencyVoicePool: 0
   need_to_player_update_all: 1
+--- !u!114 &1561022188646218435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6334573864489366620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6012c0951490f442930543384e1d810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minVec: {x: 0, y: 0, z: 0}
+  maxVec: {x: 0, y: 0, z: 0}
+  Moveobj: 0
 --- !u!1 &6334573865038289463
 GameObject:
   m_ObjectHideFlags: 0

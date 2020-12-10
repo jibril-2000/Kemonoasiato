@@ -7,7 +7,10 @@ public class RotateObj : MonoBehaviour
     Vector3 firstPos;
     Vector3 lastPos;
 
-    private Renderer _renderer; 
+    private Renderer _renderer;
+    private Vector3 clickPos;             	// 　マウスのカーソル位置座標
+    private float degree;       //　回転角度（オイラー角、一般的な普通の角°で表す）
+    private float rotSpeed=0.8f;      //　回頭のスピードを入れる変数　0.8fくらいがよい
 
     void Start()
     {
@@ -25,26 +28,20 @@ public class RotateObj : MonoBehaviour
     {
 
         _renderer.enabled = true;
-        float sensitivity = 1f; // いわゆるマウス感度
-        float mouse_move_x = Input.GetAxis("Mouse X")*2 ;
-        float mouse_move_y = Input.GetAxis("Mouse Y")*2 ;
-        if (Input.GetMouseButtonDown(0))
-        {
-            firstPos = Input.mousePosition;
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            lastPos = Input.mousePosition;
-        }
+        clickPos = Input.mousePosition;      // Vector3型変数ｃlickPosに、マウスの現在位置座標を取得する(クリックしませんが)
+        clickPos.z = 10.0f;                                   //Z軸の値に適当な値を入れます
+                                                              // ScreenToWorldPoint(位置(Vector3))：　スクリーン座標をワールド座標に変換する
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(clickPos);
+        //弾の飛ぶ方向をマウスカーソルの位置からcanonPosの位置を引いて、正規化（長さ1の単位ベクトル）します
+        Vector3 bulletDir = Vector3.Scale((mouseWorldPos -this.transform.position), new Vector3(1, 1, 0)).normalized;
 
-            var dic = lastPos - firstPos;
+        degree = Mathf.Atan2(bulletDir.y, bulletDir.x) * Mathf.Rad2Deg;
+        //アークタンジェントで求めた角度（ラジアン表示）をオイラー角に変換します
+        //playerObj.transform.eulerAngles = new Vector3(0, 0, degree);　
+        gameObject.transform.parent.transform.eulerAngles = new Vector3(0f, 0f, Mathf.LerpAngle(gameObject.transform.parent.transform.eulerAngles.z,degree, Time.deltaTime * rotSpeed));
 
-            if (dic.y > 1.0f)
-            {
-                gameObject.transform.parent.Rotate(0,0, mouse_move_x+ mouse_move_y);
-            }
-           
         
+
     }
     void OnMouseExit()
     {

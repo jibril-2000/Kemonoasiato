@@ -404,7 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minVec: {x: 0, y: 0, z: 0}
   maxVec: {x: 0, y: 0, z: 0}
-  Moveobj: 0
+  Moveobj: 1
 --- !u!1 &6334573865038289463
 GameObject:
   m_ObjectHideFlags: 0

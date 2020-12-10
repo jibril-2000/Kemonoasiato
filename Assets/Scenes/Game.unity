@@ -5447,6 +5447,11 @@ PrefabInstance:
       propertyPath: Moveobj
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8517035013748727875, guid: aedf48667f1f1854b8ba4ee6ea8e0bc3,
+        type: 3}
+      propertyPath: Moveobj
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7427692794557058842, guid: aedf48667f1f1854b8ba4ee6ea8e0bc3, type: 3}
     - {fileID: 5434283507224836354, guid: aedf48667f1f1854b8ba4ee6ea8e0bc3, type: 3}

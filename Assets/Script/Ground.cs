@@ -5,8 +5,10 @@ using UnityEngine;
 public class Ground : MonoBehaviour
 {
     public GameObject Player;
+    [SerializeField] GameObject Canvas;
     Namakemono script;
-
+    [SerializeField]
+    Fade fade = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +20,7 @@ public class Ground : MonoBehaviour
     {
 
     }
-    private void OnCollisionStay2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         
         if (other.gameObject.CompareTag("Namakemono"))
@@ -30,11 +32,10 @@ public class Ground : MonoBehaviour
     }
     public IEnumerator Resporn()
     {
-       
-            yield return new WaitForSeconds(1);//何秒待つのか
-            Player.gameObject.transform.position = script.Resporn;
-            
-
+        Canvas.GetComponent<FadeTest>().FadeStart();
+        yield return new WaitForSeconds(1);//何秒待つのか
         
+            Player.gameObject.transform.position = script.Resporn;
+
     }
 }

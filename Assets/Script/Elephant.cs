@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Elephant : MonoBehaviour
 {
-    Animator anim;
+    Animation anim;
     // Start is called before the first frame update
     void Start()
     {
-        this.anim = GetComponent<Animator>();
+        this.anim = GetComponent<Animation>();
     }
 
     // Update is called once per frame
@@ -16,7 +16,7 @@ public class Elephant : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            this.anim.Play("Elephant", 0, 0.0f);
+            this.anim.Play("Elephant");
         }
     }
 }

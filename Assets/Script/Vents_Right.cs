@@ -23,7 +23,9 @@ public class Vents_Right : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
+
             vents_left.SetActive(true);
+            Debug.Log("a");
             vents_right.SetActive(false);
         }
     }

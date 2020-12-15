@@ -20,18 +20,17 @@ public class CriAtomSourceEditor : Editor
 	private GUIStyle style;
 
 #if CRI_UNITY_EDITOR_PREVIEW
-	private bool isPreviewReady = false;
-	private CriAtomExAcb previewAcb;
-	private CriAtomExPlayer previewPlayer;
 	public CriAtom atomComponent;
+	private CriAtomEditor.PreviewPlayer previewPlayer;
 	private string strPreviewAcb = null;
 	private string strPreviewAwb = null;
+	private CriAtomExAcb previewAcb = null;
 	private string lastCuesheet = "";
 #endif
 	#endregion
 
 	#region Functions
-	private void OnEnable()	{
+	private void OnEnable() {
 		this.source = (CriAtomSource)base.target;
 		this.style = new GUIStyle();
 
@@ -39,86 +38,49 @@ public class CriAtomSourceEditor : Editor
 		/* シーンからCriAtomコンポーネントを見つけ出す */
 		atomComponent = (CriAtom)FindObjectOfType(typeof(CriAtom));
 #endif
+		previewPlayer = new CriAtomEditor.PreviewPlayer();
 	}
 
 	private void OnDisable() {
-#if CRI_UNITY_EDITOR_PREVIEW
 		if (previewAcb != null) {
 			previewAcb.Dispose();
 			previewAcb = null;
 		}
+		lastCuesheet = "";
 		if (previewPlayer != null) {
 			previewPlayer.Dispose();
 			previewPlayer = null;
 		}
-#endif
 	}
 
 #if CRI_UNITY_EDITOR_PREVIEW
-	/* プレビュ用：初期化関数 */
-	private void PreparePreview() {
-		if (CriAtomPlugin.IsLibraryInitialized() == false) {
-			CriWareInitializer.InitializeAtom(new CriAtomConfig());
-		}
-		if (CriAtomPlugin.IsLibraryInitialized() == false) {
-			return;
-		}
-		
-		previewPlayer = new CriAtomExPlayer();
+	/* プレビュ用：音声データ設定・再生関数 */
+	private void StartPreviewPlayer() {
 		if (previewPlayer == null) {
 			return;
 		}
 
-		if (atomComponent != null) {
-			CriAtomEx.RegisterAcf(null, Path.Combine(CriWare.streamingAssetsPath, atomComponent.acfFile));
-		} else {
-			Debug.LogWarning("[CRIWARE] CriAtom component not found in this scene");
-			return;
-		}
-
-		isPreviewReady = true;
-	}
-
-	/* プレビュ用：音声データ設定・再生関数 */
-	private void StartPreviewPlayer() {
-		if (isPreviewReady == false) {
-			PreparePreview();
-		}
-		if (isPreviewReady == true) {
-			if (previewAcb == null || lastCuesheet != this.source.cueSheet) {
-				if (previewAcb != null) {
-					previewAcb.Dispose();
-					previewAcb = null;
-				}
-				foreach (var cuesheet in atomComponent.cueSheets) {
-					if (cuesheet.name == this.source.cueSheet) {
-						strPreviewAcb = Path.Combine(CriWare.streamingAssetsPath, cuesheet.acbFile);
-						strPreviewAwb = (cuesheet.awbFile == null) ? null : Path.Combine(CriWare.streamingAssetsPath, cuesheet.awbFile);
-						previewAcb = CriAtomExAcb.LoadAcbFile(null, strPreviewAcb, strPreviewAwb);
-						lastCuesheet = cuesheet.name;
-					}
-				}
-			}
+		if (lastCuesheet != this.source.cueSheet) {
 			if (previewAcb != null) {
-				if (previewPlayer != null) {
-					previewPlayer.SetCue(previewAcb, this.source.cueName);
-					previewPlayer.SetVolume(this.source.volume);
-					previewPlayer.SetPitch(this.source.pitch);
-					previewPlayer.Loop(this.source.loop);
-					previewPlayer.Start();
-				} else {
-					Debug.LogWarning("[CRIWARE] Player is not ready. Please try reloading the inspector");
+				previewAcb.Dispose();
+				previewAcb = null;
+			}
+			foreach (var cuesheet in atomComponent.cueSheets) {
+				if (cuesheet.name == this.source.cueSheet) {
+					strPreviewAcb = Path.Combine(CriWare.streamingAssetsPath, cuesheet.acbFile);
+					strPreviewAwb = (cuesheet.awbFile == null) ? null : Path.Combine(CriWare.streamingAssetsPath, cuesheet.awbFile);
+					previewAcb = CriAtomExAcb.LoadAcbFile(null, strPreviewAcb, strPreviewAwb);
+					lastCuesheet = cuesheet.name;
 				}
-			} else {
-				Debug.LogWarning("[CRIWARE] Specified cue sheet could not be found");
 			}
 		}
-	}
-
-	/* プレビュ用：再生停止関数 */
-	private void StopPreviewPlayer() {
-		if (previewPlayer != null) {
-			previewPlayer.Stop();
+		if (previewAcb != null) {
+			previewPlayer.player.SetVolume(this.source.volume);
+			previewPlayer.player.SetPitch(this.source.pitch);
+			previewPlayer.player.Loop(this.source.loop);
+			previewPlayer.Play(previewAcb, this.source.cueName);
+		} else {
+			Debug.LogWarning("[CRIWARE] Specified cue sheet could not be found");
 		}
 	}
 #endif
@@ -143,10 +105,10 @@ public class CriAtomSourceEditor : Editor
 			{
 				EditorGUILayout.LabelField("Preview", GUILayout.MaxWidth(EditorGUIUtility.labelWidth - 5));
 				if (GUILayout.Button("Play", GUILayout.MaxWidth(60))) {
-					StartPreviewPlayer();
+					this.StartPreviewPlayer();
 				}
 				if (GUILayout.Button("Stop", GUILayout.MaxWidth(60))) {
-					StopPreviewPlayer();
+					this.previewPlayer.Stop();
 				}
 			}
 			GUILayout.EndHorizontal();
@@ -157,7 +119,11 @@ public class CriAtomSourceEditor : Editor
 			this.source.volume = EditorGUILayout.Slider("Volume", this.source.volume, 0.0f, 1.0f);
 			this.source.pitch = EditorGUILayout.Slider("Pitch", this.source.pitch, -1200f, 1200);
 			this.source.loop = EditorGUILayout.Toggle("Loop", this.source.loop);
-			this.source.use3dPositioning = EditorGUILayout.Toggle("3D Positioning", this.source.use3dPositioning);
+			if (this.source.use3dPositioning = EditorGUILayout.Toggle("3D Positioning", this.source.use3dPositioning)) {
+				EditorGUI.indentLevel++;
+				this.source.regionOnStart = EditorGUILayout.ObjectField("Region On Start", this.source.regionOnStart, typeof(CriAtomRegion), true) as CriAtomRegion;
+				EditorGUI.indentLevel--;
+			}
 
 			this.showAndroidConfig = EditorGUILayout.Foldout(this.showAndroidConfig, "Android Config");
 			if (this.showAndroidConfig) {

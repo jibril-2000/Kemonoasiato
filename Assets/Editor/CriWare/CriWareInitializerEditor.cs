@@ -88,6 +88,10 @@ public class CriWareInitializerEditor : Editor
 	
 	static private string[] asrOutputModes = {"Default", "Stereo", "4ch", "6ch(5.1ch)", "8ch(7.1ch)"};
 	static private int[] asrNumOutputChannels = {0, 2, 4, 6, 8};
+	static private string[] inGamePreviewSwitchModes = { "Disable", "Enable", "Follow Build Setting" };
+	static private CriAtomConfig.InGamePreviewSwitchMode[] inGamePreviewSwitchModeValues
+		= { CriAtomConfig.InGamePreviewSwitchMode.Disable, CriAtomConfig.InGamePreviewSwitchMode.Enable, CriAtomConfig.InGamePreviewSwitchMode.FollowBuildSetting };
+
 
 	public override void OnInspectorGUI()
 	{
@@ -162,10 +166,26 @@ public class CriWareInitializerEditor : Editor
 				selected_output_mode = EditorGUILayout.Popup("ASR Output Mode", selected_output_mode, asrOutputModes);
 				initializer.atomConfig.asrOutputChannels = asrNumOutputChannels[selected_output_mode];
 
-				GenToggleField("Uses Time For Seed",    "", ref initializer.atomConfig.useRandomSeedWithTime);
-                GenToggleField("Uses In Game Preview", "", ref initializer.atomConfig.usesInGamePreview);
-                GenToggleField("VR Mode", "", ref initializer.atomConfig.vrMode);
+				GenToggleField("Use Time For Seed",    "", ref initializer.atomConfig.useRandomSeedWithTime);
 
+				if (initializer.atomConfig.inGamePreviewMode == CriAtomConfig.InGamePreviewSwitchMode.Default) {
+					initializer.atomConfig.inGamePreviewMode = initializer.atomConfig.usesInGamePreview ?
+																CriAtomConfig.InGamePreviewSwitchMode.Enable :
+																CriAtomConfig.InGamePreviewSwitchMode.Disable;
+					initializer.atomConfig.usesInGamePreview = false;
+				}
+				int selected_ingamepreview_switch_mode = 0;
+				foreach (CriAtomConfig.InGamePreviewSwitchMode mode in inGamePreviewSwitchModeValues) {
+					if (mode == initializer.atomConfig.inGamePreviewMode) {
+						break;
+					}
+					selected_ingamepreview_switch_mode++;
+				}
+				selected_ingamepreview_switch_mode = EditorGUILayout.Popup("In Game Preview", selected_ingamepreview_switch_mode, inGamePreviewSwitchModes);
+				initializer.atomConfig.inGamePreviewMode = inGamePreviewSwitchModeValues[selected_ingamepreview_switch_mode];
+
+				GenToggleField("VR Mode", "", ref initializer.atomConfig.vrMode);
+				GenToggleField("Keep Playing Sound On Pause", "", ref initializer.atomConfig.keepPlayingSoundOnPause);
 
 				showAtomStandardVoicePoolConfig = EditorGUILayout.Foldout(showAtomStandardVoicePoolConfig, "Standard Voice Pool Config");
 				if (showAtomStandardVoicePoolConfig) {
@@ -210,8 +230,8 @@ public class CriWareInitializerEditor : Editor
 							initializer.atomConfig.androidStartBufferingTime = (int)(3 * 1000.0 / initializer.atomConfig.serverFrequency);
 						}
 					}
-                    GenIntFieldWithUnit("Buffering Time", "[msec]", "Sound buffering time in msec.", ref initializer.atomConfig.androidBufferingTime, 50, 500);
-                    GenIntFieldWithUnit("Start Buffering", "[msec]", "Sound buffering time to start playing. This value will be applied when using the low latency voice pool.", ref initializer.atomConfig.androidStartBufferingTime, 50, 500);
+					GenIntFieldWithUnit("Buffering Time", "[msec]", "Sound buffering time in msec.", ref initializer.atomConfig.androidBufferingTime, 50, 500);
+					GenIntFieldWithUnit("Start Buffering", "[msec]", "Sound buffering time to start playing. This value will be applied when using the low latency voice pool.", ref initializer.atomConfig.androidStartBufferingTime, 50, 500);
 					showAtomAndroidVoicePoolConfig = EditorGUILayout.Foldout(showAtomAndroidVoicePoolConfig, "Low Latency Standard Voice Pool Config");
 					if (showAtomAndroidVoicePoolConfig) {
 						EditorGUI.indentLevel += 1;
@@ -219,9 +239,10 @@ public class CriWareInitializerEditor : Editor
 						GenIntField("Streaming Voices", "", ref initializer.atomConfig.androidLowLatencyStandardVoicePoolConfig.streamingVoices, 0, 32);
 						EditorGUI.indentLevel -= 1;
 					}
-                    /* Android OS の Fast Mixer を使用して、音声再生時の発音遅延を短縮します。ASR/NSR の発音遅延や、遅延推測機能の結果に影響します */
-                    GenToggleField("Uses Android Fast Mixer", "", ref initializer.atomConfig.androidUsesAndroidFastMixer);
-                    EditorGUI.indentLevel -= 1;
+					GenToggleField("Uses Android Fast Mixer", "", ref initializer.atomConfig.androidUsesAndroidFastMixer);
+					GenToggleField("Use Asr For Default Playback", "", ref initializer.atomConfig.androidForceToUseAsrForDefaultPlayback);
+					GenToggleField("[Beta] Use AAudio", "", ref initializer.atomConfig.androidUsesAAudio);
+					EditorGUI.indentLevel -= 1;
 				}
 			}
 			EditorGUI.indentLevel -= 1;

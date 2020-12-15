@@ -7,50 +7,59 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 /// \addtogroup CRIATOM_UNITY_COMPONENT
 /// @{
 
 /**
  * <summary>音声再生を行うコンポーネントです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * 任意のGameObjectに付加して使用します。<br/>
  * 再生するキューが3Dポジショニングを行うように設定されている場合、3D再生を行います。
  * この際、 ::CriAtomListener が付加されているGameObjectの位置との間で定位計算を行うため、
  * カメラやメインキャラクタに ::CriAtomListener を付加しておく必要があります。<br/>
  * Public変数は基本的にUnityEditor上で設定します。
+ * </para>
+ * </remarks>
  */
 [AddComponentMenu("CRIWARE/CRI Atom Source")]
-public class CriAtomSource : MonoBehaviour
+public class CriAtomSource : CriMonoBehaviour
 {
 	#region Enumlators
 	/**
-	 * <summary>CriAtomSourceの再生状態を示す値です。<summary>
-	 * \par 説明:
+	 * <summary>CriAtomSourceの再生状態を示す値です。</summary>
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomSource::status プロパティにより取得できます。
+	 * </para>
+	 * </remarks>
 	 */
 	public enum Status
 	{
-		Stop,		/**< 停止中			*/
-		Prep,		/**< 再生準備中		*/
-		Playing,	/**< 再生中			*/
-		PlayEnd,	/**< 再生完了		*/
-		Error		/**< エラーが発生	*/
+		Stop,       /**< 停止中          */
+		Prep,       /**< 再生準備中        */
+		Playing,    /**< 再生中          */
+		PlayEnd,    /**< 再生完了       */
+		Error       /**< エラーが発生 */
 	}
 	#endregion
 
 	#region Variables
 	/**
 	 * <summary>内部で使用している CriAtomExPlayer です。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomExPlayer を直接制御する場合にはこのプロパティから CriAtomExPlayer を取得してください。
+	 * </para>
+	 * </remarks>
 	 */
 	public CriAtomExPlayer player { protected set; get; }
 
 	protected CriAtomEx3dSource source = null;
 	private Vector3 lastPosition;
 	private bool hasValidPosition = false;
+	private CriAtomRegion currentRegion = null;
 
 	[SerializeField]
 	private bool _playOnStart = false;
@@ -58,6 +67,8 @@ public class CriAtomSource : MonoBehaviour
 	private string _cueName = "";
 	[SerializeField]
 	private string _cueSheet = "";
+	[SerializeField]
+	private CriAtomRegion _regionOnStart = null;
 
 	// Parameters
 	[SerializeField]
@@ -73,20 +84,25 @@ public class CriAtomSource : MonoBehaviour
 	[SerializeField]
 	private bool need_to_player_update_all = true;
 	#endregion
-	
+
 	#region Properties
 
 	/**
 	 * <summary>実行開始時に再生するかどうかを設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * trueが設定されていると、実行開始時に再生を開始します。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * 再生開始が行われるタイミングは、MonoBehaviour::Start 関数が呼ばれるタイミングです。
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * WebGL などの非同期 ACB ロードが有効なプラットフォームで本フラグによる
-	 * 実行開始時のキュー再生を行う場合は、必ずキューシート名を指定してください。<br>
+	 * 実行開始時のキュー再生を行う場合は、必ずキューシート名を指定してください。<br/>
 	 * 指定しない場合、ロード待ちを行うべきキューシートが特定できないため、
 	 * キューの再生に失敗します。
+	 * </para>
+	 * </remarks>
 	 */
 	public bool playOnStart {
 		get {return this._playOnStart;}
@@ -95,10 +111,13 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>再生するキュー名を設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomSource::Play() 関数を呼び出した場合や、
 	 * CriAtomSource::playOnStart プロパティの設定により実行開始時に再生する場合には、
 	 * 本プロパティで設定されているキューを再生します。
+	 * </para>
+	 * </remarks>
 	 */
 	public string cueName {
 		get {return this._cueName;}
@@ -107,9 +126,12 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>キューシート名を設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomSource::Play 関数や CriAtomSource::cueName プロパティで指定したキューは、
 	 * 本プロパティで設定されているキューシートから検索されます。
+	 * </para>
+	 * </remarks>
 	 */
 	public string cueSheet {
 		get {return this._cueSheet;}
@@ -118,10 +140,13 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>3Dポジショニングを使用するかを設定します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * <br/>
 	 * デフォルトの設定では、3Dポジショニングの使用は有効になっています。<br/>
 	 * 本パラメータは任意のタイミングで切り替えることができます。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public bool use3dPositioning {
 		set {
@@ -135,13 +160,58 @@ public class CriAtomSource : MonoBehaviour
 	}
 
 	/**
+	 * <summary>音源の3Dリージョンの設定及び取得</summary>
+	 * <remarks>
+	 * <para header='注意'>
+	 * 3Dポジショニングが無効の場合、リージョンの設定は行えません。
+	 * </para>
+	 * </remarks>
+	 */
+	public CriAtomRegion region3d {
+		get { return this.currentRegion; }
+		set {
+			if (this._use3dPositioning == false) {
+				Debug.LogWarning("[CRIWARE] Cannot set 3D Region on audio source with 3d positioning disabled.");
+				return;
+			}
+
+			CriAtomEx3dRegion regionHandle = (value == null) ? null : value.region3dHn;
+			if (this.source != null) {
+				this.source.Set3dRegion(regionHandle);
+				this.source.Update();
+				this.currentRegion = value;
+			} else {
+				Debug.LogError("[CRIWARE] Internal: 3D Positioning is not initialized correctly.");
+				this.currentRegion = null;
+			}
+		}
+	}
+
+	/**
+	 * <summary>初期リージョンを設定します。</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * Startが実行されるタイミングで適用するリージョンを設定します。<br/>
+	 * 3Dポジショニング有効時にのみ適用されます。<br/>
+	 * 空(null)の場合は適用されません。<br/>
+	 * </para>
+	 * </remarks>
+	 */
+	public CriAtomRegion regionOnStart {
+		get { return this._regionOnStart; }
+		set { this._regionOnStart = value; }
+	}
+
+	/**
 	 * <summary>ループ再生の切り替え</summary>
-	 * <param name="loop">ループスイッチ（true: ループモード、false: ループモード解除）</param>
-	 * \par 説明:
+	 * <param name='loop'>ループスイッチ（true: ループモード、false: ループモード解除）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ループポイントを持たない波形データに対し、ループ再生のON/OFFを切り替えます。<br/>
 	 * デフォルトはループOFFです。<br/>
 	 * ループ再生をONにした場合は、音声終端まで再生しても再生は終了せず先頭に戻って再生を繰り返します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数の設定は波形データに対して適用されます。<br/>
 	 * シーケンスデータに対して本関数を実行した場合、
 	 * シーケンスデータ内の個々の波形データがループ再生される形になります。<br/>
@@ -156,6 +226,8 @@ public class CriAtomSource : MonoBehaviour
 	 * <br/>
 	 * 本パラメータが評価されるのは、CriAtomSource コンポーネントのステータスが停止状態で、
 	 * CriAtomSource::Play 関数を呼び出した場合です。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public bool loop {
 		set { this._loop = value;}
@@ -164,7 +236,8 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>ボリュームを設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 出力音声のボリューム（音量）を設定／取得します。<br/>
 	 * ボリューム値は音声データの振幅に対する倍率です（単位はデシベルではありません）。<br/>
 	 * 例えば、1.0fを指定した場合、原音はそのままのボリュームで出力されます。<br/>
@@ -172,11 +245,14 @@ public class CriAtomSource : MonoBehaviour
 	 * 音声が出力されます。<br/>
 	 * 0.0fを指定した場合、音声はミュートされます（無音になります）。<br/>
 	 * ボリュームのデフォルト値は1.0fです。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * キュー再生時、データ側にボリュームが設定されている場合に本関数を呼び出すと、
 	 * データ側に設定されている値と本関数による設定値とを<b>乗算</b>した値が適用されます。<br/>
 	 * 例えば、データ側のボリュームが0.8f、 CriAtomSource のボリュームが0.5fの場合、
 	 * 実際に適用されるボリュームは0.4fになります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public float volume {
 		set {
@@ -191,17 +267,21 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>ピッチを設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 出力音声のピッチ（音の高さ）を設定／取得します。<br/>
 	 * ピッチはセント単位で指定します。<br/>
 	 * 1セントは1オクターブの1/1200です。半音は100セントです。<br/>
 	 * 例えば、100.0fを指定した場合、ピッチが半音上がります。-100.0fを指定した場合、ピッチが半音下がります。<br/>
 	 * ピッチのデフォルト値は0.0fです。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * キュー再生時、データ側にピッチが設定されている場合に本関数を呼び出すと、
 	 * データ側に設定されている値と本関数による設定値とを<b>加算</b>した値が適用されます。<br/>
 	 * 例えば、データ側のピッチが-100.0f、 CriAtomSource のピッチが200.0fの場合、
 	 * 実際に適用されるピッチは100.0fになります。
+	 * </para>
+	 * </remarks>
 	 */
 	public float pitch {
 		set {
@@ -216,12 +296,14 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>パンニング3D角度を設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * パンニング3D角度を設定／取得します。<br/>
 	 * 角度は度単位で指定します。<br/>
 	 * 前方を0度とし、右方向（時計回り）に180.0f、左方向（反時計回り）に-180.0fまで設定できます。<br/>
 	 * 例えば、45.0fを指定した場合、右前方45度に定位します。-45.0fを指定した場合、左前方45度に定位します。<br/>
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * キュー再生時、データ側にパンニング3D角度が設定されている場合に本関数を呼び出すと、
 	 * データ側に設定されている値と本関数による設定値とを<b>加算</b>した値が適用されます。<br/>
 	 * 例えば、データ側のパンニング3D角度が15.0f、 CriAtomSource のパンニング3D角度が30.0fの場合、
@@ -230,6 +312,8 @@ public class CriAtomSource : MonoBehaviour
 	 * 実際に適用されるパンニング3D角度が180.0fを超える値になった場合、値を-360.0fして範囲内に納めます。<br/>
 	 * 同様に、実際に適用されるボリューム値が-180.0f未満の値になった場合は、値を+360.0fして範囲内に納めます。<br/>
 	 * （+360.0f, -360.0fしても定位は変わらないため、実質的には-180.0f～180.0fの範囲を超えて設定可能です。）
+	 * </para>
+	 * </remarks>
 	 */
 	public float pan3dAngle {
 		set {
@@ -246,11 +330,13 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>パンニング3D距離を設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * パンニング3Dでインテリアパンニングを行う際の距離を設定／取得します。<br/>
 	 * 距離は、リスナー位置を0.0f、スピーカーの配置されている円周上を1.0fとして、-1.0f～1.0fの範囲で指定します。<br/>
 	 * 負値を指定すると、パンニング3D角度が180度反転し、逆方向に定位します。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * キュー再生時、データ側にパンニング3D距離が設定されている場合に本関数を呼び出すと、
 	 * データ側に設定されている値と本関数による設定値とを<b>乗算</b>した値が適用されます。<br/>
 	 * 例えば、データ側のパンニング3D距離が0.8f、 CriAtomSource のパンニング3D距離が0.5fの場合、
@@ -258,6 +344,8 @@ public class CriAtomSource : MonoBehaviour
 	 * <br/>
 	 * 実際に適用されるパンニング3D距離が1.0fを超える値になった場合、値は1.0fにクリップされます。<br/>
 	 * 同様に、実際に適用されるパンニング3D距離が-1.0f未満の値になった場合も、値は-1.0fにクリップされます。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public float pan3dDistance {
 		set {
@@ -274,20 +362,25 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>再生開始位置を設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 再生を開始する位置を設定／取得します。
-	 * 再生開始位置を設定すると、音声データを途中から再生することができます。<br>
+	 * 再生開始位置を設定すると、音声データを途中から再生することができます。<br/>
 	 * 再生開始位置の指定はミリ秒単位で行います。例えば、 10000 を設定すると、
 	 * 次に再生する音声データは 10 秒目の位置から再生されます。
-	 * \par 備考
+	 * </para>
+	 * <para header='備考'>
 	 * 音声データ途中からの再生は、音声データ先頭からの再生に比べ、発音開始の
 	 * タイミングが遅くなります。<br/>
 	 * これは、一旦音声データのヘッダを解析後、指定位置にジャンプしてからデータを読み
 	 * 直して再生を開始するためです。
-	 * <br>
+	 * </para>
+	 * <para header='注意'>
 	 * 再生開始位置を指定してシーケンスを再生した場合、指定位置よりも前に配置された
-	 * 波形データは再生されません。<br>
-	 * （シーケンス内の個々の波形が途中から再生されることはありません。）<br>
+	 * 波形データは再生されません。<br/>
+	 * （シーケンス内の個々の波形が途中から再生されることはありません。）<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public int startTime {
 		set {
@@ -302,13 +395,15 @@ public class CriAtomSource : MonoBehaviour
 		}
 	}
 
-	
+
 	/**
 	 * <summary>再生時刻（ミリ秒単位）を取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 再生時刻が取得できている場合、本プロパティは 0 以上の値を示します。<br/>
 	 * 再生時刻が取得できない場合（ボイスの取得に失敗した場合等）、本関数は負値を示します。<br/>
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * 同一 CriAtomSource コンポーネントで複数の音声を再生した場合は、
 	 * "最後に"再生した音声の時刻を示します。<br/>
 	 * 複数の音声に対して再生時刻をチェックする必要がある場合には、
@@ -322,7 +417,8 @@ public class CriAtomSource : MonoBehaviour
 	 * 再生時刻のカウントアップも停止します。<br/>
 	 * （ポーズを解除すれば再度カウントアップが再開されます。）
 	 * <br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 戻り値の型はlongですが、現状、32bit以上の精度はありません。<br/>
 	 * 再生時刻を元に制御を行う場合、約24日で再生時刻が異常になる点に注意が必要です。<br/>
 	 * （ 2147483647 ミリ秒を超えた時点で、再生時刻がオーバーフローし、負値になります。）<br/>
@@ -338,6 +434,8 @@ public class CriAtomSource : MonoBehaviour
 	 * （データ供給停止により再生が停止した場合でも、時刻は進み続けます。）<br/>
 	 * そのため、本関数で取得した時刻を元に映像との同期を行った場合、
 	 * データ供給不足が発生する度に同期が大きくズレる可能性があります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public long time
 	{
@@ -346,11 +444,12 @@ public class CriAtomSource : MonoBehaviour
 				this.player.GetTime() : 0;
 		}
 	}
-	
+
 	/**
 	 * <summary>ステータスを取得します。</summary>
-	 * \par 説明:
-	 * CriAtomSource コンポーネントのステータスを取得します。<br>
+	 * <remarks>
+	 * <para header='説明'>
+	 * CriAtomSource コンポーネントのステータスを取得します。<br/>
 	 * ステータスは CriAtomSource コンポーネントの再生状態を示す値で、以下の5通りの値が存在します。<br/>
 	 * -# Stop
 	 * -# Prep
@@ -372,6 +471,8 @@ public class CriAtomSource : MonoBehaviour
 	 * <br/>
 	 * CriAtomSource コンポーネントのステータスをチェックし、ステータスに応じて処理を切り替えることで、
 	 * 音声の再生状態に連動したプログラムを作成することが可能です。
+	 * </para>
+	 * </remarks>
 	 */
 	public Status status
 	{
@@ -382,11 +483,38 @@ public class CriAtomSource : MonoBehaviour
 	}
 
 	/**
+	 * <summary>距離減衰有効化設定を設定／取得します。</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * 距離減衰による音量の変動を有効にするか無効にするかを設定／取得します。<br/>
+	 * デフォルトは有効です。
+	 * </para>
+	 * </remarks>
+	 */
+	public bool attenuationDistanceSetting
+	{
+		set {
+			if (this.source != null) {
+				source.SetAttenuationDistanceSetting(value);
+				source.Update();
+			}
+		}
+		get {
+			return (this.source != null) ?
+				source.GetAttenuationDistanceSetting() : false;
+		}
+	}
+
+	/**
 	 * <summary>低遅延再生ボイスプールから再生を行うかどうかを設定／取得します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * trueが設定されていると、低遅延再生ボイスプールを使って再生を開始します。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * 本フラグを有効にする場合は、CriWareInitializerの低遅延再生ボイスプール数を設定しておく必要があります。
+	 * </para>
+	 * </remarks>
 	 */
 	public bool androidUseLowLatencyVoicePool {
 		get {return this._androidUseLowLatencyVoicePool;}
@@ -400,7 +528,7 @@ public class CriAtomSource : MonoBehaviour
 	{
 		this.need_to_player_update_all = true;
 	}
-	
+
 	protected virtual void InternalInitialize()
 	{
 		CriAtomPlugin.InitializeLibrary();
@@ -416,14 +544,15 @@ public class CriAtomSource : MonoBehaviour
 		this.source = null;
 		CriAtomPlugin.FinalizeLibrary();
 	}
-	
+
 	void Awake()
 	{
 		this.InternalInitialize();
 	}
 
-	void OnEnable()
+	protected override void OnEnable()
 	{
+		base.OnEnable();
 		this.hasValidPosition = false;
 		this.SetInitialParameters();
 		this.SetNeedToPlayerUpdateAll();
@@ -452,31 +581,42 @@ public class CriAtomSource : MonoBehaviour
 		this.use3dPositioning = this.use3dPositioning; /* ここで必要に応じて3Dソースが設定される */
 		this.player.Set3dListener(CriAtomListener.sharedNativeListener);
 		if (this.SetInitialSourcePosition() == false) {
-			Debug.LogError("[ADX2][SetInitialParameters] source is null.",this);	
+			Debug.LogError("[ADX2][SetInitialParameters] source is null.",this);
 		}
 
 		this.player.SetVolume(this._volume);
 		this.player.SetPitch(this._pitch);
 	}
 
-	void Start() {
-		this.PlayOnStart();
-	}
-
-	void LateUpdate()
+	protected virtual void UpdatePosition()
 	{
 		Vector3 position = this.transform.position;
-		Vector3 velocity = (position - this.lastPosition) / Time.deltaTime;
-		this.lastPosition = position;
-
 		this.source.SetPosition(position.x, position.y, position.z);
 		if (this.hasValidPosition == true) {
+			Vector3 velocity = (position - this.lastPosition) / Time.deltaTime;
 			this.source.SetVelocity(velocity.x, velocity.y, velocity.z);
 		}
 		this.source.Update();
+		this.lastPosition = position;
 		this.hasValidPosition = true;
-	
-		if (this.need_to_player_update_all) {
+	}
+
+	void Start() {
+		if (this.use3dPositioning && this.regionOnStart != null) {
+			this.region3d = this.regionOnStart;
+		}
+		this.PlayOnStart();
+	}
+
+	public override void CriInternalUpdate() { }
+
+	public override void CriInternalLateUpdate()
+	{
+		if (this.use3dPositioning == true) {
+			UpdatePosition();
+		}
+
+		if (this.need_to_player_update_all == true) {
 			this.player.UpdateAll();
 			this.need_to_player_update_all = false;
 		}
@@ -484,20 +624,34 @@ public class CriAtomSource : MonoBehaviour
 
 	public void OnDrawGizmos()
 	{
+		if (this.enabled == false) { return; }
+		var criWareLightBlue = new Color(0.332f, 0.661f, 0.991f);
+
 		if (Application.isPlaying && this.status == Status.Playing) {
 			Gizmos.DrawIcon(this.transform.position, "Criware/VoiceOn.png");
 		} else {
 			Gizmos.DrawIcon(this.transform.position, "Criware/VoiceOff.png");
 		}
+		Gizmos.color = criWareLightBlue;
+		Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.forward);
+		Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.up);
+#if UNITY_EDITOR
+		UnityEditor.Handles.color = criWareLightBlue;
+		UnityEditor.Handles.ArrowHandleCap(1, this.transform.position + this.transform.forward, this.transform.rotation, 1f, EventType.Repaint);
+		UnityEditor.Handles.CircleHandleCap(1, this.transform.position, this.transform.rotation * Quaternion.LookRotation(Vector3.up), 1f, EventType.Repaint);
+#endif
 	}
 
 	#region PlaybackAndController
 	/**
 	 * <summary>設定されているキューを再生開始します。</summary>
 	 * <returns>再生ID</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * どのキューを再生するかは、事前に CriAtomSource::cueName
 	 * プロパティにより設定しておく必要があります。
+	 * </para>
+	 * </remarks>
 	 */
 	public CriAtomExPlayback Play()
 	{
@@ -506,10 +660,13 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>指定したキュー名のキューを再生開始します。</summary>
-	 * <param name="cueName">キュー名</param>
+	 * <param name='cueName'>キュー名</param>
 	 * <returns>再生ID</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomSource::cueName プロパティの設定に関わらず、本関数に指定したキュー名のキューを再生します。
+	 * </para>
+	 * </remarks>
 	 */
 	public CriAtomExPlayback Play(string cueName)
 	{
@@ -525,7 +682,7 @@ public class CriAtomSource : MonoBehaviour
 		if (androidUseLowLatencyVoicePool) {
 			this.player.SetSoundRendererType(CriAtomEx.SoundRendererType.Native);
 		} else {
-			this.player.SetSoundRendererType(CriAtomEx.SoundRendererType.Default);
+			this.player.SetSoundRendererType(CriAtomEx.androidDefaultSoundRendererType);
 		}
 #endif
 		if (this.hasValidPosition == false) {
@@ -540,10 +697,13 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>指定したキューIDのキューを再生開始します。</summary>
-	 * <param name="cueId">キューID</param>
+	 * <param name='cueId'>キューID</param>
 	 * <returns>再生ID</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomSource::cueName プロパティの設定に関わらず、本関数に指定したキューIDのキューを再生します。
+	 * </para>
+	 * </remarks>
 	 */
 	public CriAtomExPlayback Play(int cueId)
 	{
@@ -560,13 +720,13 @@ public class CriAtomSource : MonoBehaviour
 		if (androidUseLowLatencyVoicePool) {
 			this.player.SetSoundRendererType(CriAtomEx.SoundRendererType.Native);
 		} else {
-			this.player.SetSoundRendererType(CriAtomEx.SoundRendererType.Default);
+			this.player.SetSoundRendererType(CriAtomEx.androidDefaultSoundRendererType);
 		}
 #endif
 		if (this.hasValidPosition == false) {
 			this.SetInitialSourcePosition();
 			this.hasValidPosition = true;
-		} 
+		}
 		if (this.status == Status.Stop) {
 			this.player.Loop(this._loop);
 		}
@@ -575,9 +735,12 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>設定されているキューを再生開始します。</summary>
-	 * \par 説明:
-	 * 事前に CriAtomSource::playOnStart, CriAtomSource::cueName 
+	 * <remarks>
+	 * <para header='説明'>
+	 * 事前に CriAtomSource::playOnStart, CriAtomSource::cueName
 	 * プロパティを設定しておく必要があります。
+	 * </para>
+	 * </remarks>
 	 */
 	private void PlayOnStart()
 	{
@@ -588,11 +751,14 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>非同期に、指定したキュー名のキューを再生開始します。</summary>
-	 * <param name="cueName">キュー名</param>
+	 * <param name='cueName'>キュー名</param>
 	 * <returns>コルーチン</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * Unityのコルーチン機能を使い、非同期に実行されます。
 	 * 本関数は MonoBehaviour::StartCoroutine の引数に指定して呼び出してください。
+	 * </para>
+	 * </remarks>
 	 */
 	private IEnumerator PlayAsync(string cueName)
 	{
@@ -608,7 +774,7 @@ public class CriAtomSource : MonoBehaviour
 		if (androidUseLowLatencyVoicePool) {
 			this.player.SetSoundRendererType(CriAtomEx.SoundRendererType.Native);
 		} else {
-			this.player.SetSoundRendererType(CriAtomEx.SoundRendererType.Default);
+			this.player.SetSoundRendererType(CriAtomEx.androidDefaultSoundRendererType);
 		}
 #endif
 		if (this.hasValidPosition == false) {
@@ -623,17 +789,21 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>再生を停止します。</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 音声再生中の CriAtomSource コンポーネントに対して本関数を実行すると、
 	 * CriAtomSource コンポーネントは再生を停止（ファイルの読み込みや、発音を止める）し、
 	 * ステータスを停止状態（ Stop ）に遷移します。<br/>
-	 * 既に停止している CriAtomSource コンポーネント（ステータスが Playend や Error 
+	 * 既に停止している CriAtomSource コンポーネント（ステータスが Playend や Error
 	 * の CriAtomSource コンポーネント ） に対して本関数を実行すると、
 	 * CriAtomSource コンポーネント のステータスを Stop に変更します。
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 音声再生中の CriAtomSource コンポーネントに対して本関数を実行した場合、ステータスが即座に
 	 * Stop になるとは限りません。<br/>
 	 * （停止状態になるまでに、時間がかかる場合があります。）
+	 * </para>
+	 * </remarks>
 	 */
 	public void Stop()
 	{
@@ -644,13 +814,16 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>一時停止／再開します。</summary>
-	 * <param name="sw">true:一時停止、false:再開</param>
-	 * \par 説明:
+	 * <param name='sw'>true:一時停止、false:再開</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 再生のポーズ／ポーズ解除を行います。<br/>
 	 * sw に true を指定して本関数を実行すると、 CriAtomSource
 	 * コンポーネントは再生中の音声をポーズ（一時停止）します。<br/>
 	 * sw に false を指定して本関数を実行すると、 CriAtomSource
 	 * コンポーネントはポーズを解除し、一時停止していた音声の再生を再開します。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public void Pause(bool sw)
 	{
@@ -663,13 +836,16 @@ public class CriAtomSource : MonoBehaviour
 			this.player.Pause();
 		}
 	}
-	
+
 	/**
 	 * <summary>ポーズ状態の取得を行います。</summary>
 	 * <returns>ポーズ状態</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ポーズのON/OFFを取得します。<br/>
-	 * \sa CriAtomSource::Pause
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomSource::Pause'/>
 	 */
 	public bool IsPaused()
 	{
@@ -678,11 +854,14 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>バス名を指定してバスセンドレベルを設定します。</summary>
-	 * \par 備考:
+	 * <remarks>
+	 * <para header='備考'>
 	 * キュー再生時、データ側にバスセンドレベルが設定されている場合に本関数を呼び出すと、
 	 * データ側に設定されている値と本関数による設定値とを<b>乗算</b>した値が適用されます。<br/>
 	 * 例えば、データ側のバスセンドレベルが0.8f、 CriAtomSource のバスセンドレベルが0.5fの場合、
 	 * 実際に適用されるバスセンドレベルは0.4fになります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public void SetBusSendLevel(string busName, float level)
 	{
@@ -703,10 +882,14 @@ public class CriAtomSource : MonoBehaviour
 
 	/**
 	 * <summary>バス名を指定してバスセンドレベルをオフセット指定で設定します。</summary>
+	 * <remarks>
+	 * <para header='説明'>
 	 * キュー再生時、データ側にバスセンドレベルが設定されている場合に本関数を呼び出すと、
 	 * データ側に設定されている値と本関数による設定値とを<b>加算</b>した値が適用されます。<br/>
 	 * 例えば、データ側のバスセンドレベルが0.2f、 CriAtomSource のバスセンドレベルが0.5fの場合、
 	 * 実際に適用されるバスセンドレベルは0.7fになります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public void SetBusSendLevelOffset(string busName, float levelOffset)
 	{
@@ -777,7 +960,6 @@ public class CriAtomSource : MonoBehaviour
 	{
 		analyzer.DetachExPlayer();
 	}
-
 	#endregion
 
 	#endregion

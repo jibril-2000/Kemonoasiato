@@ -18,10 +18,10 @@ public class CriAtomEditor : Editor
 	private CriAtom atom = null;
 	#endregion
 
-	#region Functions
+	#region GUI Functions
 	private void OnEnable()
 	{
-		atom = (CriAtom)base.target;		
+		atom = (CriAtom)base.target;
 	}
 
 	public override void OnInspectorGUI()
@@ -39,10 +39,9 @@ public class CriAtomEditor : Editor
 
 			for (int i = 0; i < atom.cueSheets.Length; i++) {
 				var cueSheet = atom.cueSheets[i];
-				EditorGUILayout.BeginHorizontal("Label");
-				GUILayout.Label("Cue Sheet");
-				//GUILayout.Label("(" + cueSheet.name + ")");
-				//cueSheet.name = GUILayout.TextField(cueSheet.name, );
+				EditorGUILayout.BeginVertical("HelpBox");
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.PrefixLabel("Cue Sheet");
 				if (GUILayout.Button("Remove")) {
 					atom.RemoveCueSheetInternal(cueSheet.name);
 					break;
@@ -53,6 +52,7 @@ public class CriAtomEditor : Editor
 				cueSheet.acbFile = EditorGUILayout.TextField("ACB File", cueSheet.acbFile);
 				cueSheet.awbFile = EditorGUILayout.TextField("AWB File", cueSheet.awbFile);
 				EditorGUI.indentLevel--;
+				EditorGUILayout.EndVertical();
 			}
 			if (GUILayout.Button("Add CueSheet")) {
 				atom.AddCueSheetInternal("", "", "", null);
@@ -63,6 +63,172 @@ public class CriAtomEditor : Editor
 		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(atom);
+		}
+	}
+	#endregion
+
+	#region Editor Utilities
+	public static void InitializePluginForEditor() {
+		if (CriAtomPlugin.IsLibraryInitialized()) {
+			return;
+		}
+
+		var criInitCom = FindObjectOfType<CriWareInitializer>();
+		if (criInitCom != null) {
+			if (criInitCom.initializesFileSystem) {
+				CriFsConfig config = criInitCom.fileSystemConfig;
+				CriFsPlugin.SetConfigParameters(
+					config.numberOfLoaders,
+					config.numberOfBinders,
+					config.numberOfInstallers,
+					(config.installBufferSize * 1024),
+					config.maxPath,
+					config.minimizeFileDescriptorUsage,
+					false
+					);
+			}
+			if (criInitCom.initializesAtom) {
+				CriAtomConfig config = criInitCom.atomConfig;
+				CriAtomPlugin.SetConfigParameters(
+					Mathf.Max(config.maxVirtualVoices, CriAtomPlugin.GetRequiredMaxVirtualVoices(config)),
+					config.maxVoiceLimitGroups,
+					config.maxCategories,
+					config.maxSequenceEventsPerFrame,
+					config.maxBeatSyncCallbacksPerFrame,
+					config.standardVoicePoolConfig.memoryVoices,
+					config.standardVoicePoolConfig.streamingVoices,
+					config.hcaMxVoicePoolConfig.memoryVoices,
+					config.hcaMxVoicePoolConfig.streamingVoices,
+					config.outputSamplingRate,
+					config.asrOutputChannels,
+					config.usesInGamePreview,
+					config.serverFrequency,
+					config.maxParameterBlocks,
+					config.categoriesPerPlayback,
+					config.maxBuses,
+					config.vrMode);
+
+				CriAtomPlugin.SetConfigAdditionalParameters_PC(
+					config.pcBufferingTime
+					);
+			}
+		}
+		CriAtomPlugin.InitializeLibrary();
+	}
+
+	public class PreviewPlayer : CriDisposable {
+		public CriAtomExPlayer player { get; private set; }
+		private bool finalizeSuppressed = false;
+
+		private bool isPlayerReady = false;
+		private CriAtomEx3dSource source3d;
+		private CriAtomEx3dListener listener;
+
+		private void Initialize() {
+			CriAtomEditor.InitializePluginForEditor();
+
+			if (CriAtomPlugin.IsLibraryInitialized() == false) {
+				return;
+			}
+
+			player = new CriAtomExPlayer();
+			if (player == null) {
+				return;
+			}
+
+			if (source3d == null) {
+				source3d = new CriAtomEx3dSource();
+			}
+			source3d.SetPosition(0, 0, 0);
+			source3d.Update();
+			player.Set3dSource(source3d);
+
+			if (CriAtomListener.sharedNativeListener != null) {
+				player.Set3dListener(CriAtomListener.sharedNativeListener);
+			} else {
+				if (listener == null) {
+					listener = new CriAtomEx3dListener();
+				}
+				listener.SetPosition(0, 0, 0);
+				listener.Update();
+				player.Set3dListener(listener);
+			}
+
+			player.UpdateAll();
+
+			isPlayerReady = true;
+
+			CriDisposableObjectManager.Register(this, CriDisposableObjectManager.ModuleType.Atom);
+
+			if (finalizeSuppressed) {
+				GC.ReRegisterForFinalize(this);
+			}
+		}
+
+		public PreviewPlayer() {
+			Initialize();
+		}
+
+		public override void Dispose() {
+			this.dispose();
+			GC.SuppressFinalize(this);
+			finalizeSuppressed = true;
+		}
+
+		private void dispose() {
+			CriDisposableObjectManager.Unregister(this);
+			if (player != null) {
+				player.Dispose();
+				player = null;
+			}
+			if (source3d != null) {
+				source3d.Dispose();
+				source3d = null;
+			}
+			if (listener != null) {
+				listener.Dispose();
+				listener = null;
+			}
+			this.isPlayerReady = false;
+		}
+
+		~PreviewPlayer() {
+			this.dispose();
+		}
+
+		/* 音声データ設定・再生 */
+		public void Play(CriAtomExAcb acb, string cueName) {
+			if (isPlayerReady == false) {
+				this.Initialize();
+			}
+
+			if (acb != null) {
+				if (player != null) {
+					player.SetCue(acb, cueName);
+					player.Start();
+				} else {
+					Debug.LogWarning("[CRIWARE] Player is not ready. Please try reloading the inspector");
+				}
+			} else {
+				Debug.LogWarning("[CRIWARE] Atom Player for editor: internal error");
+			}
+		}
+
+		/* 再生停止 */
+		public void Stop(bool withoutRelease = false) {
+			if (player != null) {
+				if (withoutRelease) {
+					player.StopWithoutReleaseTime();
+				} else {
+					player.Stop();
+				}
+			}
+		}
+
+		public void ResetPlayer() {
+			player.SetVolume(1f);
+			player.SetPitch(0);
+			player.Loop(false);
 		}
 	}
 	#endregion

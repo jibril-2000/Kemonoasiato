@@ -21,7 +21,7 @@ public class CriWareBuildPreprocessor : ScriptableObject,
 #endif
 {
 	private static string prefsFilePath = "Assets/Editor/CriWare/CriWareBuildPreprocessorPrefs.asset";
-	public bool muteOtherAudio	= true;
+	public bool muteOtherAudio  = true;
 
 	public int callbackOrder { get { return 0; } }
 

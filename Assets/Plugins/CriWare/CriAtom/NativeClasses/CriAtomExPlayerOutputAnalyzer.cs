@@ -14,37 +14,47 @@
 
 
  /**
- * <summary>音声出力データ解析モジュール（プレーヤ/ソース単位)</summary>
- * \par 説明:
- * CriAtomSource/CriAtomExPlayerごとの音声出力の解析を行います。<br/>
- * レベルメータ機能などを提供します。<br/>
- * \attention 注意：
- * 将来的に本クラスは廃止される予定です。CriAtomExOutputAnalyzerをご利用ください。<br/>
- * HCA-MXやプラットフォーム固有の音声圧縮コーデックを使用している場合は解析できません。<br />
- * HCAもしくはADXコーデックをご利用ください。
- */
+  * <summary>音声出力データ解析モジュール（プレーヤ/ソース単位)</summary>
+  * <remarks>
+  * <para header='説明'>
+  * CriAtomSource/CriAtomExPlayerごとの音声出力の解析を行います。<br/>
+  * レベルメータ機能などを提供します。<br/>
+  * </para>
+  * <para header='注意'>
+  * 将来的に本クラスは廃止される予定です。CriAtomExOutputAnalyzerをご利用ください。<br/>
+  * HCA-MXやプラットフォーム固有の音声圧縮コーデックを使用している場合は解析できません。<br/>
+  * HCAもしくはADXコーデックをご利用ください。
+  * </para>
+  * </remarks>
+  */
  [System.Obsolete("Use CriAtomExOutputAnalyzer")]
 public class CriAtomExPlayerOutputAnalyzer : CriAtomExOutputAnalyzer
 {
 	/**
 	 * <summary>解析処理種別</summary>
-	 * \par 説明：
+	 * <remarks>
+	 * <para header='説明'>
 	 * 解析モジュール作成時に指定する解析処理の種別を示す値です。
-	 * \sa CriAtomExOutputAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExOutputAnalyzer'/>
 	 */
 	public enum Type {
-		LevelMeter = 0,			/**< レベルメーター(RMSレベル計測)	**/
-		SpectrumAnalyzer = 1,	/**< スペクトルアナライザ **/
-		PcmCapture = 2,			/**< 波形データ取得 **/
+		LevelMeter = 0,         /**< レベルメーター(RMSレベル計測)  */
+		SpectrumAnalyzer = 1,   /**< スペクトルアナライザ */
+		PcmCapture = 2,         /**< 波形データ取得 */
 	}
 
 	/**
 	 * <summary>音声出力データ解析モジュールコンフィグ構造体</summary>
-	 * \par 説明：
+	 * <remarks>
+	 * <para header='説明'>
 	 * 解析モジュール作成時に指定するコンフィグです。<br/>
 	 * num_spectrum_analyzer_bands：スペクトルアナライザのバンド数<br/>
 	 * num_stored_output_data：記録する出力データサンプル数<br/>
-	 * \sa CriAtomExPlayerOutputAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayerOutputAnalyzer'/>
 	 */
 	public new struct Config {
 		public int num_spectrum_analyzer_bands;
@@ -60,17 +70,22 @@ public class CriAtomExPlayerOutputAnalyzer : CriAtomExOutputAnalyzer
 	/**
 	 * <summary>音声出力データ解析モジュールの作成</summary>
 	 * <returns>音声出力データ解析モジュール</returns>
-	 * \par 説明：
+	 * <remarks>
+	 * <para header='説明'>
 	 * CriAtomSource/CriAtomExPlayerの出力音声データの解析モジュールを作成します。<br/>
 	 * 作成した解析モジュールは、CriAtomSourceまたはCriAtomExPlayerにアタッチして使用します。<br/>
 	 * アタッチしている音声出力に対し、レベルメータなどの解析を行います。<br/>
-	 * \par 備考：
+	 * </para>
+	 * <para header='備考'>
 	 * 解析モジュールにアタッチ可能なCriAtomSource/CriAtomExPlayerは一つのみです。<br/>
 	 * 解析モジュールを使いまわす場合は、デタッチを行ってください。<br/>
-	 * \attention 注意：
+	 * </para>
+	 * <para header='注意'>
 	 * 将来的に本クラスは廃止される予定です。CriAtomExOutputAnalyzerをご利用ください。<br/>
 	 * 音声出力データ解析モジュールの作成時には、アンマネージドなリソースが確保されます。<br/>
 	 * 解析モジュールが不要になった際は、必ず CriAtomExPlayerOutputAnalyzer.Dispose メソッドを呼んでください。
+	 * </para>
+	 * </remarks>
 	 */
 	public CriAtomExPlayerOutputAnalyzer(Type[] types, Config[] configs = null)
 		: base()

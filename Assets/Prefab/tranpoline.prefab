@@ -494,7 +494,7 @@ MonoBehaviour:
   _cueName: Bound_tra
   _cueSheet: SFX
   _regionOnStart: {fileID: 0}
-  _use3dPositioning: 1
+  _use3dPositioning: 0
   _loop: 0
   _volume: 1
   _pitch: 0

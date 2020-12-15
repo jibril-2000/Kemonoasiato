@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Truck : MonoBehaviour
 {
@@ -24,6 +26,14 @@ public class Truck : MonoBehaviour
         {
             truck_body.transform.Translate(3.0f * Time.deltaTime, 0.0f,0.0f);
         }
-        stageclear.SetActive(true);
+        StartCoroutine("NextStage");//コルーチンを使いたいところにこれを入れる
+    }
+    public IEnumerator NextStage()
+    {
+        
+        yield return new WaitForSeconds(3);//何秒待つのか
+
+        SceneManager.LoadScene("Game2");
+
     }
 }

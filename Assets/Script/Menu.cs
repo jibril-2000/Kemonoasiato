@@ -26,14 +26,14 @@ public class Menu : MonoBehaviour
         
     }
 
-    private void Pause()
+    public void Pause()
     {
         Time.timeScale = 0; //時間停止
         pausePanel.SetActive(true);
         TitlePanel.SetActive(true);
     }
 
-    private void Resume()
+    public void Resume()
     {
         Time.timeScale = 1; //時間再開
         pausePanel.SetActive(false);

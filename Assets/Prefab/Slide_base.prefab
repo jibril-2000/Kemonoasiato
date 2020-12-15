@@ -49,7 +49,6 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bd73c22fe95ba674aa7f3e39008bed4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fb15b49bae76308438a5ebc29271bd33, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -380,12 +379,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4217701764319473445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5d28d6f7ae974240998ac7599bad6c5, type: 3}
+  m_Script: {fileID: 11500000, guid: a6012c0951490f442930543384e1d810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minVec: {x: 7, y: 0, z: 0}
-  maxVec: {x: 12, y: 10, z: 0}
-  Moveobj: 1
+  minVec: {x: 0, y: 0, z: 0}
+  maxVec: {x: 0, y: 0, z: 0}
+  Moveobj: 0
 --- !u!1 &4217701765484150346
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +431,6 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -457,7 +455,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eaa78edeb5d160f4c96fe5ef4b82325c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 43ab5e635c03bbf4892a2a276186cc18, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

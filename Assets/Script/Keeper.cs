@@ -19,7 +19,7 @@ public class Keeper : MonoBehaviour
         {
             case true:
                 transform.position += new Vector3(1.0f * Time.deltaTime, 0.0f, 0.0f);
-                if (transform.position.x >= 8.0)
+                if (transform.position.x >= 26)
                 {
                     Keepermove = false;
 
@@ -30,7 +30,7 @@ public class Keeper : MonoBehaviour
 
             case false:
                 transform.position -= new Vector3(1.0f * Time.deltaTime, 0.0f, 0.0f);
-                if (transform.position.x <= 4.0)
+                if (transform.position.x <= 19)
                 {
                     Keepermove = true;
 

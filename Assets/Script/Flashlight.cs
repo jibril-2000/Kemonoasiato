@@ -24,6 +24,9 @@ public class Flashlight : MonoBehaviour
         if (other.gameObject.tag == "Namakemono")
         {
             find.GetComponent<Text>();
+            //サウンド再生
+            CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
+            audio.Play();
             find.SetActive(true);
         }
     }

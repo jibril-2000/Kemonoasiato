@@ -6,7 +6,6 @@
 #if UNITY_EDITOR
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,7 +62,8 @@ public partial class CriProfiler
 		protected int tail;
 		protected int mask;   /* for remainder operation */
 
-		static private int RegulateToPow2(uint n) {
+		static private int RegulateToPow2(uint n)
+		{
 			int res = 0;
 			for (n -= 1; n != 0; n >>= 1) {
 				res = (res << 1) + 1;
@@ -77,7 +77,8 @@ public partial class CriProfiler
 		 * <para>The resulted size will be rounded up to the nearest 2^n number for the sake of performance.</para>
 		 * </summary>
 		 */
-		public RingBuffer(int _size) {
+		public RingBuffer(int _size)
+		{
 			size = RegulateToPow2((uint)_size);
 			data = new T[size];
 			head = 0;
@@ -88,7 +89,8 @@ public partial class CriProfiler
 		/**
 		 *  Get the number of elements in the buffer
 		 */
-		public int Count {
+		public int Count
+		{
 			get {
 				int _count = this.tail - this.head;
 				if (_count < 0) _count += this.size;
@@ -96,7 +98,8 @@ public partial class CriProfiler
 			}
 		}
 
-		public int Capacity {
+		public int Capacity
+		{
 			get {
 				return size - 1;
 			}
@@ -105,7 +108,8 @@ public partial class CriProfiler
 		/**
 		 *  Index access to the buffer.
 		 */
-		public T this[int i] {
+		public T this[int i]
+		{
 			get {
 				return this.data[(i + this.head) & this.mask];
 			}
@@ -120,7 +124,8 @@ public partial class CriProfiler
 		 *  <para>return false if the buffer is full.</para>
 		 *  </summary>
 		 */
-		public bool EnBuffer(T[] inputData, int inputSize) {
+		public bool EnBuffer(T[] inputData, int inputSize)
+		{
 			if (this.Count + inputSize >= this.size) {
 				return false;
 			}
@@ -140,7 +145,8 @@ public partial class CriProfiler
 		 *  <para>The resulted array may be smaller in length than requested.</para>
 		 *  </summary>
 		 */
-		public T[] DeBuffer(int outputSize) {
+		public T[] DeBuffer(int outputSize)
+		{
 			if (outputSize <= 0 || this.Count <= 0) {
 				return null;
 			}
@@ -162,7 +168,8 @@ public partial class CriProfiler
 		 *  Clear the buffer. Memory spaces will still be occupied. 
 		 *  </summary>
 		 */
-		public void Clear() {
+		public void Clear()
+		{
 			this.head = 0;
 			this.tail = 0;
 		}
@@ -171,7 +178,8 @@ public partial class CriProfiler
 	private class RingBufferAutoDequeue<T> : RingBuffer<T> {
 		public RingBufferAutoDequeue(int size) : base(size) { }
 
-		public new bool EnBuffer(T[] inputData, int inputSize) {
+		public new bool EnBuffer(T[] inputData, int inputSize)
+		{
 			if (this.Count + inputSize >= this.size) {
 				this.DeBuffer(this.Count + inputSize - this.size + 1);
 			}
@@ -184,59 +192,75 @@ public partial class CriProfiler
 			return true;
 		}
 
-		public void FillWithZeros() {
+		public void FillWithZeros()
+		{
 			T[] zeros = new T[Capacity];
 			this.EnBuffer(zeros, Capacity);
 		}
 	}
 
 	#region Loading / Saving data from big-endian data stream
-	public static Byte LoadBigEndianByte(Byte[] data, int ofst) {
+	public static Byte LoadBigEndianByte(Byte[] data, int ofst)
+	{
 		return data[ofst];
 	}
-	public static void SaveBigEndianByte(Byte[] data, int ofst, Byte input) {
+	public static void SaveBigEndianByte(Byte[] data, int ofst, Byte input)
+	{
 		data[ofst] = input;
 	}
 
-	public static UInt16 LoadBigEndianUInt16(Byte[] data, int ofst) {
-		return (UInt16)( ((data[ofst + 0]) << 8)
-					   |  (data[ofst + 1]));
+	public static UInt16 LoadBigEndianUInt16(Byte[] data, int ofst)
+	{
+		return (UInt16)(
+						 ((data[ofst + 0]) << 8)
+					   |  (data[ofst + 1])
+					   );
 	}
-	public static void SaveBigEndianUInt16(Byte[] data, int ofst, UInt16 input) {
+	public static void SaveBigEndianUInt16(Byte[] data, int ofst, UInt16 input)
+	{
 		data[ofst + 0] = (byte)((input >> 8) & 0xff);
 		data[ofst + 1] = (byte)( input       & 0xff);
 	}
 
-	public static UInt32 LoadBigEndianUInt32(Byte[] data, int ofst) {
-		return (UInt32)( ((data[ofst + 0]) << 24)
+	public static UInt32 LoadBigEndianUInt32(Byte[] data, int ofst)
+	{
+		return (UInt32)(
+						 ((data[ofst + 0]) << 24)
 					   | ((data[ofst + 1]) << 16)
 					   | ((data[ofst + 2]) << 8)
-					   |  (data[ofst + 3]));
+					   |  (data[ofst + 3])
+					   );
 	}
-	public static void SaveBigEndianUInt32(Byte[] data, int ofst, UInt32 input) {
+	public static void SaveBigEndianUInt32(Byte[] data, int ofst, UInt32 input)
+	{
 		data[ofst + 0] = (byte)((input >> 24) & 0xff);
 		data[ofst + 1] = (byte)((input >> 16) & 0xff);
 		data[ofst + 2] = (byte)((input >> 8)  & 0xff);
 		data[ofst + 3] = (byte)( input        & 0xff);
 	}
 
-	public static Single LoadBigEndianSingle(Byte[] data, int ofst) {
+	public static Single LoadBigEndianSingle(Byte[] data, int ofst)
+	{
 		/* convert to little-endian for System.BitConverter */
 		byte[] byteVals = new[] { data[ofst + 3], data[ofst + 2], data[ofst + 1], data[ofst + 0] };
 		return BitConverter.ToSingle(byteVals, 0);
 	}
 
-	public static UInt64 LoadBigEndianUInt64(Byte[] data, int ofst) {
-		return (UInt64)( ((data[ofst + 0]) << 56)
+	public static UInt64 LoadBigEndianUInt64(Byte[] data, int ofst)
+	{
+		return (UInt64)(
+						 ((data[ofst + 0]) << 56)
 					   | ((data[ofst + 1]) << 48)
 					   | ((data[ofst + 2]) << 40)
 					   | ((data[ofst + 3]) << 32)
 					   | ((data[ofst + 4]) << 24)
 					   | ((data[ofst + 5]) << 16)
 					   | ((data[ofst + 6]) << 8)
-					   |  (data[ofst + 7]));
+					   |  (data[ofst + 7])
+					   );
 	}
-	public static void SaveBigEndianUInt64(Byte[] data, int ofst, UInt64 input) {
+	public static void SaveBigEndianUInt64(Byte[] data, int ofst, UInt64 input)
+	{
 		data[ofst + 0] = (byte)((input >> 56) & 0xff);
 		data[ofst + 1] = (byte)((input >> 48) & 0xff);
 		data[ofst + 2] = (byte)((input >> 40) & 0xff);
@@ -249,10 +273,6 @@ public partial class CriProfiler
 	#endregion
 
 	protected struct TcpLogHeader {
-		public const int properSize
-			  /* = sizeof(UInt32) + sizeof(UInt16) + sizeof(Byte) + sizeof(Byte) + sizeof(UInt64)
-			   * + sizeof(UInt16) + sizeof(UInt16) + sizeof(UInt32) + sizeof(UInt64);
-			   */ = 32;
 		public readonly UInt32 packetSize;
 		public readonly UInt16 command;
 		public readonly Byte ptr_size;
@@ -265,7 +285,8 @@ public partial class CriProfiler
 		public readonly bool isPtr64;
 		public readonly int size;
 
-		public TcpLogHeader(byte[] data) {
+		public TcpLogHeader(byte[] data)
+		{
 			int offset = 0;
 			isPtr64 = false;
 
@@ -304,9 +325,6 @@ public partial class CriProfiler
 			}
 
 			size = offset;
-            if (size != properSize) {
-                UnityEngine.Debug.LogError("[CRIWARE] (Profiler) Corrupted log header");
-            }
 		}
 	}
 
@@ -321,14 +339,12 @@ public partial class CriProfiler
 	public class PlaybackInfo {
 		public readonly UInt32 playbackId;
 		public readonly String cueName;
-		public readonly String cueSheetName;
 		public readonly UInt64 timestamp; 
 		public int? StreamType;
-		public PlaybackInfo(UInt32 playbackId, String cueName, String cueSheetName, UInt64 timestamp)
+		public PlaybackInfo(UInt32 playbackId, String cueName, UInt64 timestamp)
 		{
 			this.playbackId = playbackId;
 			this.cueName = cueName;
-			this.cueSheetName = cueSheetName;
 			this.timestamp = timestamp;
 			this.StreamType = null;
 		}
@@ -364,24 +380,20 @@ public partial class CriProfiler
 	private Thread threadPacketReading;
 	private ManualResetEvent threadTerminator = new ManualResetEvent(false);
 	private RingBuffer<byte> TcpBuffer = new RingBuffer<byte>(16384);
-	private List<byte[]> eventLogList = new List<byte[]>();
 	private bool isProfiling = false;
 	private bool isConnected = false;
 	private bool isBufferCorrupted = false;
-	private bool doSaveLog;
-	private FileStream logStream = null;
-	private const int cRwLockTimeoutMs = 100;
-	public bool IsProfiling {
+	public bool IsProfiling
+	{
 		get { return isProfiling; }
 	}
 	#endregion
 
 	#region Fields / Properties
-	public UInt64 timestamp { get; private set; }
-    public UInt64 timestampStart { get; private set; }
 	public Single cpu_load { get; private set; }
 	private RingBufferAutoDequeue<Single> cpuLoadHistory = new RingBufferAutoDequeue<float>(100);
-	public Single[] CpuLoadHistory {
+	public Single[] CpuLoadHistory
+	{
 		get {
 			lock (cpuLoadHistory) {
 				Single[] histArray = new Single[cpuLoadHistory.Count];
@@ -394,7 +406,8 @@ public partial class CriProfiler
 	}
 	public UInt32 num_used_voices { get; private set; }
 	private RingBufferAutoDequeue<UInt32> voiceUsageHistory = new RingBufferAutoDequeue<UInt32>(100);
-	public UInt32[] VoiceUsageHistory {
+	public UInt32[] VoiceUsageHistory
+	{
 		get {
 			lock (voiceUsageHistory) {
 				UInt32[] histArray = new UInt32[voiceUsageHistory.Count];
@@ -416,12 +429,12 @@ public partial class CriProfiler
 	public Single loudness_integrated { get; private set; }
 	public int numChMasterOut { get; private set; }
 	private List<LevelInfo> levels = new List<LevelInfo>();		/* Channel => Levels */
-	public LevelInfo[] LevelsAllCh {
+	public LevelInfo[] LevelsAllCh
+	{
 		get {
 			if(levels.Count > 0) {
-				LevelInfo[] levelsCopy;
+				LevelInfo[] levelsCopy = new LevelInfo[levels.Count];
 				lock (levels) {
-					levelsCopy = new LevelInfo[levels.Count];
 					levels.CopyTo(levelsCopy);
 				}
 				return levelsCopy;
@@ -431,9 +444,9 @@ public partial class CriProfiler
 		}
 	}
 	public String cuename_lastPlayed { get; private set; }
-    public String cuesheetName_lastPlayed { get; private set; }
 	private Hashtable playbackHashtable = new Hashtable();		/* Playback ID => Playback Info */
-	public PlaybackInfo[] PlaybackList {
+	public PlaybackInfo[] PlaybackList
+	{
 		get {
 			lock (playbackHashtable) {
 				PlaybackInfo[] playbackList = new PlaybackInfo[playbackHashtable.Count];
@@ -442,13 +455,13 @@ public partial class CriProfiler
 			}
 		}
 	}
-	private Dictionary<string, CueSheetGroup> multiLaneTimeline = new Dictionary<string, CueSheetGroup>();
 	private Hashtable voicePoolInfoTable = new Hashtable();		/* VoicePool Handle => VoicePool Info */
 	public enum VoicePoolFormat {
 		Standard,
 		HcaMx
 	}
-	public int GetVoicePoolUsage(VoicePoolFormat format) {
+	public int GetVoicePoolUsage(VoicePoolFormat format)
+	{
 		int usage = 0;
 		bool haveData = false;
 		UInt32 formatBits = FORMAT_NONE;
@@ -476,31 +489,16 @@ public partial class CriProfiler
 			return -1;
 		}
 	}
-	public List<byte[]> GetLogList() {
-		return eventLogList;
-	}
-	public List<byte[]> GetLogList(int offset, int count) {
-		try {
-			offset = Mathf.Clamp(offset, 0, eventLogList.Count - 1);
-			count = Mathf.Clamp(count, 0, eventLogList.Count - offset);
-			return eventLogList.GetRange(offset, count);
-		} catch {
-			return new List<byte[]>();
-		}
-	}
-	public void ClearLog() {
-		eventLogList.Clear();
-	}
 	#endregion Fields / Properties
 
 	#region Data Initialization
-	private void ResetVals() {
+	private void ResetVals()
+	{
 		this.InitVals();
 	}
 
-	private void InitVals() {
-		this.timestamp = 0;
-		this.timestampStart = 0;
+	private void InitVals()
+	{
 		this.cpu_load = 0;
 		this.cpuLoadHistory.FillWithZeros();
 		this.num_used_voices = 0;
@@ -518,58 +516,29 @@ public partial class CriProfiler
 		this.numChMasterOut = 0;
 		this.voicePoolInfoTable.Clear();
 		this.playbackHashtable.Clear();
-		this.multiLaneTimeline.Clear();
 		this.levels.Clear();
-		this.eventLogList.Clear();
 	}
 	#endregion
 
 	#region Profiler Control
 	/* connection settings */
+	public string ipAddressString = "127.0.0.1";
 	private const int TCP_PORT = 2002;
 	private const int TCP_CHUNK = 2048;
 	private const int TCP_CONNECT_TIMEOUT_MS = 500;
 	private const int TCP_RETRY_INTERVAL_MS = 2000;
 	private const int TCP_RETRY = 5;
 	private const int BUFFERING_INTERVAL_MS = 10;
-	public const string LOG_FILE_EXTENSION = "crimon";
-
-	public string ipAddressString = "127.0.0.1";
-	public string LogFileSavePath { get; private set; }
 	/**
 	 * Starting the TCP sub thread.
 	 */
-	public void StartProfiling(bool saveLog, string logDirPath = null) {
+	public void StartProfiling()
+	{
 		IPAddress validIp;
 		if(IPAddress.TryParse(ipAddressString, out validIp) == false) {
 			UnityEngine.Debug.LogWarning("[CRIWARE] (Profiler) IP address not valid - connection aborted. ");
 			return;
 		}
-
-		this.doSaveLog = saveLog;
-		if (this.doSaveLog) {
-			if (string.IsNullOrEmpty(logDirPath)) {
-				/* default log file path */
-				logDirPath = Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "CriWareProfilerLog");
-			}
-			this.LogFileSavePath = logDirPath;
-			if (Directory.Exists(LogFileSavePath) == false) {
-				try {
-					Directory.CreateDirectory(LogFileSavePath);
-				} catch (Exception e) {
-					UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to create directory for log files. Msg: " + e.Message);
-				}
-			}
-			var filePath = Path.Combine(LogFileSavePath, "CriProfilerLog-" + DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + "." + LOG_FILE_EXTENSION);
-			try {
-				this.logStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-			} catch (Exception e) {
-				UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to create log file. Msg: " + e.Message);
-				this.logStream = null;
-				this.doSaveLog = false;
-			}
-		}
-
 		TcpParams tcpParams = new TcpParams(
 			validIp, 
 			TCP_PORT, 
@@ -595,28 +564,20 @@ public partial class CriProfiler
 	/**
 	 * Stopping the TCP sub thread.
 	 */
-	public void StopProfiling() {
+	public void StopProfiling()
+	{
 		threadTerminator.Set();
 		ResetVals();
-
-		if (this.logStream != null) {
-			this.doSaveLog = false;
-			try {
-				this.logStream.Flush();
-				this.logStream.Close();
-				this.logStream = null;
-			} catch (Exception e) {
-				UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to flush log file. Msg: " + e.Message);
-			}
-		}
 	}
 
-	private CriProfiler() {
+	private CriProfiler()
+	{
 		/* hide constructor for singleton */
 		InitVals();
 	}
 
-	~CriProfiler() {
+	~CriProfiler()
+	{
 		this.StopProfiling();
 	}
 	#endregion
@@ -625,7 +586,8 @@ public partial class CriProfiler
 	/**
 	 * TCP connection sub thread task.
 	 */
-	private void TaskTcpClient(TcpParams tcpParams) {
+	private void TaskTcpClient(TcpParams tcpParams)
+	{
 		int failedConnectCnt = 0;
 
 		this.isProfiling = true;
@@ -637,7 +599,7 @@ public partial class CriProfiler
 					this.isConnected = true;
 					UnityEngine.Debug.Log("[CRIWARE] CRI Profiler connected.");
 					BufferingLoop(tcpClient, tcpParams);
-				} catch {
+				} catch (SocketException) {
 					failedConnectCnt += 1;
 					if(failedConnectCnt > tcpParams.connectionRetryLimit) {
 						UnityEngine.Debug.LogWarning("[CRIWARE] Retry count exceeded limit(" + tcpParams.connectionRetryLimit + "); Stopped.");
@@ -661,7 +623,8 @@ public partial class CriProfiler
 	/**
 	 *  Looping process to push the socket input to the buffer.
 	 */
-	private void BufferingLoop(TcpClient tcpClient, TcpParams tcpParams) {
+	private void BufferingLoop(TcpClient tcpClient, TcpParams tcpParams)
+	{
 		int numBytesRead = 0;
 		byte[] chunk = new byte[tcpParams.chunkSize];
 		byte[] sendPacket;
@@ -698,7 +661,7 @@ public partial class CriProfiler
 							/**
 							 * -- buffer corrupted -> prepare to reset --
 							 * Enbuffer failure may cause incomplete packets in the packet queue.
-							 * The solution we take is skipping all incoming data until a "tail" chunk (followed by no data) arrives, 
+							 * The solution we take is to skip all incoming data until a "tail" chunk (followed by no data) arrives, 
 							 * right after which the buffer will be reset.
 							 */
 							this.isBufferCorrupted = true;
@@ -735,7 +698,8 @@ public partial class CriProfiler
 		StartLog,
 		StopLog
 	}
-	private byte[] MakeLogPacket4StartStopLog(SendPacketType sendType) {
+	private byte[] MakeLogPacket4StartStopLog(SendPacketType sendType)
+	{
 		int ptr_size = IntPtr.Size;
 		const LogTypes log_type = LogTypes.NON;
 		const UInt64 time = 0;
@@ -747,9 +711,14 @@ public partial class CriProfiler
 		TcpCommandId command;
 		int padding_size;
 
+		int headerSize
+			  /* = sizeof(UInt32) + sizeof(UInt16) + sizeof(Byte) + sizeof(Byte) + sizeof(UInt64)
+			   * + sizeof(UInt16) + sizeof(UInt16) + sizeof(UInt32) + sizeof(UInt64);
+			   */ = 32;
+
 		switch (sendType) {
 			case SendPacketType.StartLog:
-				size = TcpLogHeader.properSize
+				size = headerSize
 					   /* + sizeof(UInt16) 
 						* + CriProfiler.LogParams[(int)LogParamItems.LOG_STRINGS_ITEM_LogRecordMode].size32/64;
 						*/ + 6;
@@ -758,7 +727,7 @@ public partial class CriProfiler
 				size += padding_size;
 				break;
 			case SendPacketType.StopLog:
-				size = TcpLogHeader.properSize;
+				size = headerSize;
 				command = TcpCommandId.CRITCP_MAIL_STOP_LOG_RECORD;
 				padding_size = 0; /* 8 - (32 mod 8) */
 				size += padding_size;
@@ -819,7 +788,8 @@ public partial class CriProfiler
 	/**
 	 *  Sub thread task to extract TCP packets from the buffer.
 	 */
-	private void TaskPacketReading(int readIntervalMillisec) {
+	private void TaskPacketReading(int readIntervalMillisec)
+	{
 		Stopwatch stopwatch = new Stopwatch();
 		const int threadMaxLifeMs = 20000;  /* should be longer than total TCP retrying time */
 		const int threadRetryLifeMs = 500;
@@ -841,14 +811,6 @@ public partial class CriProfiler
 					packetHeader = new TcpLogHeader(data);
 					try {
 						if (packetHeader.size > 0) {
-							if (this.doSaveLog && this.logStream != null) {
-								try {
-									this.logStream.Write(data, 0, data.Length);
-								} catch (Exception e) {
-									UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to write logs. Msg: " + e.Message);
-									this.doSaveLog = false;
-								}
-							}
 							this.Parser(data, packetHeader);
 						} /* if headerSize > 0 */
 					} catch (Exception ex) { /* Any parsing error */
@@ -883,103 +845,12 @@ public partial class CriProfiler
 	}
 
 	/**
-	 *  Get the size of the packet from the header.
-	 *  Return 0 if there is no enough data to determine the size. 
+	 * Override this method to rewrite the whole parsing procedure 
 	 */
-	private int GetPacketSize(RingBuffer<byte> buffer) {
-		if (buffer == null || buffer.Count < DATA_LENGTH_PARAM_SIZE) {
-			return 0;
-		}
-
-		uint result = buffer[0];
-		for (int i = 1; i < DATA_LENGTH_PARAM_SIZE; ++i) {
-			result <<= 8;
-			result += buffer[i];
-		}
-
-		return (int)result;
-	}
-
-	private int GetPacketSize(byte[] data, uint offset = 0) {
-		if (data == null || data.Length - offset < DATA_LENGTH_PARAM_SIZE) {
-			return 0;
-		}
-
-		uint result = data[offset];
-		for (int i = 0; i < DATA_LENGTH_PARAM_SIZE; i++) {
-			result <<= 8;
-			result += data[i + offset];
-		}
-
-		return (int)result;
-	}
-
-	public void LoadLogFromFile(string path) {
-		if (string.IsNullOrEmpty(path)) {
-			UnityEngine.Debug.LogError("[CRIWARE] Profiler: Log file path cannot be empty");
-		}
-
-		try {
-			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read)) {
-				if (fileStream.CanRead) {
-					eventLogList.Clear();
-					byte[] reusedSizeData = new byte[DATA_LENGTH_PARAM_SIZE];
-					while (fileStream.Position + DATA_LENGTH_PARAM_SIZE < fileStream.Length) {
-						var read = fileStream.Read(reusedSizeData, 0, DATA_LENGTH_PARAM_SIZE);
-						/* roll back read position */
-						fileStream.Position -= read;
-						/* get actual data size */
-						var dataSize = GetPacketSize(reusedSizeData);
-						if (dataSize > 0) {
-							byte[] data = new byte[dataSize];
-							fileStream.Read(data, 0, dataSize);
-							this.LogParser(data);
-						} else {
-							UnityEngine.Debug.LogError("[CRIWARE] Profiler: Error while reading log");
-							break;
-						}
-					}
-				} else {
-					UnityEngine.Debug.LogError("[CRIWARE] Profiler: Log file cannot be read");
-				}
-			}
-		} catch (Exception e) {
-			UnityEngine.Debug.LogError("[CRIWARE] Profiler: Error while opening log: " + e.Message);
-		}
-	}
-
-	private void LogParser(byte[] data) {
-		var header = new TcpLogHeader(data);
-
-		switch ((TcpCommandId)header.command) {
-			case TcpCommandId.CRITCP_MAIL_SEND_LOG:
-				switch (GetLogFuncId(header.function_id)) {
-					case LogFuncId.LOG_COMMAND_ExPlaybackId:
-						this.AddEventLog(data);
-						break;
-					default:
-						break;
-				}
-				break;
-			case TcpCommandId.CRITCP_MAIL_MONITOR_ATOM_EXPLAYBACKINFO_PLAY_END:
-				switch (GetLogFuncId(header.function_id)) {
-					case LogFuncId.LOG_COMMAND_ExPlaybackInfo_FreeInfo:
-						this.AddEventLog(data);
-						break;
-					default:
-						break;
-				}
-				break;
-			default:
-				break;
-		}
-	}
-
-	private void Parser(byte[] data, TcpLogHeader header) {
+	protected virtual void Parser(byte[] data, TcpLogHeader packetHeader)
+	{
 		int offset = 0;
-		int offset2 = 0;
 		int dataSize = 0;
-		int dataSize2 = 0;
 
 		UInt32 playbackId;
 		StreamTypes streamType;
@@ -992,41 +863,34 @@ public partial class CriProfiler
 		int numOutputCh;
 		int numMaxCh = 0;
 
-		switch ((TcpCommandId)header.command) {
+		switch ((TcpCommandId)packetHeader.command) {
 			case TcpCommandId.CRITCP_MAIL_PREVIEW_CPU_LOAD:
-				this.timestamp = header.time;
-				if (this.timestampStart == 0) {
-					this.timestampStart = this.timestamp;
-				}
-				if (GetLogFuncId(header.function_id) == LogFuncId.LOG_COMMAND_CpuLoadAndNumUsedVoices) {
-					this.cpu_load = LoadBigEndianSingle(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CpuLoad, out offset));
-					this.num_used_voices = LoadBigEndianUInt32(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, ref offset));
+				if (GetLogFuncId(packetHeader.function_id) == LogFuncId.LOG_COMMAND_CpuLoadAndNumUsedVoices) {
+					this.cpu_load = LoadBigEndianSingle(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_CpuLoad, out offset));
+					this.num_used_voices = LoadBigEndianUInt32(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, ref offset));
 					lock (cpuLoadHistory) {
 						cpuLoadHistory.EnBuffer(new Single[] { cpu_load }, 1);
 					}
 					lock (voiceUsageHistory) {
 						voiceUsageHistory.EnBuffer(new UInt32[] { num_used_voices }, 1);
 					}
+					break;
 				}
 				break;
 			case TcpCommandId.CRITCP_MAIL_SEND_LOG:
-				this.timestamp = header.time;
-				if (this.timestampStart == 0) {
-					this.timestampStart = this.timestamp;
-				}
-				switch (GetLogFuncId(header.function_id)) {
+				switch (GetLogFuncId(packetHeader.function_id)) {
 					case LogFuncId.LOG_COMMAND_LoudnessInfo:
-						this.loudness_momentary = LoadBigEndianSingle(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_MomentaryValue, out offset));
-						this.loudness_shortTerm = LoadBigEndianSingle(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ShortTermValue, ref offset));
-						this.loudness_integrated = LoadBigEndianSingle(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_IntegratedValue, ref offset));
+						this.loudness_momentary = LoadBigEndianSingle(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_MomentaryValue, out offset));
+						this.loudness_shortTerm = LoadBigEndianSingle(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ShortTermValue, ref offset));
+						this.loudness_integrated = LoadBigEndianSingle(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_IntegratedValue, ref offset));
 						break;
 					case LogFuncId.LOG_COMMAND_StreamingInfo:
-						this.num_used_streams = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, out offset));
-						this.total_bps = LoadBigEndianSingle(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_TotalBps, ref offset));
+						this.num_used_streams = LoadBigEndianUInt32(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, out offset));
+						this.total_bps = LoadBigEndianSingle(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_TotalBps, ref offset));
 						break;
 					case LogFuncId.LOG_COMMAND_AsrBusAnalyzeInfoAllCh:
-						if (LoadBigEndianByte(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_BusNo, out offset)) == 0) {    /* if the bus is MasterOut(bus0) */
-							numCh = LoadBigEndianByte(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumCh, out offset));
+						if (LoadBigEndianByte(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_BusNo, out offset)) == 0) {    /* if the bus is MasterOut(bus0) */
+							numCh = LoadBigEndianByte(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumCh, 3, out offset));
 							lock (levels) {
 								if (numMaxCh == 0) {
 									numMaxCh = numCh;
@@ -1037,9 +901,9 @@ public partial class CriProfiler
 								}
 								if (numMaxCh == numCh) {
 									for (int i = 0; i < numCh; ++i) {
-										levelPeak = LoadBigEndianSingle(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_PeakLevel, ref offset));
-										levelRms = LoadBigEndianSingle(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_RmsLevel, ref offset));
-										levelPeakHold = LoadBigEndianSingle(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_PeakHoldLevel, ref offset));
+										levelPeak = LoadBigEndianSingle(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_PeakLevel, ref offset));
+										levelRms = LoadBigEndianSingle(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_RmsLevel, ref offset));
+										levelPeakHold = LoadBigEndianSingle(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_PeakHoldLevel, ref offset));
 										levels[i] = new LevelInfo(levelPeak, levelRms, levelPeakHold);
 									}
 								}
@@ -1047,23 +911,23 @@ public partial class CriProfiler
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_ExStandardVoicePoolConfig:
-						if (Convert.ToBoolean(LoadBigEndianByte(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_StreamingFlag, out offset))) == false) {
-							this.maxVoice_stdOnMemory = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumVoices, out offset));
+						if (Convert.ToBoolean(LoadBigEndianByte(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_StreamingFlag, 5, out offset))) == false) {
+							this.maxVoice_stdOnMemory = LoadBigEndianUInt32(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumVoices, 2, out offset));
 						} else {
-							this.maxVoice_stdStreaming = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumVoices, out offset));
+							this.maxVoice_stdStreaming = LoadBigEndianUInt32(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumVoices, 2, out offset));
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_ExHcaMxVoicePoolConfig:
-						if (Convert.ToBoolean(LoadBigEndianByte(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_StreamingFlag, out offset))) == false) {
-							this.maxVoice_hcamxOnMemory = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumVoices, out offset));
+						if (Convert.ToBoolean(LoadBigEndianByte(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_StreamingFlag, 5, out offset))) == false) {
+							this.maxVoice_hcamxOnMemory = LoadBigEndianUInt32(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumVoices, 2, out offset));
 						} else {
-							this.maxVoice_hcamxStreaming = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumVoices, out offset));
+							this.maxVoice_hcamxStreaming = LoadBigEndianUInt32(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumVoices, 2, out offset));
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_ExVoicePoolHn:
 						try {
-							voicePoolHn = LoadBigEndianUInt64(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExVoicePoolHn, out offset));
-							voicePoolInfo = new VoicePoolInfo(LoadBigEndianUInt32(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_SoundFormat, ref offset)), null);
+							voicePoolHn = LoadBigEndianUInt64(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ExVoicePoolHn, out offset));
+							voicePoolInfo = new VoicePoolInfo(LoadBigEndianUInt32(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_SoundFormat, ref offset)), null);
 							lock (voicePoolInfoTable) {
 								voicePoolInfoTable.Add(voicePoolHn, voicePoolInfo);
 							}
@@ -1072,42 +936,38 @@ public partial class CriProfiler
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_ExVoicePool_Free:
-						voicePoolHn = LoadBigEndianUInt64(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExVoicePoolHn, out offset));
+						voicePoolHn = LoadBigEndianUInt64(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ExVoicePoolHn, out offset));
 						lock (voicePoolInfoTable) {
 							voicePoolInfoTable.Remove(voicePoolHn);
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_PlayerPool_NumVoices:
-						voicePoolHn = LoadBigEndianUInt64(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExVoicePoolHn, out offset));
+						voicePoolHn = LoadBigEndianUInt64(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ExVoicePoolHn, out offset));
 						lock (voicePoolInfoTable) {
 							if (voicePoolInfoTable[voicePoolHn] != null) {
-								(voicePoolInfoTable[voicePoolHn] as VoicePoolInfo).numUsedVoices = (int)LoadBigEndianUInt32(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, ref offset));
+								(voicePoolInfoTable[voicePoolHn] as VoicePoolInfo).numUsedVoices = (int)LoadBigEndianUInt32(data, GetNextParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, ref offset));
 							}
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_ExPlaybackId:
-						playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
-						dataSize = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CueName, out offset)); /* cue name */
-                        dataSize2 = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExAcbName, out offset2)); /* cuesheet name */
-						if (dataSize > 1 && dataSize2 > 1) {
-							this.cuename_lastPlayed = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset), dataSize);
-                            this.cuesheetName_lastPlayed = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset2), dataSize2);
+						playbackId = LoadBigEndianUInt32(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
+						dataSize = LoadBigEndianUInt16(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_CueName, 5, out offset));
+						if (dataSize > 1) {
+							this.cuename_lastPlayed = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(packetHeader, offset), dataSize);
 							try {
 								lock (playbackHashtable) {
-									this.playbackHashtable.Add(playbackId, new PlaybackInfo(playbackId, cuename_lastPlayed, cuesheetName_lastPlayed, header.time));
+									this.playbackHashtable.Add(playbackId, new PlaybackInfo(playbackId, cuename_lastPlayed, packetHeader.time));
 								}
 							} catch (ArgumentException) {
 								/* Duplicated playback info received; Do nothing */
 							}
-							this.AddEventLog(data);
-							this.AddPlaybackToTimeline(new Playback(playbackId, header.time, true, cuename_lastPlayed, cuesheetName_lastPlayed));
 						} else {
 							this.cuename_lastPlayed = "";
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_SoundVoice_Allocate:
-						playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
-						streamType = (StreamTypes)LoadBigEndianByte(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_StreamType, out offset));
+						playbackId = LoadBigEndianUInt32(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, 2, out offset));
+						streamType = (StreamTypes)LoadBigEndianByte(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_StreamType, 5, out offset));
 						lock (playbackHashtable) {
 							if (playbackHashtable.ContainsKey(playbackId)) {
 								(playbackHashtable[playbackId] as PlaybackInfo).StreamType = (int)streamType;
@@ -1115,7 +975,7 @@ public partial class CriProfiler
 						}
 						break;
 					case LogFuncId.LOG_COMMAND_ExAsrConfig:
-						numOutputCh = LoadBigEndianByte(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_OutputChannels, out offset));
+						numOutputCh = LoadBigEndianByte(data, GetParamOffsetByOrder(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_OutputChannels, 2, out offset));
 						if (numOutputCh > this.numChMasterOut) {
 							numChMasterOut = numOutputCh;
 						}
@@ -1125,20 +985,11 @@ public partial class CriProfiler
 				}
 				break;
 			case TcpCommandId.CRITCP_MAIL_MONITOR_ATOM_EXPLAYBACKINFO_PLAY_END:
-				this.timestamp = header.time;
-				if (this.timestampStart == 0) {
-					this.timestampStart = this.timestamp;
-				}
-				switch (GetLogFuncId(header.function_id)) {
+				switch (GetLogFuncId(packetHeader.function_id)) {
 					case LogFuncId.LOG_COMMAND_ExPlaybackInfo_FreeInfo:
-						playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
+						playbackId = LoadBigEndianUInt32(data, GetFirstParamOffset(data, packetHeader, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
 						lock (playbackHashtable) {
-							if (playbackHashtable.ContainsKey(playbackId)) {
-								var info = playbackHashtable[playbackId] as PlaybackInfo;
-								this.AddEventLog(data);
-								this.AddPlaybackToTimeline(new Playback(playbackId, header.time, false, info.cueName, info.cueSheetName));
-								playbackHashtable.Remove(playbackId);
-							}
+							playbackHashtable.Remove(playbackId);
 						}
 						break;
 					default:
@@ -1146,7 +997,7 @@ public partial class CriProfiler
 				}
 				break;
 			default:
-				UserDefinedParser(data, header);
+				UserDefinedParser(data, packetHeader);
 				break;
 		}
 	}
@@ -1154,7 +1005,8 @@ public partial class CriProfiler
 	/**
 	 * Override this method to add new parsing procedure 
 	 */
-	protected virtual void UserDefinedParser(byte[] data, TcpLogHeader packetHeader) {
+	protected virtual void UserDefinedParser(byte[] data, TcpLogHeader packetHeader)
+	{
 		/** e.g.
 		int offset;
 		switch ((TcpCommandId)packetHeader.command) {
@@ -1173,302 +1025,114 @@ public partial class CriProfiler
 		*/
 	}
 
-	private void AddEventLog(byte[] data) {
-		this.eventLogList.Add(data);
-	}
+	/**
+	 *  Get the size of the packet from the header.
+	 *  Return 0 if there is no enough data to determine the size. 
+	 */
+	private int GetPacketSize(RingBuffer<byte> buffer)
+	{
+		/* the size of the parameter "packet size" in bytes */
+		const int PARAM_SIZE = 4;
 
-	static private LogFuncId GetLogFuncId(UInt16 rawId) {
-		return (LogFuncId)(rawId - CriProfiler.logFuncBaseNum);
-	}
-
-	public string FilteredLog2String(byte[] data) {
-		if (data == null || data.Length < TcpLogHeader.properSize) { return string.Empty; }
-
-		var header = new TcpLogHeader(data);
-		var funcId = GetLogFuncId(header.function_id);
-		uint playbackId;
-		int dataSize, dataSize2, offset, offset2;
-		string str1, str2;
-
-		string output = string.Empty;
-		switch (funcId) {
-			case LogFuncId.LOG_COMMAND_ExPlaybackId:
-				playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
-				dataSize = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CueName, out offset)); /* cue name */
-				dataSize2 = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExAcbName, out offset2)); /* cuesheet name */
-				str1 = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset), dataSize);
-				str2 = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset2), dataSize2);
-				output = MicroSec2String(header.time) + " | Start ID : " + playbackId + " | cuename : " + str1 + " | cuesheet : " + str2;
-				break;
-			case LogFuncId.LOG_COMMAND_ExPlaybackInfo_FreeInfo:
-				playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
-				output = MicroSec2String(header.time) + " | End ID : " + playbackId;
-				break;
-			default:
-				break;
+		if(buffer == null) {
+			return 0;
+		}
+		if(buffer.Count < PARAM_SIZE) {
+			return 0;
 		}
 
-		return output;
+		uint result = buffer[0];
+		for(int i = 1; i < PARAM_SIZE; ++i) {
+			result <<= 8;
+			result += buffer[i];
+		}
+
+		return (int)result;
 	}
 
-	static private string MicroSec2String(ulong microSec) {
-		ulong hour = microSec / 3600000000;
-		ulong min = (microSec % 3600000000) / 60000000;
-		ulong sec = (microSec % 60000000) / 1000000;
-		ulong msec = (microSec % 1000000) / 1000;
-		return string.Format("{0}:{1}:{2}.{3}", hour, min, sec, msec);
+	private LogFuncId GetLogFuncId(UInt16 rawId)
+	{
+		return (LogFuncId)(rawId - CriProfiler.logFuncBaseNum);
 	}
 
 	#region Methods for data offset calculation
 	private const int paramIdSize = 2;
 
-	private int GetStrDataOffset(TcpLogHeader header, int paramIdOffset) {
-		return paramIdOffset + CriProfiler.paramIdSize + (header.isPtr64 
-			? ParamTypeSizes64[(int)CriProfiler.LogParamTypes.TYPE_CHAR] 
-			: ParamTypeSizes32[(int)CriProfiler.LogParamTypes.TYPE_CHAR]);
-	}
-
-	private int FindParamOffset(byte[] data, TcpLogHeader header, LogParamId logParamId, out int currentOffset) {
-		if (data.Length < TcpLogHeader.properSize) {
-			throw new ParamIdDoesNotMatchException("Could not find parameter: " + logParamId.ToString());
-		}
-		int offset = header.size;
-		int paramId;
-		int dataSize;
-		while (offset < header.packetSize) {
-			paramId = LoadBigEndianUInt16(data, offset);
-			if ((LogParamId)paramId == logParamId) {
-				currentOffset = offset;
-				return offset + paramIdSize;
+	private int GetParamOffsetByOrder(byte[] data, TcpLogHeader header, LogParamId logParamId, int order, out int paramIdOffset)
+	{
+		int paramId = 0;
+		int dataSize = 0;
+		paramIdOffset = header.size;
+		for (int i = 1; i< order; ++i) {		/* iterating for (order - 1) times. */
+			paramId = LoadBigEndianUInt16(data, paramIdOffset);
+			if(header.isPtr64 == true) {
+				dataSize = CriProfiler.LogParams[paramId].size64;
+			} else {
+				dataSize = CriProfiler.LogParams[paramId].size32;
 			}
-
-			dataSize = header.isPtr64 ? LogParams[paramId].size64 : LogParams[paramId].size32;
-			if (LogParams[paramId].type == LogParamTypes.TYPE_CHAR) {
-				dataSize += LoadBigEndianUInt16(data, offset + paramIdSize);
+			if (CriProfiler.LogParams[paramId].type == LogParamTypes.TYPE_CHAR) {
+				dataSize += LoadBigEndianUInt16(data, paramIdOffset + paramIdSize);
 			}
-			offset += paramIdSize + dataSize;
+			/* set parameter id offset */
+			paramIdOffset += paramIdSize + dataSize;
 		}
 
-		throw new ParamIdDoesNotMatchException("Could not find parameter: " + logParamId.ToString());
-	}
-
-	private int GetNextParamOffset(byte[] data, TcpLogHeader header, LogParamId logParamId, ref int currentOffset) {
-		if (currentOffset >= header.packetSize) {
-			throw new ParamIdDoesNotMatchException("Could not find parameter: " + logParamId.ToString());
-		}
-		int paramId = LoadBigEndianUInt16(data, currentOffset);
-		int dataSize = header.isPtr64 ? CriProfiler.LogParams[paramId].size64 : CriProfiler.LogParams[paramId].size32;
-		if (CriProfiler.LogParams[paramId].type == LogParamTypes.TYPE_CHAR) {
-			dataSize += LoadBigEndianUInt16(data, currentOffset + paramIdSize);
-		}
-		/* set parameter id offset */
-		currentOffset += paramIdSize + dataSize;
-
-		if ((LogParamId)LoadBigEndianUInt16(data, currentOffset) != logParamId) {
+		if((LogParamId)LoadBigEndianUInt16(data, paramIdOffset) != logParamId) {
 			throw new ParamIdDoesNotMatchException("Parsed parameter ID does not match with " + logParamId.ToString());
 		}
 
 		/* return parameter data offset */
-		return currentOffset + paramIdSize;
+		return paramIdOffset + paramIdSize;
+	}
+
+	private int GetFirstParamOffset(byte[] data, TcpLogHeader header, LogParamId logParamId, out int paramIdOffset)
+	{
+		/* set parameter id offset */
+		paramIdOffset = header.size;
+
+		if ((LogParamId)LoadBigEndianUInt16(data, paramIdOffset) != logParamId) {
+			throw new ParamIdDoesNotMatchException("Parsed parameter ID does not match with " + logParamId.ToString());
+		}
+
+		/* return parameter data offset */
+		return paramIdOffset + CriProfiler.paramIdSize;
+	}
+
+	private int GetStrDataOffset(TcpLogHeader header, int paramIdOffset)
+	{
+		if (header.isPtr64 == true) {
+			return paramIdOffset + CriProfiler.paramIdSize + ParamTypeSizes64[(int)CriProfiler.LogParamTypes.TYPE_CHAR];
+		} else {
+			return paramIdOffset + CriProfiler.paramIdSize + ParamTypeSizes32[(int)CriProfiler.LogParamTypes.TYPE_CHAR];
+		}
+	}
+
+	private int GetNextParamOffset(byte[] data, TcpLogHeader header, LogParamId logParamId, ref int paramIdOffset)
+	{
+		int paramId = 0;
+		int dataSize = 0;
+		paramId = LoadBigEndianUInt16(data, paramIdOffset);
+		if(header.isPtr64 == true) {
+			dataSize = CriProfiler.LogParams[paramId].size64;
+		} else {
+			dataSize = CriProfiler.LogParams[paramId].size32;
+		}
+		if (CriProfiler.LogParams[paramId].type == LogParamTypes.TYPE_CHAR) {
+			dataSize += LoadBigEndianUInt16(data, paramIdOffset + paramIdSize);
+		}
+		/* set parameter id offset */
+		paramIdOffset += paramIdSize + dataSize;
+
+		if ((LogParamId)LoadBigEndianUInt16(data, paramIdOffset) != logParamId) {
+			throw new ParamIdDoesNotMatchException("Parsed parameter ID does not match with " + logParamId.ToString());
+		}
+
+		/* return parameter data offset */
+		return paramIdOffset + paramIdSize;
 	}
 	#endregion Methods for data offset calculation
 
 	#endregion Parser
-
-
-	#region Timeline
-
-	/* CueSheet - Cue - Playback Lane (multiple non-overlapping playback lists) - Timestamp (true = start, false = end) */
-
-	private void AddPlaybackToTimeline(Playback playback) {
-		CueSheetGroup group;
-		if (multiLaneTimeline.TryGetValue(playback.cuesheet, out group) == false) {
-			group = new CueSheetGroup(playback.cuesheet);
-			multiLaneTimeline.Add(playback.cuesheet, group);
-		}
-		group.AddPlayback(playback);
-	}
-
-	public Dictionary<string, CueSheetGroup> TimelineDataSlice {
-		get {
-			var output = new Dictionary<string, CueSheetGroup>();
-			foreach (var elem in multiLaneTimeline) {
-				output.Add(elem.Key, elem.Value.Clone());
-			}
-			return output;
-		}
-	}
-
-	public class CueSheetGroup : ICloneable {
-		public string name;
-		public Color cuesheetColor = Color.white;
-		public Dictionary<string, CueLane> cueLaneDict;
-
-		static private readonly Color baseColor = new Color(0.5412f, 1f, 0.3451f);
-
-		public CueSheetGroup(string name) {
-			this.name = name;
-			{/* set distinguishing color */
-				float h, s, v;
-				Color.RGBToHSV(baseColor, out h, out s, out v);
-				System.Random rand = new System.Random();
-				this.cuesheetColor = Color.HSVToRGB(rand.Next(0, 10000) / 10000f, s, v);
-			}
-			cueLaneDict = new Dictionary<string, CueLane>();
-		}
-
-		public CueSheetGroup(CueSheetGroup group) {
-			this.name = group.name;
-			this.cuesheetColor = group.cuesheetColor;
-			this.cueLaneDict = new Dictionary<string, CueLane>();
-			foreach (var elem in group.cueLaneDict) {
-				cueLaneDict.Add(elem.Key, elem.Value.Clone());
-			}
-		}
-		public CueSheetGroup Clone() { return new CueSheetGroup(this); }
-		object ICloneable.Clone() { return Clone(); }
-
-		public void AddPlayback(Playback playback) {
-			CueLane lane;
-			if (cueLaneDict.TryGetValue(playback.cuename, out lane) == false) {
-				lane = new CueLane(playback.cuename, playback.cuesheet);
-				cueLaneDict.Add(playback.cuename, lane);
-			}
-			lane.AddPlayback(playback);
-		}
-
-		public int TotalLaneCount {
-			get {
-				int cnt = 0;
-				foreach (var elem in cueLaneDict) {
-					cnt += elem.Value.playbackLaneList.Count;
-				}
-				return cnt;
-			}
-		}
-	}
-
-	public class CueLane : ICloneable {
-		public string name;
-		public string cuesheet;
-		public Color cueColor;
-		public List<PlaybackLane> playbackLaneList;
-
-		static private readonly Color baseColor = new Color(0.537f, 0.922f, 0.424f);
-		private Dictionary<uint, int> playingDict; /* <playback id, lane index>; wont be cloned */
-
-		public CueLane(string name, string cuesheet) {
-			this.name = name;
-			this.cuesheet = cuesheet;
-			{/* set distinguishing color */
-				float h, s, v;
-				Color.RGBToHSV(baseColor, out h, out s, out v);
-				System.Random rand = new System.Random();
-				this.cueColor = Color.HSVToRGB(rand.Next(0, 10000) / 10000f, s, v);
-			}
-			playbackLaneList = new List<PlaybackLane>();
-			playingDict = new Dictionary<uint, int>();
-		}
-
-		public CueLane(CueLane cuelane) {
-			this.name = cuelane.name;
-			this.cuesheet = cuelane.cuesheet;
-			this.cueColor = cuelane.cueColor;
-			this.playbackLaneList = new List<PlaybackLane>();
-			this.playbackLaneList.AddRange(cuelane.playbackLaneList.Select(i => i.Clone()));
-		}
-
-		public CueLane Clone() { return new CueLane(this); }
-		object ICloneable.Clone() { return Clone(); } 
-
-		public void AddPlayback(Playback playback) {
-			if (playback.isStart) { /* playback start */
-				bool added = false;
-				for (int i = 0; i < playbackLaneList.Count; ++i) {
-					if (playbackLaneList[i].isPlaying == false) {
-						if (playbackLaneList[i].AddPlayback(playback)) {
-							playingDict.Add(playback.id, i);
-							added = true;
-							break;
-						}
-					}
-				}
-				if (added == false) { /* no empty lane */
-					playbackLaneList.Add(new PlaybackLane());
-					if (playbackLaneList[playbackLaneList.Count - 1].AddPlayback(playback)) {
-						playingDict.Add(playback.id, playbackLaneList.Count - 1);
-					}
-				}
-			} else { /* playback end */
-				int laneId;
-				if (playingDict.TryGetValue(playback.id, out laneId)) {
-					playbackLaneList[laneId].AddPlayback(playback);
-					playingDict.Remove(playback.id);
-				}
-			}
-		}
-	}
-
-	public class PlaybackLane : ICloneable {
-		public List<Playback> playbackList;
-		private int balance;
-
-		public bool isConsistent {
-			get {
-				if (balance > 1 || balance < 0) {
-					return false;
-				}
-				return true;
-			}
-		}
-
-		public PlaybackLane() {
-			playbackList = new List<Playback>();
-			balance = 0;
-		}
-
-		public PlaybackLane(PlaybackLane playbackLane) {
-			this.playbackList = new List<Playback>(playbackLane.playbackList);
-			this.balance = playbackLane.balance;
-		}
-
-		public PlaybackLane Clone() { return new PlaybackLane(this); }
-		object ICloneable.Clone() { return Clone(); }
-
-		public bool AddPlayback(Playback playback) {
-			if (playbackList.Count > 0 &&
-				(playbackList[playbackList.Count - 1].timestamp > playback.timestamp ||
-				playbackList[playbackList.Count - 1].isStart == playback.isStart)) {
-				UnityEngine.Debug.LogError("[CRIWARE] Profiler internal: playback timestamp order error");
-				return false;
-			}
-			playbackList.Add(playback);
-			balance += playback.isStart ? 1 : -1;
-			return true;
-		}
-
-		public bool isPlaying {
-			get {
-				return playbackList[playbackList.Count - 1].isStart;
-			}
-		}
-	}
-
-	public struct Playback {
-		public uint id;
-		public ulong timestamp;
-		public bool isStart;
-		public string cuename;
-		public string cuesheet;
-		public Playback(uint id, ulong timestamp, bool isStart, string cuename, string cuesheet) {
-			this.id = id;
-			this.timestamp = timestamp;
-			this.isStart = isStart;
-			this.cuename = cuename;
-			this.cuesheet = cuesheet;
-		}
-	}
-	#endregion
 }
 
 #endif

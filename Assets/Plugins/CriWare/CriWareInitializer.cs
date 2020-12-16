@@ -46,30 +46,21 @@ public class CriAtomConfig {
 	/*JP ACFファイル名
 	 *   \attention ACFファイルをStreamingAssetsフォルダに配置しておく必要あり。 */
 	public string acfFileName = "";
-
+	
 	/*JP 標準ボイスプール作成パラメータ */
 	[System.Serializable]
 	public class StandardVoicePoolConfig {
 		public int memoryVoices    = 16;
 		public int streamingVoices = 8;
 	}
-
+	
 	/*JP HCA-MXボイスプール作成パラメータ */
 	[System.Serializable]
 	public class HcaMxVoicePoolConfig {
 		public int memoryVoices    = 0;
 		public int streamingVoices = 0;
 	}
-
-	/*JP インゲームプレビュー設定 */
-	[System.Serializable]
-	public enum InGamePreviewSwitchMode {
-		Disable,                /*JP 無効 */
-		Enable,                 /*JP 有効 */
-		FollowBuildSetting,     /*JP Development Build時のみ有効 */
-		Default                 /*JP "usesInGamePreview" */
-	}
-
+	
 	/*JP 最大バーチャルボイス数 */
 	public int maxVirtualVoices = 32;
 	/*JP 最大ボイスリミットグループ数 */
@@ -88,8 +79,6 @@ public class CriAtomConfig {
 	public int outputSamplingRate = 0;
 	/*JP インゲームプレビューを使用するかどうか */
 	public bool usesInGamePreview = false;
-	/*JP インゲームプレビュー設定(Inspector 指定時のみ有効) */
-	public InGamePreviewSwitchMode inGamePreviewMode = InGamePreviewSwitchMode.Default;
 	/*JP サーバ周波数 */
 	public float serverFrequency  = 60.0f;
 	/*JP ASR出力チャンネル数 */
@@ -104,12 +93,10 @@ public class CriAtomConfig {
 	public int maxParameterBlocks = 1024;
 	/*JP VR サウンド出力モードを使用するか否か */
 	public bool vrMode = false;
-	/*JP StandAlone プラットフォームやエディタでポーズ時に音声出力もポーズするか否か */
-	public bool keepPlayingSoundOnPause = true;
 
 	/*JP [PC] 出力バッファリング時間 */
 	public int pcBufferingTime = 0;
-
+	
 	/*JP [iOS] 出力バッファリング時間(ミリ秒)*/
 	public int  iosBufferingTime     = 50;
 	/*JP [iOS] iPodの再生を上書きするか？ */
@@ -130,10 +117,6 @@ public class CriAtomConfig {
 	public AndroidLowLatencyStandardVoicePoolConfig androidLowLatencyStandardVoicePoolConfig = new AndroidLowLatencyStandardVoicePoolConfig();
 	/*JP [Android] Android OS の Fast Mixer を使用して、音声再生時の発音遅延を短縮するかどうか。ASR/NSR の発音遅延や、遅延推測機能の結果に影響する */
 	public bool androidUsesAndroidFastMixer = true;
-	/*JP [Android] 非低遅延再生指定時のCriAtomSourceで、強制的にASRによる再生を行うか */
-	public bool androidForceToUseAsrForDefaultPlayback = true;
-	/*JP [Android] β版機能：AAudioを有効にするかどうか */
-	public bool androidUsesAAudio = false;
 }
 
 /*JP
@@ -149,7 +132,6 @@ public class CriManaConfig {
 	public readonly bool graphicsMultiThreaded = true; // always true.
 }
 
-
 /// \addtogroup CRIWARE_UNITY_COMPONENT
 /// @{
 
@@ -159,23 +141,23 @@ public class CriManaConfig {
  * CRIWAREライブラリの初期化を行うためのコンポーネントです。<br>
  */
 [AddComponentMenu("CRIWARE/Library Initializer")]
-public class CriWareInitializer : CriMonoBehaviour {
-
+public class CriWareInitializer : MonoBehaviour {
+	
 	/*JP CRI File Systemライブラリを初期化するかどうか */
 	public bool initializesFileSystem = true;
-
+	
 	/*JP CRI File Systemライブラリ初期化設定 */
 	public CriFsConfig fileSystemConfig = new CriFsConfig();
-
+	
 	/*JP CRI Atomライブラリを初期化するかどうか */
 	public bool initializesAtom = true;
-
+	
 	/*JP CRI Atomライブラリ初期化設定 */
 	public CriAtomConfig atomConfig = new CriAtomConfig();
-
+	
 	/*JP CRI Manaライブラリを初期化するかどうか */
 	public bool initializesMana = true;
-
+	
 	/*JP CRI Manaライブラリ初期化設定 */
 	public CriManaConfig manaConfig = new CriManaConfig();
 
@@ -198,39 +180,30 @@ public class CriWareInitializer : CriMonoBehaviour {
 		/* プラグインの初期化 */
 		this.Initialize();
 	}
-
+	
 	/* Execution Order の設定を確実に有効にするために OnEnable をオーバーライド */
-	protected override void OnEnable() {
-		base.OnEnable();
+	void OnEnable() {
 	}
-
-	void Start () { }
-
-	void OnDestroy() {
-		Shutdown();
+	
+	// Use this for initialization
+	void Start () {
 	}
-
-	public override void CriInternalUpdate() { }
-
-	public override void CriInternalLateUpdate() { }
+	
+	// Update is called once per frame
+	void Update () {
+	}
 
 	/**
-	 * <summary>プラグインの初期化（手動初期化用）</summary>
-	 * <remarks>
-	 * <para header='説明'>
+	 * <summary>プラグインの初期化（手動初期化用）</summary> 
+	 * \par 説明:
 	 * プラグインの初期化を行います。<br/>
 	 * デフォルトでは本関数はAwake関数内で自動的に呼び出されるので、アプリケーションが直接呼び出す必要はありません。<br/>
 	 * <br/>
 	 * 初期化パラメタをスクリプトから動的に変更して初期化を行いたい場合、本関数を使用してください。<br/>
-	 * </para>
-	 * <para header='注意'>
-	 * 本関数を使用する場合は、 自動初期化を無効にするため、
-	 * ::CriWareInitializer::dontInitializeOnAwake プロパティをインスペクタ上でチェックしてください。<br/>
-	 * また、本関数を呼び出すタイミングは全てのプラグインAPIよりも前である必要があります。
-	 * Script Execution Orderが高いスクリプト上で行ってください。
-	 * </para>
-	 * </remarks>
-	 *
+	 * \par 注意：
+	 * 本関数を使用する場合は、 自動初期化を無効にするため、 ::CriWareInitializer::dontInitializeOnAwake プロパティをインスペクタ上でチェックしてください。<br/>
+	 * また、本関数を呼び出すタイミングは全てのプラグインAPIよりも前に呼び出す必要があります。Script Execution Orderが高いスクリプト上で行ってください。
+	 * 
 	 */
 	public void Initialize() {
 		/* 初期化カウンタの更新 */
@@ -245,10 +218,12 @@ public class CriWareInitializer : CriMonoBehaviour {
 		if ((CriFsPlugin.IsLibraryInitialized() == true && CriAtomPlugin.IsLibraryInitialized() == true && CriManaPlugin.IsLibraryInitialized() == true) ||
 			(CriFsPlugin.IsLibraryInitialized() == true && CriAtomPlugin.IsLibraryInitialized() == true && CriManaPlugin.IsLibraryInitialized() == false) ||
 			(CriFsPlugin.IsLibraryInitialized() == true && CriAtomPlugin.IsLibraryInitialized() == false && CriManaPlugin.IsLibraryInitialized() == false)) {
+#if UNITY_EDITOR || (!UNITY_PS3)
 			/* CRI Manaライブラリの終了 */
 			if (initializesMana) {
 				CriManaPlugin.FinalizeLibrary();
 			}
+#endif
 
 			/* CRI Atomライブラリの終了 */
 			if (initializesAtom) {
@@ -274,20 +249,6 @@ public class CriWareInitializer : CriMonoBehaviour {
 
 		/* CRI Atomライブラリの初期化 */
 		if (initializesAtom) {
-			switch (atomConfig.inGamePreviewMode) {
-				case CriAtomConfig.InGamePreviewSwitchMode.Disable:
-					atomConfig.usesInGamePreview = false;
-					break;
-				case CriAtomConfig.InGamePreviewSwitchMode.Enable:
-					atomConfig.usesInGamePreview = true;
-					break;
-				case CriAtomConfig.InGamePreviewSwitchMode.FollowBuildSetting:
-					atomConfig.usesInGamePreview = UnityEngine.Debug.isDebugBuild;
-					break;
-				default:
-					/* 既に設定されたフラグに従う */
-					break;
-			}
 			InitializeAtom(atomConfig);
 		}
 
@@ -299,13 +260,10 @@ public class CriWareInitializer : CriMonoBehaviour {
 	}
 
 	/**
-	 * <summary>プラグインの終了（手動終了用）</summary>
-	 * <remarks>
-	 * <para header='説明'>
+	 * <summary>プラグインの終了（手動終了用）</summary> 
+	 * \par 説明:
 	 * プラグインを終了します。<br/>
 	 * デフォルトでは本関数はOnDestroy関数内で自動的に呼び出されるので、アプリケーションが直接呼び出す必要はありません。
-	 * </para>
-	 * </remarks>
 	 */
 	public void Shutdown() {
 		/* 初期化カウンタの更新 */
@@ -332,6 +290,10 @@ public class CriWareInitializer : CriMonoBehaviour {
 		}
 	}
 
+	void OnDestroy() {
+		Shutdown();
+	}
+	
 	/* 初期化カウンタ */
 	private static int initializationCount = 0;
 
@@ -346,41 +308,6 @@ public class CriWareInitializer : CriMonoBehaviour {
 		}
 	}
 
-	/**
-	 * <summary>カスタムエフェクトのインタフェース登録</summary>
-	 * <remarks>
-	 * <para header='説明'>
-	 * ユーザが独自に実装したASRバスエフェクト(カスタムエフェクト)の
-	 * インタフェースを登録するためのメソッドです。
-	 * CRI ADX2 Audio Effect Plugin SDK を使用することで、
-	 * ユーザ独自の ASR バスエフェクトを作成することができます。
-	 * <br/>
-	 * 通常は、予め用意されたエフェクト処理しか使うことができません。
-	 * CRIWARE で定められたルールに従ってカスタムエフェクトライブラリを実装することで、
-	 * ユーザは CRIWAER Unity Plug-in 用カスタムエフェクトインタフェースを用意することができます。
-	 * <br/>
-	 * このインタフェースへのポインタを、本関数を用いて CRIWAER Unity Plug-in に登録することで、
-	 * CRI ライブラリ初期化時にカスタムエフェクトが有効化されます。
-	 * <br/>
-	 * なお、登録したカスタムエフェクトは CRI ライブラリの終了時に強制的に登録解除されます。
-	 * 再度 CRI ライブラリを初期化する際には、改めて本関数を呼び出してカスタムエフェクトの
-	 * インタフェース登録を行ってください。
-	 * </para>
-	 * <para header='注意'>
-	 * 必ず CRI ライブラリの初期化前に本関数を呼んでください。
-	 * 本関数で追加されたカスタムエフェクトのインタフェースは、CRI ライブラリの初期化処理内で
-	 * 実際に有効化されます。
-	 * </para>
-	 * </remarks>
-	 */
-	static public void AddAudioEffectInterface(IntPtr effect_interface)
-	{
-		List<IntPtr> effect_interface_list = null;
-		if (CriAtomPlugin.GetAudioEffectInterfaceList(out effect_interface_list))
-		{
-			effect_interface_list.Add(effect_interface);
-		}
-	}
 
 	public static bool InitializeFileSystem(CriFsConfig config)
 	{
@@ -392,8 +319,7 @@ public class CriWareInitializer : CriMonoBehaviour {
 				config.numberOfInstallers,
 				(config.installBufferSize * 1024),
 				config.maxPath,
-				config.minimizeFileDescriptorUsage,
-				false
+				config.minimizeFileDescriptorUsage
 				);
 			{
 				/* Ver.2.03.03 以前は 0 がデフォルト値だったことの互換性維持のための処理 */
@@ -453,17 +379,20 @@ public class CriWareInitializer : CriMonoBehaviour {
 				if (config.androidStartBufferingTime == 0) {
 					config.androidStartBufferingTime = (int)(3 * 1000.0 / config.serverFrequency);
 				}
+				IntPtr android_context = IntPtr.Zero;
 #if !UNITY_EDITOR && UNITY_ANDROID
-				CriAtomEx.androidDefaultSoundRendererType = config.androidForceToUseAsrForDefaultPlayback ?
-					CriAtomEx.SoundRendererType.Asr : CriAtomEx.SoundRendererType.Default;
+				if (config.androidUsesAndroidFastMixer) {
+					AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+					AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
+					android_context = activity.GetRawObject();
+				}
 #endif
 				CriAtomPlugin.SetConfigAdditionalParameters_ANDROID(
 					config.androidLowLatencyStandardVoicePoolConfig.memoryVoices,
 					config.androidLowLatencyStandardVoicePoolConfig.streamingVoices,
 					config.androidBufferingTime,
 					config.androidStartBufferingTime,
-					config.androidUsesAndroidFastMixer,
-					config.androidUsesAAudio);
+					android_context);
 			}
 
 			CriAtomPlugin.InitializeLibrary();
@@ -482,7 +411,6 @@ public class CriWareInitializer : CriMonoBehaviour {
 
 				CriAtomEx.RegisterAcf(null, acfPath);
 			}
-			CriAtomServer.KeepPlayingSoundOnPause = config.keepPlayingSoundOnPause;
 			return true;
 		} else {
 			return false;
@@ -505,7 +433,6 @@ public class CriWareInitializer : CriMonoBehaviour {
 			return false;
 		}
 	}
-
 } // end of class
 
 /// @}

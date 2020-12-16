@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
  * CRIWAREライブラリの初期化を行うためのコンポーネントです。<br>
  */
 [AddComponentMenu("CRIWARE/Error Handler")]
-public class CriWareErrorHandler : CriMonoBehaviour{
+public class CriWareErrorHandler : MonoBehaviour{
 	/*JP
 	 * \brief コンソールデバッグ出力を有効にするかどうか
 	 * \par 注意:
@@ -49,11 +49,11 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 			GameObject.Destroy(this);
 			return;
 		}
-
+		
 		/* エラー処理の初期化 */
 		criWareUnity_Initialize();
 		criWareUnity_SetForceCrashFlagOnError(enableForceCrashOnError);
-
+		
 		/* ターミナルへのログ出力表示切り替え */
 		criWareUnity_ControlLogOutput(enableDebugPrintOnTerminal);
 
@@ -66,17 +66,15 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 			DontDestroyOnLoad(transform.gameObject);
 		}
 	}
-
+	
 	/* Execution Order の設定を確実に有効にするために OnEnable をオーバーライド */
-	protected override void OnEnable() {
-		base.OnEnable();
+	void OnEnable() {
 #if CRIWAREERRORHANDLER_SUPPORT_NATIVE_CALLBACK
 		criWareUnity_SetErrorCallback(ErrorCallbackFromNative);
 #endif
 	}
 
-	protected override void OnDisable() {
-		base.OnDisable();
+	void OnDisable() {
 #if CRIWAREERRORHANDLER_SUPPORT_NATIVE_CALLBACK
 		criWareUnity_SetErrorCallback(null);
 #endif
@@ -84,11 +82,11 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 
 	// Use this for initialization
 	void Start () {
-
+		
 	}
-
+	
 	// Update is called once per frame
-	public override void CriInternalUpdate() {
+	void Update () {
 #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS || UNITY_TVOS)
 		if (enableDebugPrintOnTerminal == false){
 			/* iOS/Androidの場合、エラーメッセージの出力先が重複してしまうため、*/
@@ -99,9 +97,7 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 		OutputErrorMessage();
 #endif
 	}
-
-	public override void CriInternalLateUpdate() { }
-
+	
 	void OnDestroy() {
 		/* 初期化カウンタの更新 */
 		initializationCount--;
@@ -112,13 +108,13 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 #if CRIWAREERRORHANDLER_SUPPORT_NATIVE_CALLBACK
 		criWareUnity_SetErrorCallback(null);
 #endif
-
+		
 		/* エラー処理の終了処理 */
 		criWareUnity_Finalize();
 	}
-
+	
 	/* エラーメッセージのポーリングと出力 */
-	private static void OutputErrorMessage()
+	private static void OutputErrorMessage() 
 	{
 		/* エラーメッセージのポーリング */
 		System.IntPtr ptr = criWareUnity_GetFirstError();
@@ -132,7 +128,7 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 			OutputLog(message);
 			criWareUnity_ResetError();
 		}
-
+		
 		if (CriWareErrorHandler.errorMessage == null) {
 			CriWareErrorHandler.errorMessage = message.Substring(0);
 		}
@@ -144,7 +140,7 @@ public class CriWareErrorHandler : CriMonoBehaviour{
 		if (errmsg == null) {
 			return;
 		}
-
+		
 		if (errmsg.StartsWith("E")) {
 			Debug.LogError("[CRIWARE] Error:" + errmsg);
 		} else if (errmsg.StartsWith("W")) {

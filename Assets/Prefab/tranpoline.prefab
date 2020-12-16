@@ -384,7 +384,6 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Drag
   _cueSheet: SFX
-  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -417,7 +416,7 @@ GameObject:
   - component: {fileID: 6334573865038289456}
   - component: {fileID: 6334573865038289457}
   - component: {fileID: 6334573865038289462}
-  - component: {fileID: 8704844891786315930}
+  - component: {fileID: 3272317490244940982}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -478,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animobj: {fileID: 6334573865986425210}
---- !u!114 &8704844891786315930
+--- !u!114 &3272317490244940982
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -493,8 +492,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Bound_tra
   _cueSheet: SFX
-  _regionOnStart: {fileID: 0}
-  _use3dPositioning: 0
+  _use3dPositioning: 1
   _loop: 0
   _volume: 1
   _pitch: 0

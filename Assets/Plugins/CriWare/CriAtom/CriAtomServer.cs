@@ -8,8 +8,8 @@ using UnityEngine;
 using System;
 
 
-public class CriAtomServer : CriMonoBehaviour {
-
+public class CriAtomServer : MonoBehaviour {
+	
 	#region Internal Fields
 	private static CriAtomServer _instance = null;
 #if UNITY_EDITOR
@@ -17,30 +17,29 @@ public class CriAtomServer : CriMonoBehaviour {
 	private bool isEditorPaused = false;
 #endif
 	#endregion
-
+	
 	public System.Action<bool> onApplicationPausePreProcess;
 	public System.Action<bool> onApplicationPausePostProcess;
-	static public bool KeepPlayingSoundOnPause = true;
-
+	
 	public static CriAtomServer instance {
 		get {
 			CreateInstance();
 			return _instance;
 		}
 	}
-
+	
 	public static void CreateInstance() {
 		if (_instance == null) {
 			CriWare.managerObject.AddComponent<CriAtomServer>();
 		}
 	}
-
+	
 	public static void DestroyInstance() {
 		if (_instance != null) {
 			UnityEngine.GameObject.Destroy(_instance);
 		}
 	}
-
+	
 	void Awake()
 	{
 		/* インスタンスは常に１つしか生成されないことを保証する */
@@ -51,9 +50,8 @@ public class CriAtomServer : CriMonoBehaviour {
 		}
 	}
 
-	protected override void OnEnable()
+	void OnEnable()
 	{
-		base.OnEnable();
 #if UNITY_EDITOR
 #if UNITY_2017_2_OR_NEWER
 		UnityEditor.EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
@@ -64,9 +62,8 @@ public class CriAtomServer : CriMonoBehaviour {
 #endif
 	}
 
-	protected override void OnDisable()
+	void OnDisable()
 	{
-		base.OnDisable();
 #if UNITY_EDITOR
 #if UNITY_2017_2_OR_NEWER
 		UnityEditor.EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
@@ -80,10 +77,6 @@ public class CriAtomServer : CriMonoBehaviour {
 			_instance = null;
 		}
 	}
-
-	public override void CriInternalUpdate() { }
-
-	public override void CriInternalLateUpdate() { }
 
 #if UNITY_EDITOR
 	private void OnPlaymodeStateChange()
@@ -130,14 +123,7 @@ public class CriAtomServer : CriMonoBehaviour {
 			CriAtomPlugin.CallOnApplicationResume_IOS();
 		}
 #endif
-
-#if UNITY_STANDALONE || UNITY_EDITOR
-		if (!KeepPlayingSoundOnPause) {
-			CriAtomPlugin.Pause(appPause);
-		}
-#else
 		CriAtomPlugin.Pause(appPause);
-#endif
 		if (onApplicationPausePostProcess != null) {
 			onApplicationPausePostProcess(appPause);
 		}

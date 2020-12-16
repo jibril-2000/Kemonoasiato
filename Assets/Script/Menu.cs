@@ -10,7 +10,6 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject TitlePanel;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button TitleButton;
-    GameObject MainBGM;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +31,6 @@ public class Menu : MonoBehaviour
         Time.timeScale = 0; //時間停止
         pausePanel.SetActive(true);
         TitlePanel.SetActive(true);
-
-        //サウンドAISAC設定
-        MainBGM = GameObject.Find("Main Camera");
-        MainBGM.GetComponent<CriAtomSource>().SetAisacControl("Menu", 1.0f); 
-        //SE.GetComponent<CriAtomSource>().SetAisacControl("SE", 1.0f); 
     }
 
     public void Resume()
@@ -44,10 +38,5 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1; //時間再開
         pausePanel.SetActive(false);
         TitlePanel.SetActive(true);
-
-        //サウンドAISAC設定
-        MainBGM = GameObject.Find("Main Camera");
-        MainBGM.GetComponent<CriAtomSource>().SetAisacControl("Menu", 0.0f); 
-        //SE.GetComponent<CriAtomSource>().SetAisacControl("SE", 0.0f); 
     }
 }

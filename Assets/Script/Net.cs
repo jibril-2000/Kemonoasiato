@@ -28,10 +28,6 @@ public class Net : MonoBehaviour
         {
             Net_open.SetActive(false);
             Net_close.SetActive(true);
-
-            //サウンド再生
-            CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
-            audio.Play();
         }
     }
 }

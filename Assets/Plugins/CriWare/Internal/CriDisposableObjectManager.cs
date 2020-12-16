@@ -4,7 +4,7 @@
  *
  ****************************************************************************/
 
-#if !(UNITY_2019_3_OR_NEWER && ENABLE_IL2CPP)
+#if !(UNITY_WEBGL || (UNITY_2019_3_OR_NEWER && ENABLE_IL2CPP))
 #define CRIWARE_DISPOSABLEOBJECTMANAGER_USE_WEAKREF
 #endif
 
@@ -28,11 +28,9 @@ public static class CriDisposableObjectManager
 	public enum ModuleType
 	{
 		Atom,
-		AtomMic,
 		Fs,
 		FsWeb,
-		Mana,
-		Lips
+		Mana
 	}
 
 	public struct ObjectRef
@@ -66,12 +64,10 @@ public static class CriDisposableObjectManager
 	private static List<ObjectRef> refList = new List<ObjectRef>();
 
 	private static int SearchForDisposable(CriDisposable disposable){
-		lock (refList) {
-			int listCount = CriDisposableObjectManager.refList.Count;
-			for (int i = listCount - 1; i >= 0; --i) {
-				if (CriDisposableObjectManager.refList[i].guid == disposable.guid) {
-					return i;
-				}
+		int listCount = CriDisposableObjectManager.refList.Count;
+		for (int i = listCount - 1; i >= 0; --i) {
+			if (CriDisposableObjectManager.refList[i].guid == disposable.guid) {
+				return i;
 			}
 		}
 		return -1;
@@ -87,25 +83,19 @@ public static class CriDisposableObjectManager
 	#if CRIWARE_DISPOSABLEOBJECTMANAGER_USE_WEAKREF
 		/* Keep weak reference until object finalized */
 		var weakRef = new WeakReference(disposable, true);
-		lock (refList) {
-			CriDisposableObjectManager.refList.Add(new ObjectRef(disposable.guid, weakRef, type));
-		}
+		CriDisposableObjectManager.refList.Add(new ObjectRef(disposable.guid, weakRef, type));
 	#else
 		/* Keep reference directly */
-		lock (refList) {
-			CriDisposableObjectManager.refList.Add(new ObjectRef(disposable.guid, disposable, type));
-		}
+		CriDisposableObjectManager.refList.Add(new ObjectRef(disposable.guid, disposable, type));
 	#endif
 	}
 
 	public static bool Unregister(CriDisposable disposable)
 	{
-		lock (refList) {
-			int index = CriDisposableObjectManager.SearchForDisposable(disposable);
-			if (index >= 0) {
-				CriDisposableObjectManager.refList.RemoveAt(index);
-				return true;
-			}
+		int index = CriDisposableObjectManager.SearchForDisposable(disposable);
+		if (index >= 0) {
+			CriDisposableObjectManager.refList.RemoveAt(index);
+			return true;
 		}
 		return false;
 	}
@@ -133,27 +123,25 @@ public static class CriDisposableObjectManager
 
 	public static void DisposeAll(ModuleType type)
 	{
-		lock (refList) {
-			while (true) {
-				int index = GetNextWithType(type);
-				if (index < 0) {
-					break;
-				}
+		while (true) {
+			int index = GetNextWithType(type);
+			if (index < 0) {
+				break;
+			}
 	#if CRIWARE_DISPOSABLEOBJECTMANAGER_USE_WEAKREF
-				var target = (CriDisposable)CriDisposableObjectManager.refList[index].weakRef.Target;
+			var target = (CriDisposable)CriDisposableObjectManager.refList[index].weakRef.Target;
 	#else
-				var target = CriDisposableObjectManager.refList[index].disposable;
+			var target = CriDisposableObjectManager.refList[index].disposable;
 	#endif
-				if (target != null) {
-					target.Dispose();
-				} else {
-					/* Unsafe fallback */
-					UnityEngine.Debug.LogWarning("[CRIWARE] Internal: Object disposal(Type:" +
-												 CriDisposableObjectManager.refList[index].type.ToString() +
-												 ") not handled by CriDisposableObjectManager; " +
-												 "memory leak may have occured.");
-					CriDisposableObjectManager.refList.RemoveAt(index);
-				}
+			if (target != null) {
+				target.Dispose();
+			} else {
+				/* Unsafe fallback */
+				UnityEngine.Debug.LogWarning("[CRIWARE] Internal: Object disposal(Type:" +
+											 CriDisposableObjectManager.refList[index].type.ToString() +
+											 ") not handled by CriDisposableObjectManager; " +
+											 "memory leak may have occured.");
+				CriDisposableObjectManager.refList.RemoveAt(index);
 			}
 		}
 	}

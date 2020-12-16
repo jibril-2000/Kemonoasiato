@@ -21,11 +21,10 @@ public static class CriFsPlugin
 	public static bool isInitialized { get { return initializationCount > 0; } }
 	
 	public static void SetConfigParameters(
-		int num_loaders, int num_binders, int num_installers, int argInstallBufferSize, int max_path, bool minimize_file_descriptor_usage)
+		int num_loaders, int num_binders, int num_installers, int argInstallBufferSize, int max_path, bool minimize_file_descriptor_usage, bool dummy_flag)
 	{
 		CriFsPlugin.criFsUnity_SetConfigParameters(
-			num_loaders, num_binders, num_installers, max_path, minimize_file_descriptor_usage);
-		installBufferSize = argInstallBufferSize;
+			num_loaders, num_binders, num_installers, max_path, minimize_file_descriptor_usage, dummy_flag);
 
 		CriFsPlugin.isConfigured = true;
 	}
@@ -95,9 +94,10 @@ public static class CriFsPlugin
 	#region DLL Import
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criFsUnity_SetConfigParameters(
-		int num_loaders, int num_binders, int num_installers, int max_path, bool minimize_file_descriptor_usage);
+		int num_loaders, int num_binders, int num_installers, int max_path, bool minimize_file_descriptor_usage, bool dummy_flag);
 
-	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+
+[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criFsUnity_Initialize();
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]

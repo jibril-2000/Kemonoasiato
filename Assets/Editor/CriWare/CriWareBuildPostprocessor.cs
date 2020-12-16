@@ -16,7 +16,7 @@ using UnityEditor.iOS.Xcode;
 public class CriWareBuildPostprocessor : ScriptableObject
 {
 	private static string prefsFilePath = "Assets/Editor/CriWare/CriWareBuildPostprocessorPrefs.asset";
-	public bool iosAddDependencyFrameworks	= true;
+	public bool iosAddDependencyFrameworks  = true;
 	public bool iosReorderLibraryLinkingsForVp9 = true;
 
 	[MenuItem("GameObject/CRIWARE/Create CriWareBuildPostprocessorPrefs.asset")]
@@ -28,40 +28,40 @@ public class CriWareBuildPostprocessor : ScriptableObject
 			Selection.activeObject = instance;
 			return;
 		}
-		
+
 		var scobj = ScriptableObject.CreateInstance<CriWareBuildPostprocessor>();
 		if (scobj == null) {
 			Debug.Log("[CRIWARE] Failed to create CriWareBuildPostprocessor");
 			return;
 		}
-		
+
 		Directory.CreateDirectory(Path.GetDirectoryName(prefsFilePath));
 		AssetDatabase.CreateAsset(scobj, prefsFilePath);
-		
+
 		AssetDatabase.SaveAssets();
 		AssetDatabase.Refresh();
-		
+
 		Debug.Log("[CRIWARE] Created the preferences file of CriWareBuildPostprocessor. (" + prefsFilePath + ")");
 
 		Selection.activeObject = scobj;
 	}
-	
-	
+
+
 	[PostProcessScene]
 	public static void OnPostProcessScene() {
 		CheckGraphicsApiProcess ();
 	}
-	
-	
+
+
 	[PostProcessBuild]
 	public static void OnPostprocessBuild(BuildTarget build_target, string path)
 	{
 		CriWareBuildPostprocessor instance = (CriWareBuildPostprocessor)AssetDatabase.LoadAssetAtPath(prefsFilePath, typeof(CriWareBuildPostprocessor));
 		if (instance == null) {
-			instance = new CriWareBuildPostprocessor();
+            instance = ScriptableObject.CreateInstance<CriWareBuildPostprocessor>();
 			Debug.Log(
 				"[CRIWARE] Run CriWareBuildPostprocessor.OnPostprocessBuild with default preferences.\n"
-				+ "If you want to change the preferences, please create the preferences file by 'CRI/Create CriWareBuildPostprocessorPrefs.asset' menu."
+				+ "If you want to change the preferences, please create the preferences file by 'GameObject/CRIWARE/Create CriWareBuildPostprocessorPrefs.asset' menu."
 				);
 		} else {
 			Debug.Log(
@@ -73,6 +73,11 @@ public class CriWareBuildPostprocessor : ScriptableObject
 		instance.IosAddDependencyFrameworksProcess(build_target, path,
 		                                           instance.iosAddDependencyFrameworks,
 		                                           instance.iosReorderLibraryLinkingsForVp9);
+		switch (build_target) {
+			case BuildTarget.WebGL:
+				instance.PostprocessBuildWebGL(path);
+				break;
+		}
 	}
 
 
@@ -87,11 +92,11 @@ public class CriWareBuildPostprocessor : ScriptableObject
 		string project_path = path + "/Unity-iPhone.xcodeproj/project.pbxproj";
 		PBXProject project = new PBXProject();
 		project.ReadFromString(File.ReadAllText(project_path));
-		string target = project.TargetGuidByName("UnityFramework");
-		if (string.IsNullOrEmpty(target)) {
-			target = project.TargetGuidByName("Unity-iPhone");
-		}
-
+#if UNITY_2019_3_OR_NEWER
+		string target = project.GetUnityFrameworkTargetGuid();
+#else
+		string target = project.TargetGuidByName("Unity-iPhone");
+#endif
 		if (add_frameworks) {
 			Debug.Log("[CRIWARE][iOS] Add dependency frameworks (VideoToolbox.framework, Metal.framework)");
 			if (build_target == BuildTarget.iOS) {
@@ -101,7 +106,7 @@ public class CriWareBuildPostprocessor : ScriptableObject
 		}
 		if (reorder_linkings) {
 			bool isVp9Enabled = project.ContainsFileByRealPath("Libraries/Plugins/iOS/libcri_mana_vpx.a");
- 			if (isVp9Enabled) {
+            if (isVp9Enabled) {
 				string guid = project.FindFileGuidByRealPath("Libraries/libiPhone-lib.a", PBXSourceTree.Source);
 				if (!string.IsNullOrEmpty(guid)) {
 					project.RemoveFileFromBuild(target, guid);
@@ -122,10 +127,32 @@ public class CriWareBuildPostprocessor : ScriptableObject
 #endif
 #endif
 	}
-	
-	
+
+
 	private static bool CheckGraphicsApiProcess() {
 		return true;
+	}
+
+
+	private void PostprocessBuildWebGL(string path)
+	{
+		string SourceDir = "Assets/Plugins/WebGL/";
+		string DestnationDir = path + "/StreamingAssets/";
+
+		bool ret = true;
+		try {
+			Directory.CreateDirectory(DestnationDir);
+			File.Copy(SourceDir + "sofdec2.worker.bin",      DestnationDir + "sofdec2.worker.js", true);
+			File.Copy(SourceDir + "sofdec2.worker.wajs.bin", DestnationDir + "sofdec2wasm.worker.js", true);
+			File.Copy(SourceDir + "sofdec2.worker.wasm.bin", DestnationDir + "sofdec2.worker.wasm", true);
+		}
+		catch (System.Exception) {
+			Debug.Log("[CRIWARE][WebGL] Copying sofdec2.worker.js failed.");
+			ret = false;
+		}
+		if (ret) {
+			Debug.Log("[CRIWARE][WebGL] Copying sofdec2.worker.js succeeded.");
+		}
 	}
 }
 

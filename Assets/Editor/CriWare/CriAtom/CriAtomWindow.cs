@@ -4,484 +4,512 @@
  *
  ****************************************************************************/
 
+#if UNITY_2017 && UNITY_EDITOR_WIN
+#define OPENFOLDERPANEL_IS_BROKEN
+#endif
+
 using UnityEngine;
 using UnityEditor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-public sealed class CriAtomWindow : EditorWindow, ISerializationCallbackReceiver
+public sealed class CriAtomWindow : EditorWindow
 {
 	#region Variables
-	private int selectedCueId = 0;
+	private int selectedAcfId = 0;
 	private int selectedCueInfoIndex = 0;
 	private int selectedCueSheetId = 0;
 	private bool isCueSheetListInitiated = false;
 	private int lastPreviewCueSheetId = -1;
-	private Vector2 scrollPos;
-	private Vector2 scrollPos_Window;
-	private Rect windowRect = new Rect(10, 10, 100, 100);
-	private bool scaling = true;
+	private Vector2 scrollPosCueSheetList;
+	private Vector2 scrollPosCueList;
+	private Vector2 scrollPosWindow;
 	private bool useCopyAssetsFromCriAtomCraft = false;
-	// Public
-	public string searchPath = "";
-	public string acfPath = "";
-	public string dspBusSetting = "";
-	public CriAtomAcfInfo.AcfInfo acfInfoData;
+	private string[] popupAcfList = null;
+	private Color currentGuiColor;
 
-	private CriAtomWindowPrefs criAtomWindowPrefs = null;
-	const string pathToJson = "Assets/Editor/CriWare/CriAtom/saveAcfData.json";
+	private GameObject targetObject = null;
+	private CriAtomSource targetAtomSource = null;
+	private CriAtomEditor.PreviewPlayer previewPlayer = null;
+	private CriAtomExAcb previewAcb = null;
+	private string lastAcbName = null;
+
+	[SerializeField] private string searchPath = "";
+	[SerializeField] private CriAtomWindowInfo projInfo = new CriAtomWindowInfo();
+	[SerializeField] private CriAtomWindowPrefs criAtomWindowPrefs = null;
+	[SerializeField] private GUIStyle toolBarButtonStyle = null;
+
+	[SerializeField] private bool showPrivateCue = false;
 	#endregion
 
 	#region Functions
-	public void OnAfterDeserialize()
-	{
-	#if UNITY_5_3_OR_NEWER
-		string tmp_json;
-		if (System.IO.File.Exists(pathToJson)) {
-			tmp_json = File.ReadAllText(pathToJson);
-			acfInfoData = JsonUtility.FromJson<CriAtomAcfInfo.AcfInfo>(tmp_json);
-		} else {
-			tmp_json = null;
-			acfInfoData = null;
-		}
-	#endif
-	}
 
-	public void OnBeforeSerialize()
-	{
-	#if UNITY_5_3_OR_NEWER
-		string tmp_json;
-		tmp_json = JsonUtility.ToJson(acfInfoData);
-		File.WriteAllText(pathToJson, tmp_json);
-	#endif
-	}
-
-	private static string tempJsonPath()
-	{
-		string filePath = "Assets/Editor/CriWare/CriAtom/saveAcfData";
-		filePath += ".json";
-		return filePath;
-	}
-
-	public void OnDestroy()
-	{
-		if (System.IO.File.Exists(pathToJson)) {
-			System.IO.File.Delete(tempJsonPath());
-			System.IO.File.Delete(tempJsonPath() + ".meta");
-		}
-		acfInfoData = null;
-	}
-
-	[MenuItem("Window/CRIWARE/Open CRI Atom Window", false, 100)]
+	[MenuItem("Window/CRIWARE/Atom Browser", false, 100)]
 	static void OpenWindow()
 	{
-		EditorWindow.GetWindow<CriAtomWindow>(false, "CRI Atom");
+		EditorWindow.GetWindow<CriAtomWindow>(false, "Atom Browser");
 	}
 
-	void OnSelectionChange()
-	{
+	private void OnEnable() {
+		searchPath = Application.streamingAssetsPath;
+		criAtomWindowPrefs = CriAtomWindowPrefs.Load();
+
+		if (Selection.gameObjects.Length > 0) {
+			targetObject = Selection.gameObjects[0];
+			targetAtomSource = targetObject.GetComponent<CriAtomSource>();
+		}
+
+		ReloadAcbInfo();
+	}
+
+	private void OnDisable() {
+		if (previewAcb != null) {
+			previewAcb.Dispose();
+			previewAcb = null;
+		}
+		lastAcbName = "";
+		if (previewPlayer != null) {
+			previewPlayer.Dispose();
+			previewPlayer = null;
+		}
+	}
+
+	private void OnSelectionChange() {
+		if (Selection.gameObjects.Length > 0) {
+			targetObject = Selection.gameObjects[0];
+			targetAtomSource = targetObject.GetComponent<CriAtomSource>();
+		}
+
 		Repaint();
 	}
 
-	void OnFocus()
-	{
+	private void OnLostFocus() {
+		StopPreview();
+		if (previewAcb != null) {
+			previewAcb.Dispose();
+			previewAcb = null;
+		}
+		lastAcbName = "";
 	}
 
-	private void OnEnable()
-	{
-		searchPath = Application.streamingAssetsPath;
-		criAtomWindowPrefs = CriAtomWindowPrefs.Load();
+	private void OnGUI() {
+		if (toolBarButtonStyle == null) {
+			toolBarButtonStyle = new GUIStyle(EditorStyles.toolbarButton);
+			toolBarButtonStyle.alignment = TextAnchor.MiddleLeft;
+		}
+
+		currentGuiColor = GUI.color;
+		this.scrollPosWindow = GUILayout.BeginScrollView(this.scrollPosWindow);
+		{
+			GUISearchAndReload();
+			GUIACFSettings();
+			GUICueList();
+			EditorGUILayout.Space();
+			GUIImportAssetsFromAtomCraft();
+			EditorGUILayout.Space();
+		}
+		GUILayout.EndScrollView();
+		GUI.color = currentGuiColor;
 	}
 
-	private void OnDisable()
-	{
+	private void ReloadAcbInfo() {
+		TryInitializePlugin();
+		projInfo.GetAcfInfoList(true, searchPath);
+		projInfo.GetAcbInfoList(true, searchPath);
 	}
 
-	private void GUISearchAndRelaod()
+	private void PlayPreview(CriAtomExAcb acb, string cuename) {
+		if (previewPlayer == null) {
+			previewPlayer = new CriAtomEditor.PreviewPlayer();
+		}
+		previewPlayer.Play(acb, cuename);
+	}
+
+	private void StopPreview(bool withoutRelease = true) {
+		if (previewPlayer != null) {
+			previewPlayer.Stop(withoutRelease);
+		}
+	}
+
+	private void TryInitializePlugin() {
+		if (CriAtomPlugin.IsLibraryInitialized() == false) {
+			if (previewAcb != null) {
+				previewAcb = null;
+				lastAcbName = "";
+			}
+		}
+		CriAtomEditor.InitializePluginForEditor();
+	}
+
+	private void GUISearchAndReload()
 	{
 		EditorGUILayout.BeginHorizontal();
 		{
-			this.searchPath = EditorGUILayout.TextField("Search File Path", this.searchPath, EditorStyles.label);
-
-			if (EditorApplication.isPlaying) {
-				GUI.color = Color.white;
-			} else {
-				GUI.color = Color.gray;
+			this.searchPath = EditorGUILayout.TextField("Path to Search", this.searchPath);
+#if !OPENFOLDERPANEL_IS_BROKEN
+			if (GUILayout.Button("...", EditorStyles.miniButton, GUILayout.Width(50)))
+			{
+				string pathTemp = EditorUtility.OpenFolderPanel("Select folder to search", this.searchPath, "");
+				if (string.IsNullOrEmpty(pathTemp) == false) {
+					if (pathTemp.Contains(Application.dataPath)) {
+						this.searchPath = pathTemp;
+						ReloadAcbInfo();
+					} else {
+						Debug.LogWarning("[CRIWARE] Selected folder should be inside this project. Search path will not be changed.");
+					}
+				}
 			}
-			if (GUILayout.Button(new GUIContent("Reload Info", "Note that this button is available while the Unity Editor is playing a scene that has a CriWareIntializer component."))) {
+#endif
+			if (GUILayout.Button("Reload Info", EditorStyles.miniButton, GUILayout.Width(100))) {
 				ReloadAcbInfo();
 			}
-			GUI.color = Color.white;
 		}
 		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.Space();
 	}
 
 	private void GUIACFSettings()
 	{
-		this.acfPath = EditorGUILayout.TextField("ACF File Path", this.acfPath, EditorStyles.label);
-		//this.dspBusSetting = EditorGUILayout.TextField("DSP Bus Setting", this.dspBusSetting, EditorStyles.label);
-		EditorGUILayout.Space();
-	}
-
-	private void ReloadAcbInfo()
-	{
-		if (CriAtomAcfInfo.GetCueInfo(ref acfInfoData, true, searchPath)) {
-			this.acfPath = acfInfoData.acfFilePath;
-			acfInfoData.GetAcbInfoList(true, searchPath);
-		} else {
-			if (EditorApplication.isPlaying) {
-				Debug.LogError("Not found search file. (created in CRI Atom Craft [acf,acb,awb]) \"" + searchPath + "\"", this);
-			} else {
-				Debug.LogError("Please push \"play\" button.(Make sure the Scene has \"CriWareLibrayInitializer\".)", this);
-			}
+		var acfInfo = projInfo.GetAcfInfoList(false, this.searchPath);
+		popupAcfList = new string[acfInfo.Count];
+		for (int i = 0; i < acfInfo.Count; i++) {
+			popupAcfList[i] = acfInfo[i].filePath;
 		}
+		selectedAcfId = EditorGUILayout.Popup("ACF Files", selectedAcfId, popupAcfList);
 	}
 
 	private void GUICueList()
 	{
-		#region CueSheet
+		const int cCueListItemHeight = 18;
+		var acbInfoList = projInfo.GetAcbInfoList(false, searchPath);
+
+		if (isCueSheetListInitiated == true) {
+			lastPreviewCueSheetId = this.selectedCueSheetId;
+		} else {
+			isCueSheetListInitiated = true;
+		}
+
 		EditorGUILayout.BeginHorizontal();
-		{
-			EditorGUILayout.PrefixLabel("Cue Sheet");
 
-			List<string> popupCueSheetNameList = new List<string>();
-			var acbInfoList = acfInfoData.GetAcbInfoList(false, searchPath);
-			foreach (CriAtomAcfInfo.AcbInfo cueSheetInfo in acbInfoList) {
-				popupCueSheetNameList.Add(cueSheetInfo.name);
-			}
-			if (isCueSheetListInitiated == true) {
-				lastPreviewCueSheetId = this.selectedCueSheetId;
-			} else {
-				isCueSheetListInitiated = true;
-			}
-			this.selectedCueSheetId = EditorGUILayout.Popup(this.selectedCueSheetId, popupCueSheetNameList.ToArray());
-			if (this.selectedCueSheetId != lastPreviewCueSheetId) {
-				this.selectedCueInfoIndex = 0;
-				this.selectedCueId = acbInfoList[this.selectedCueSheetId].cueInfoList[0].id;
-			}
-		}
-		EditorGUILayout.EndHorizontal();
-		#endregion
-
-		GUILayout.BeginHorizontal();
-		{
-			GUIStyle style = new GUIStyle(EditorStyles.miniButtonMid);
-			style.alignment = TextAnchor.LowerLeft;
-			if (GUILayout.Button("Cue Name", style)) {
-				this.SortCueList(1);
-			}
-			if (GUILayout.Button("Cue ID", style, GUILayout.Width(70))) {
-				this.SortCueList(0);
-			}
-		}
-		GUILayout.EndHorizontal();
-
-		{
-			var acbInfoList = acfInfoData.GetAcbInfoList(false, searchPath);
-			if (acbInfoList.Length > this.selectedCueSheetId) {
-				var acbInfo = acbInfoList[this.selectedCueSheetId];
-
-				if (acbInfo.cueInfoList.Count > 0) {
-					float height = this.position.height - 354.0f;
-					if (height < 100.0f) height = 100.0f;
-					scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(height));
-					for(int i = 0; i < acbInfo.cueInfoList.Count; ++i) {
-						EditorGUILayout.BeginHorizontal();
-						if (this.selectedCueInfoIndex == i) {
-							GUI.color = Color.yellow;
-						} else {
-							GUI.color = Color.white;
-						}
-
-						if (GUILayout.Button(acbInfo.cueInfoList[i].name, EditorStyles.radioButton)) {
-							this.selectedCueInfoIndex = i;
-							this.selectedCueId = acbInfo.cueInfoList[i].id;
-						}
-						GUILayout.Label(acbInfo.cueInfoList[i].id.ToString(), GUILayout.Width(40));
-						EditorGUILayout.EndHorizontal();
-					}
-					GUI.color = Color.white;
-					EditorGUILayout.EndScrollView();
-				} else {
-					EditorGUILayout.HelpBox("Can not found(CueSheetID:" + this.selectedCueSheetId.ToString() + ")\nDo update display, Please push the play button in Unity Editor.\n and push \"Reload Info\" button.", MessageType.Error);
+		/* cuesheet list */
+		using (var cuesheetListScope = new EditorGUILayout.VerticalScope("CN Box", GUILayout.Width(200))) {
+			using (var horizontalScope = new EditorGUILayout.HorizontalScope()) {
+				if (GUILayout.Button("Cue Sheet", toolBarButtonStyle)) {
+					projInfo.SortCueSheet();
+					this.selectedCueSheetId = 0;
 				}
 			}
-		}
-	}
+			using (var cuesheetScrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPosCueSheetList)) {
+				scrollPosCueSheetList = cuesheetScrollViewScope.scrollPosition;
+				int listLengthInView = (int)position.height / cCueListItemHeight;
+				int idFirstItemInView = Mathf.Clamp((int)scrollPosCueSheetList.y / cCueListItemHeight, 0, Mathf.Max(0, acbInfoList.Count - listLengthInView));
 
-	private void GUICueInfo()
-	{
-		#region CueInfo.
-		EditorGUILayout.BeginHorizontal("Toolbar");
-		EditorGUILayout.LabelField("Selected Cue");
-		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.LabelField("Cue ID", this.selectedCueId.ToString());
-		{
-			var acbInfoList = acfInfoData.GetAcbInfoList(false, searchPath);
-			if (acbInfoList.Length > this.selectedCueSheetId) {
-				var acbInfo = acbInfoList[selectedCueSheetId];
-				bool found = false;
-				foreach (var key in acbInfoList)
+				GUILayout.Space(idFirstItemInView * cCueListItemHeight);
+				for (int i = idFirstItemInView; i < Mathf.Min(idFirstItemInView + listLengthInView, acbInfoList.Count); i++) {
+					GUI.color = (this.lastPreviewCueSheetId == i) ? Color.yellow : currentGuiColor;
+					EditorGUILayout.BeginHorizontal();
+					if (GUILayout.Button(EditorGUIUtility.IconContent("vcs_document"), EditorStyles.label, GUILayout.Width(20))) {
+						this.selectedCueSheetId = i;
+					}
+					if (GUILayout.Button(acbInfoList[i].name, EditorStyles.label)) {
+						this.selectedCueSheetId = i;
+					}
+					EditorGUILayout.EndHorizontal();
+				}
+				GUILayout.Space(Mathf.Max(0, acbInfoList.Count - idFirstItemInView - listLengthInView) * cCueListItemHeight);
+				GUI.color = currentGuiColor;
+			}
+		}
+
+		if (this.selectedCueSheetId != lastPreviewCueSheetId) {
+			this.selectedCueInfoIndex = 0;
+		}
+
+		bool isCueSheetAvailable = (acbInfoList.Count > this.selectedCueSheetId);
+
+		using (var cueListAndInfoScope = new EditorGUILayout.VerticalScope("CN Box")) {
+			/* list title */
+			using (var cueListTitleScope = new EditorGUILayout.HorizontalScope()) {
+				if (GUILayout.Button("Cue Name", toolBarButtonStyle)) {
+					if (isCueSheetAvailable) {
+						acbInfoList[selectedCueSheetId].SortCueInfo(CriAtomWindowInfo.CueSortType.Name);
+						this.selectedCueInfoIndex = 0;
+					}
+				}
+				if (GUILayout.Button("Cue ID", toolBarButtonStyle, GUILayout.Width(70))) {
+					if (isCueSheetAvailable) {
+						acbInfoList[selectedCueSheetId].SortCueInfo(CriAtomWindowInfo.CueSortType.Id);
+						this.selectedCueInfoIndex = 0;
+					}
+				}
+			}
+
+			/* cue list */
+			bool playButtonPushed = false;
+			bool isCueAvailable = false;
+			CriAtomWindowInfo.CueInfo selectedCueInfo = null;
+
+			using (var cueListScope = new EditorGUILayout.ScrollViewScope(scrollPosCueList, GUILayout.ExpandHeight(true))) {
+				scrollPosCueList = cueListScope.scrollPosition;
+				if (isCueSheetAvailable) {
+					var acbInfo = acbInfoList[this.selectedCueSheetId];
+					List<CriAtomWindowInfo.CueInfo> currentList;
+					if (this.showPrivateCue) {
+						currentList = acbInfo.cueInfoList;
+					} else {
+						currentList = acbInfo.publicCueInfoList;
+					}
+
+					if (currentList.Count <= 0) {
+						EditorGUILayout.HelpBox("Nothing to be shown here.\nTry push the \"Reload Info\" button to refresh the list.", MessageType.Error);
+					} else {
+						int listLengthInView = (int)position.height / cCueListItemHeight;
+						int idFirstCueInView = Mathf.Clamp((int)scrollPosCueList.y / cCueListItemHeight, 0, Mathf.Max(0, currentList.Count - listLengthInView));
+
+						GUILayout.Space(idFirstCueInView * cCueListItemHeight);
+						for (int i = idFirstCueInView; i < Mathf.Min(idFirstCueInView + listLengthInView, currentList.Count); ++i) {
+							GUI.color = (this.selectedCueInfoIndex == i) ? Color.yellow : currentGuiColor;
+							using (var cueItemScope = new EditorGUILayout.HorizontalScope(GUILayout.Height(cCueListItemHeight))) {
+								if (GUILayout.Button(EditorGUIUtility.IconContent("Animation.Play"), EditorStyles.miniButton, GUILayout.Width(30))) {
+									this.selectedCueInfoIndex = i;
+									playButtonPushed = true;
+								}
+								if (GUILayout.Button(currentList[i].name, EditorStyles.label)) {
+									if (selectedCueInfoIndex != i) {
+										StopPreview();
+									}
+									this.selectedCueInfoIndex = i;
+								}
+								GUILayout.Label(currentList[i].id.ToString(), GUILayout.Width(40));
+							}
+						}
+						GUILayout.Space(Mathf.Max(0, currentList.Count - idFirstCueInView - listLengthInView) * cCueListItemHeight);
+						GUI.color = currentGuiColor;
+					}
+
+					isCueAvailable = currentList.Count > this.selectedCueInfoIndex;
+					if (isCueAvailable) {
+						selectedCueInfo = currentList[selectedCueInfoIndex];
+					}
+				} else {
+					EditorGUILayout.HelpBox("No cue sheet is found.\nPlease check the search path. Press \"Reload Info\" button to refresh the list.", MessageType.Info);
+				}
+			}
+
+			if (playButtonPushed) {
+				if (isCueSheetAvailable && isCueAvailable) {
+					StopPreview();
+
+					var acbInfo = acbInfoList[selectedCueSheetId];
+					TryInitializePlugin();
+					if (lastAcbName != acbInfo.name) {
+						if (previewAcb != null) {
+							previewAcb.Dispose();
+						}
+						previewAcb = CriAtomExAcb.LoadAcbFile(
+							null,
+							Path.Combine(CriWare.streamingAssetsPath, acbInfo.acbPath),
+							string.IsNullOrEmpty(acbInfo.awbPath) ? null : Path.Combine(CriWare.streamingAssetsPath, acbInfo.awbPath)
+						);
+						lastAcbName = acbInfo.name;
+					}
+					if (previewAcb != null) {
+						PlayPreview(previewAcb, selectedCueInfo.name);
+					}
+				}
+			}
+
+			EditorGUILayout.BeginHorizontal("AppToolbar");
+			{
+				EditorGUILayout.LabelField("Cue Information");
+				EditorGUILayout.Space();
 				{
-					if (key.id == acbInfo.id) {
-						found = true;
-						break;
+					var tempToggleVal = GUILayout.Toggle(this.showPrivateCue, "Show Private Cue", EditorStyles.toolbarButton, GUILayout.Width(150));
+					if (tempToggleVal != this.showPrivateCue) {
+						/* Clear cue selection when change setting */
+						this.selectedCueInfoIndex = 0;
 					}
+					this.showPrivateCue = tempToggleVal;
 				}
-				if (found == true) {
-					foreach (var cue in acbInfo.cueInfoList) {
-						if (cue.id == this.selectedCueId) {
-							EditorGUILayout.LabelField("Cue Name", cue.name);
-							EditorGUILayout.LabelField("User Data", cue.comment, EditorStyles.wordWrappedLabel, GUILayout.Height(28));
-							EditorGUILayout.Space();
-							break;
-						}
-					}
-				} else {
-					EditorGUILayout.HelpBox("Can not Get Cue Info!!!(CueID:" + this.selectedCueId.ToString() + ")", MessageType.Error);
+				if (GUILayout.Button("Stop All", EditorStyles.toolbarButton, GUILayout.Width(100))) {
+					StopPreview();
 				}
 			}
-		}
-		#endregion
+			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.LabelField("Cue ID", (isCueSheetAvailable && isCueAvailable) ? selectedCueInfo.id.ToString() : "N/A");
+			string cueName = "N/A";
+			string userData = "";
+			if (isCueSheetAvailable && isCueAvailable) {
+				cueName = selectedCueInfo.name;
+				userData = selectedCueInfo.comment;
+			}
+			EditorGUILayout.LabelField("Cue Name", cueName);
+			EditorGUILayout.LabelField("User Data", userData, EditorStyles.wordWrappedLabel, GUILayout.Height(28));
+
+			/* edit buttons */
+			GUIEdit();
+		} /* cueListAndInfoScope */
+
+		EditorGUILayout.EndHorizontal();
 	}
 
 	private void GUIEdit()
 	{
-		//if (this.selectedCueSheetId < acfInfoData.acbInfoList.Count && acfInfoData.acbInfoList[this.selectedCueSheetId].cueInfoList.ContainsKey(this.selectedCueId))
+		EditorGUILayout.BeginHorizontal();
 		{
-			EditorGUILayout.BeginHorizontal();
-			{
-				if (GUILayout.Button("Create GameObject", EditorStyles.miniButtonLeft, GUILayout.Height(22))) {
-					this.CreateAtomSourceGameObject(true);
-				}
+			if (GUILayout.Button("Create GameObject", GUILayout.Height(22))) {
+				this.CreateAtomSourceGameObject(true);
+			}
 
-				GameObject targetObject = null;
-				CriAtomSource atomSource = null;
-				if (Selection.gameObjects.Length > 0) {
-					targetObject = Selection.gameObjects[0];
-					atomSource = targetObject.GetComponent<CriAtomSource>();
-				}
-
-				if (targetObject == null) {
-					GUI.backgroundColor = Color.gray;
-				}
-				if (GUILayout.Button("Add Component", EditorStyles.miniButtonMid, GUILayout.Height(22))) {
-					if (targetObject != null) {
-						if (atomSource != null) {
-							if (EditorUtility.DisplayDialog("There are already \"Cri Atom Souce\".", "Are you sure you want to add more?", "Add", "No")) {
-								this.CreateAtomSourceGameObject(false);
-							}
-						} else {
+			if (this.targetObject == null) {
+				GUI.enabled = false;
+			}
+			if (GUILayout.Button("Add Component", GUILayout.Height(22))) {
+				if (targetObject != null) {
+					if (targetAtomSource != null) {
+						if (EditorUtility.DisplayDialog("Duplicate Component", "CriAtomSource Component already exists. \nDo you really want to add more?", "Yes", "Cancel")) {
 							this.CreateAtomSourceGameObject(false);
 						}
+					} else {
+						this.CreateAtomSourceGameObject(false);
 					}
 				}
+			}
 
-				if (atomSource == null) {
-					GUI.backgroundColor = Color.gray;
-				}
-				if (GUILayout.Button("Update Cue Info", EditorStyles.miniButtonRight, GUILayout.Height(22))) {
-					if (atomSource != null) {
-						var acbInfoList = acfInfoData.GetAcbInfoList(false, searchPath);
-						if (acbInfoList.Length > this.selectedCueSheetId) {
-							var acbInfo = acbInfoList[this.selectedCueSheetId];
-							var cueInfo = acbInfo.cueInfoList[this.selectedCueInfoIndex];
-							if (atomSource.cueSheet == acbInfo.name && atomSource.cueName == cueInfo.name) {
-								EditorUtility.DisplayDialog("Information", "Is the same configuration.", "OK");
-							} else {
-								atomSource.cueSheet = acbInfo.name;
-								atomSource.cueName = cueInfo.name;
-							}
-							Selection.activeGameObject = targetObject;
-						}
+			if (this.targetAtomSource == null) {
+				GUI.enabled = false;
+			}
+			if (GUILayout.Button("Update Component", GUILayout.Height(22))) {
+				if (targetAtomSource != null) {
+					var acbInfoList = projInfo.GetAcbInfoList(false, searchPath);
+					if (acbInfoList.Count > this.selectedCueSheetId) {
+						var acbInfo = acbInfoList[this.selectedCueSheetId];
+						var cueInfo = acbInfo.cueInfoList[this.selectedCueInfoIndex];
+						Undo.RegisterCompleteObjectUndo(targetAtomSource, "AtomSource Update");
+						targetAtomSource.cueSheet = acbInfo.name;
+						targetAtomSource.cueName = cueInfo.name;
+						Selection.activeGameObject = targetObject;
 					}
 				}
-				GUI.backgroundColor = Color.white;
-
 			}
-			EditorGUILayout.EndHorizontal();
+			GUI.enabled = true;
 		}
-	}
-
-	private void SortCueList(int type)
-	{
-		List<CriAtomAcfInfo.CueInfo> cueList = new List<CriAtomAcfInfo.CueInfo>();
-
-		var acbInfoList = acfInfoData.GetAcbInfoList(false, searchPath);
-		if (acbInfoList.Length > this.selectedCueSheetId) {
-			foreach (CriAtomAcfInfo.CueInfo inf in acbInfoList[selectedCueSheetId].cueInfoList) {
-				cueList.Add(inf);
-			}
-			switch (type) {
-			case 0:
-				cueList.Sort(delegate (CriAtomAcfInfo.CueInfo x, CriAtomAcfInfo.CueInfo y) {
-					return x.id - y.id;
-				});
-				break;
-			default:
-				cueList.Sort(delegate (CriAtomAcfInfo.CueInfo x, CriAtomAcfInfo.CueInfo y) {
-					return string.Compare(x.name, y.name);
-				});
-				break;
-			} // end of switch
-		}
-	}
-
-	private void ScalingWindow(int windowID)
-	{
-		GUILayout.Box("", GUILayout.Width(20), GUILayout.Height(20));
-		if (Event.current.type == EventType.MouseUp)
-			this.scaling = false;
-		else if (Event.current.type == EventType.MouseDown && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
-			this.scaling = true;
-
-		if (this.scaling)
-			this.windowRect = new Rect(windowRect.x, windowRect.y, windowRect.width + Event.current.delta.x, windowRect.height + Event.current.delta.y);
-
-	}
-
-	private void OnGUI()
-	{
-		this.windowRect = GUILayout.Window(0, windowRect, ScalingWindow, "resizeable", GUILayout.MinHeight(80), GUILayout.MaxHeight(250));
-		if (acfInfoData == null) {
-			EditorGUILayout.HelpBox("Do update display,\n1. Please push the \"play\" button in Unity Editor.(Make sure the Scene has \"CriWareLibrayInitializer\".)\n2. And push \"Reload Info\" button.", MessageType.Info);
-			GUISearchAndRelaod();
-			GUIImportAssetsFromAtomCraft();
-			return;
-		}
-		this.scrollPos_Window = GUILayout.BeginScrollView(this.scrollPos_Window);
-		{
-			GUISearchAndRelaod();
-			GUIACFSettings();
-			GUICueList();
-			GUICueInfo();
-			GUIEdit();
-			GUIImportAssetsFromAtomCraft();
-		}
-		GUILayout.EndScrollView();
+		EditorGUILayout.EndHorizontal();
 	}
 
 	private void GUIImportAssetsFromAtomCraft()
 	{
-		useCopyAssetsFromCriAtomCraft = GUILayout.Toggle(useCopyAssetsFromCriAtomCraft, "Use Copy Assets Folder (Created in CRI Atom Craft)");
-		if (useCopyAssetsFromCriAtomCraft) {
-			if (criAtomWindowPrefs == null) {
-				criAtomWindowPrefs = CriAtomWindowPrefs.Load();
-			}
-			GUILayout.Space(12);
-			EditorGUILayout.HelpBox("Copy \"Assets\" folder (created in CRI Atom Craft) to the \"Streaming Assets\" folder.\n1. Push \"Select Assets Root\" to select \"CRI Atom Craft\" output Assets Folder.\n2. Push \"Update Assets of \"CRI Atom Craft\"\"."
-									, MessageType.Info);
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("\"CRI Atom Craft\" Assets Path:");
+		if (criAtomWindowPrefs == null) {
+			criAtomWindowPrefs = CriAtomWindowPrefs.Load();
+		}
 
-			if (GUILayout.Button("Select Assets Root")) {
-				string tmpStr = SelectFolder();
-				if (tmpStr != String.Empty) {
-					//	Check Assets Root
-					bool isUnityAsesetsRoot = false;
-					{
-						string[] dirs = System.IO.Directory.GetDirectories(tmpStr);
-						foreach (string dir in dirs) {
-							if (Path.GetFileName(dir) == "Editor") {
-								isUnityAsesetsRoot = true;
-								break;
-							}
-						}
-					}
-					if (isUnityAsesetsRoot == false) {
-						criAtomWindowPrefs.outputAssetsRoot = tmpStr;
+		useCopyAssetsFromCriAtomCraft = CriFoldout(useCopyAssetsFromCriAtomCraft, "Import Assets from Atom Craft Project");
+		if (useCopyAssetsFromCriAtomCraft) {
+			EditorGUI.indentLevel++;
+
+			GUILayout.BeginHorizontal();
+			{
+				if (criAtomWindowPrefs != null) {
+					criAtomWindowPrefs.outputAssetsRoot = EditorGUILayout.TextField("Import From:", criAtomWindowPrefs.outputAssetsRoot);
+				}
+
+#if !OPENFOLDERPANEL_IS_BROKEN
+				if (GUILayout.Button("...", EditorStyles.miniButton, GUILayout.Width(50))) {
+					string tmpPath = "";
+					string errorMsg;
+					tmpPath = EditorUtility.OpenFolderPanel("Select CRI Atom Craft output Assets Folder", criAtomWindowPrefs.outputAssetsRoot, "");
+					if (CheckPathIsAtomCraftAssetRoot(tmpPath, out errorMsg)) {
+						criAtomWindowPrefs.outputAssetsRoot = tmpPath;
 						criAtomWindowPrefs.Save();
 					} else {
-						Debug.LogError(String.Format("Choose \"CRI Atom Craft\" output Assets Path"));
+						Debug.LogWarning(errorMsg);
 					}
 				}
+#endif
 			}
 			GUILayout.EndHorizontal();
 
-			if (criAtomWindowPrefs != null) {
-				criAtomWindowPrefs.outputAssetsRoot = GUILayout.TextArea(criAtomWindowPrefs.outputAssetsRoot);
-			}
-			//GUILayout.Label(Application.dataPath);
+			GUILayout.BeginHorizontal();
+			{
+				GUI.color = Color.yellow;
+				EditorGUILayout.PrefixLabel(" ");
+				if (GUILayout.Button("Import Assets", GUILayout.Width(160), GUILayout.Height(40))) {
+					string errorMsg;
+					if (CheckPathIsAtomCraftAssetRoot(criAtomWindowPrefs.outputAssetsRoot, out errorMsg) == false) {
+						Debug.LogWarning(errorMsg);
+					} else {
+						try {
+							CopyDirectory(criAtomWindowPrefs.outputAssetsRoot, Application.dataPath);
+							Debug.Log("[CRIWARE] Assets successfully imported from " + criAtomWindowPrefs.outputAssetsRoot);
+						} catch (Exception ex) {
+							Debug.LogError(ex.Message);
+							Debug.LogError("[CRIWARE] Failed to import assets from " + criAtomWindowPrefs.outputAssetsRoot);
+						}
+						AssetDatabase.Refresh();
 
-			GUI.color = Color.green;
-			if (GUILayout.Button("Update Assets of \"CRI Atom Craft\"")) {
-				if (CheckPathIsAtomCraftAssetRoot(criAtomWindowPrefs.outputAssetsRoot) == false) {
-					return;
+						ReloadAcbInfo();
+					}
 				}
-				try{
-					CopyDirectory(criAtomWindowPrefs.outputAssetsRoot, Application.dataPath);
-					Debug.Log("Complete Update Assets of \"CRI Atom Craft\" " + criAtomWindowPrefs.outputAssetsRoot);
-				}
-				catch (Exception ex) {
-					Debug.LogError(ex.Message);
-					Debug.LogError("Failed to update Assets of \"CRI Atom Craft\" " + criAtomWindowPrefs.outputAssetsRoot);
-				}
-				AssetDatabase.Refresh();
-
-				ReloadAcbInfo();
+				GUI.color = Color.white;
+				EditorGUILayout.HelpBox("Copy \"Assets\" folder (created in CRI Atom Craft) to the \"StreamingAssets\" folder.\nThe folder can be created by building with the \"With Unity Assets\" flag in CRI Atom Craft.", MessageType.Info);
 			}
+			GUILayout.EndHorizontal();
+
+			EditorGUI.indentLevel--;
 		}
 	}
-	private string SelectFolder()
-	{
-		string outString = String.Empty;
 
-		outString = EditorUtility.OpenFolderPanel("Select \"CRI Atom Craft\" output Assets Folder", outString, criAtomWindowPrefs.outputAssetsRoot);
-		if (CheckPathIsAtomCraftAssetRoot(outString) == false) {
-			outString = String.Empty;
-		}
-		return outString;
-	}
-
-	private bool CheckPathIsAtomCraftAssetRoot(string outString)
+	private bool CheckPathIsAtomCraftAssetRoot(string outString, out string errorMsg)
 	{
-		if (outString != String.Empty && (System.IO.Path.GetFileName(outString) == "Assets")) {
-			Debug.Log(String.Format("Change \"CRI Atom Craft\" output Assets \"{0}\"", outString));
-			return true;
-		} else {
-			Debug.LogError(String.Format("Can not Change \"CRI Atom Craft\" output Assets \"{0}\".Please select a \"Assets\" Folder.", outString));
+		errorMsg = "";
+		try {
+			if (string.IsNullOrEmpty(outString) == false && Path.GetFileName(outString) == "Assets") {
+				if (Directory.Exists(outString) == false) {
+					errorMsg = "[CRIWARE] Path to the assets does not exist: " + outString;
+					return false;
+				}
+				foreach (string dir in Directory.GetDirectories(outString)) {
+					if (Path.GetFileName(dir) == "Editor") {
+						errorMsg = "[CRIWARE] Please choose the Assets folder in your <color=yellow>Atom Craft project</color> instead of the one in your Unity project. Import path will not be changed.";
+						return false;
+					}
+				}
+				return true;
+			} else {
+				errorMsg = "[CRIWARE] Unmatched folder name. Please set the right import path (\"Assets\" folder).";
+				return false;
+			}
+		} catch (Exception ex) {
+			errorMsg = "[CRIWARE] I/O Error: " + ex.Message;
 			return false;
 		}
 	}
 
 	private static void CopyDirectory(string sourceDirName, string destDirName)
 	{
-		if (!System.IO.Directory.Exists(destDirName)) {
-			System.IO.Directory.CreateDirectory(destDirName);
-			System.IO.File.SetAttributes(destDirName,
-				System.IO.File.GetAttributes(sourceDirName));
-		}
-		if (destDirName[destDirName.Length - 1] != System.IO.Path.DirectorySeparatorChar)
-			destDirName = destDirName + System.IO.Path.DirectorySeparatorChar;
-
-		string[] files = System.IO.Directory.GetFiles(sourceDirName);
-		foreach (string file in files) {
-			if (System.IO.Path.GetExtension(file.Replace("\\", "/")) == ".acf" ||
-				System.IO.Path.GetExtension(file.Replace("\\", "/")) == ".acb" ||
-				System.IO.Path.GetExtension(file.Replace("\\", "/")) == ".awb"
-                ) {
-				Debug.Log(String.Format("Copy \"{0}\" to \"{1}\"", file, destDirName + System.IO.Path.GetFileName(file)));
-				System.IO.File.Copy(file,
-					destDirName + System.IO.Path.GetFileName(file), true);
+		try {
+			if (Directory.Exists(destDirName) == false) {
+				Directory.CreateDirectory(destDirName);
+				File.SetAttributes(destDirName, File.GetAttributes(sourceDirName));
 			}
+
+			foreach (var file in Directory.GetFiles(sourceDirName)) {
+				string ext = Path.GetExtension(file.Replace("\\", "/"));
+				if (ext == ".acf" || ext == ".acb" || ext == ".awb") {
+					string targetPath = Path.Combine(destDirName, Path.GetFileName(file));
+					Debug.Log(String.Format("[CRIWARE] Copying \"{0}\" to \"{1}\"", file, targetPath));
+					File.Copy(file, targetPath, true);
+				}
+			}
+
+			foreach (var dir in Directory.GetDirectories(sourceDirName)) {
+				/* sub directories */
+				CopyDirectory(dir, Path.Combine(destDirName, Path.GetFileName(dir)));
+			}
+		} catch {
+			throw;
 		}
-		string[] dirs = System.IO.Directory.GetDirectories(sourceDirName);
-		foreach (string dir in dirs)
-			CopyDirectory(dir, destDirName + System.IO.Path.GetFileName(dir));
-	}
-
-	static string ToBase64(string s)
-	{
-		return System.Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(s));
-	}
-
-	static string FromBase64(string s)
-	{
-		return UTF8Encoding.UTF8.GetString(System.Convert.FromBase64String(s));
 	}
 
 	private void CreateAtomSourceGameObject(bool createGameObjectFlag)
@@ -489,14 +517,15 @@ public sealed class CriAtomWindow : EditorWindow, ISerializationCallbackReceiver
 		if (Selection.gameObjects.Length == 0) {
 			createGameObjectFlag = true;
 		}
-		var acbInfoList = acfInfoData.GetAcbInfoList(false, searchPath);
-		if (acbInfoList.Length > this.selectedCueSheetId) {
+		var acbInfoList = projInfo.GetAcbInfoList(false, searchPath);
+		if (acbInfoList.Count > this.selectedCueSheetId) {
 			GameObject go = null;
 			if (createGameObjectFlag) {
 				go = new GameObject(acbInfoList[this.selectedCueSheetId].cueInfoList[this.selectedCueInfoIndex].name + "(CriAtomSource)");
 				if (Selection.gameObjects.Length > 0) {
 					go.transform.parent = Selection.gameObjects[0].transform;
 				}
+				Undo.RegisterCreatedObjectUndo(go, "Create AtomSource GameObject");
 			} else {
 				go = Selection.gameObjects[0];
 			}
@@ -504,20 +533,33 @@ public sealed class CriAtomWindow : EditorWindow, ISerializationCallbackReceiver
 			CriAtom atom = GameObject.FindObjectOfType(typeof(CriAtom)) as CriAtom;
 			if (atom == null) {
 				atom = CriWare.managerObject.AddComponent<CriAtom>();
-				atom.acfFile = acfInfoData.acfPath;
+				var acfList = projInfo.GetAcfInfoList(false, searchPath);
+				if (acfList.Count > selectedAcfId) {
+					atom.acfFile = acfList[selectedAcfId].filePath;
+				}
 			}
 			CriAtomCueSheet cueSheet = atom.GetCueSheetInternal(acbInfo.name);
 			if (cueSheet == null) {
 				cueSheet = atom.AddCueSheetInternal(null, acbInfo.acbPath, acbInfo.awbPath, null);
 			}
 			CriAtomSource newCriAtomSource = go.AddComponent<CriAtomSource>();
+			if (createGameObjectFlag == false) {
+				Undo.RegisterCreatedObjectUndo(newCriAtomSource, "Add AtomSource Component");
+			}
 			newCriAtomSource.cueSheet = cueSheet.name;
 			newCriAtomSource.cueName = acbInfo.cueInfoList[this.selectedCueInfoIndex].name;
 			Selection.activeObject = go;
-			//Debug.Log("Add \"CRI Atom Souce\" \"" + newCriAtomSource.AcbName + "/" + newCriAtomSource.CueName + "\"");
 		}
 	}
-	#endregion
-} // end of class
+
+	private bool CriFoldout(bool foldout, string content) {
+#if UNITY_5_5_OR_NEWER
+		return EditorGUILayout.Foldout(foldout, content, true);
+#else
+        return EditorGUILayout.Foldout(foldout, content);
+#endif
+	}
+#endregion
+}
 
 /* end of file */

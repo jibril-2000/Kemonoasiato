@@ -8,6 +8,7 @@ public class Truck : MonoBehaviour
 {
     public GameObject stageclear;
     public GameObject truck_body;
+    GameObject MainBGM;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,13 @@ public class Truck : MonoBehaviour
     {
         if (other.gameObject.tag == "Namakemono")
         {
+            //サウンド再生
+            CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
+            audio.Play();
+            //BGMを止める
+            MainBGM = GameObject.Find("Main Camera");
+            MainBGM.GetComponent<CriAtomSource>().Stop();
+
             truck_body.transform.Translate(3.0f * Time.deltaTime, 0.0f,0.0f);
         }
         StartCoroutine("NextStage");//コルーチンを使いたいところにこれを入れる

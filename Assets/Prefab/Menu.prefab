@@ -169,6 +169,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Retry
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -445,7 +446,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 117.25, y: 34}
+  m_AnchoredPosition: {x: 117, y: 23}
   m_SizeDelta: {x: 234.66013, y: 67.94202}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8356999659778925136
@@ -590,6 +591,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Retry
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -1164,6 +1166,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Pose
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -1327,14 +1330,14 @@ RectTransform:
   m_GameObject: {fileID: 6620763583299912652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 6620763583205811458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1031, y: 494}
+  m_AnchoredPosition: {x: -1047, y: 551}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6620763583299912651
@@ -1467,6 +1470,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Pose
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -1815,6 +1819,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Resume
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 0
   _loop: 0
   _volume: 1

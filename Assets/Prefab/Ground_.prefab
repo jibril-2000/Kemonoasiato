@@ -248,7 +248,8 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Fall
   _cueSheet: SFX
-  _use3dPositioning: 1
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 0
   _loop: 0
   _volume: 1
   _pitch: 0

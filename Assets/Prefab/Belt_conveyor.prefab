@@ -325,11 +325,10 @@ GameObject:
   - component: {fileID: 7427692794557058840}
   - component: {fileID: 7427692794557058842}
   - component: {fileID: 7427692794557058844}
-  - component: {fileID: 5434283507224836354}
   - component: {fileID: 8517035013748727875}
   - component: {fileID: 1499971889570253436}
-  - component: {fileID: 3213934594542639612}
   - component: {fileID: 4738908800904884862}
+  - component: {fileID: 51609386536197910}
   m_Layer: 0
   m_Name: Belt_conveyor
   m_TagString: Untagged
@@ -651,27 +650,6 @@ SurfaceEffector2D:
   m_UseContactForce: 0
   m_UseFriction: 1
   m_UseBounce: 1
---- !u!114 &5434283507224836354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7427692794557058841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 1
-  _cueName: Roll
-  _cueSheet: SFX
-  _use3dPositioning: 1
-  _loop: 0
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
 --- !u!114 &8517035013748727875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -713,27 +691,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.394629, y: 1.5252495}
   m_EdgeRadius: 0
---- !u!114 &3213934594542639612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7427692794557058841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 1
-  _cueName: Roll
-  _cueSheet: SFX
-  _use3dPositioning: 1
-  _loop: 1
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
 --- !u!114 &4738908800904884862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,3 +704,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI: {fileID: 0}
+--- !u!114 &51609386536197910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427692794557058841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Roll02
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1

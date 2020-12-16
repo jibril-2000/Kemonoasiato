@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 7182876955463422254}
   - component: {fileID: 7182876955463422252}
   - component: {fileID: 7182876955463422251}
+  - component: {fileID: 3828194740797392203}
   m_Layer: 0
   m_Name: Vents_Right
   m_TagString: Untagged
@@ -197,3 +198,25 @@ MonoBehaviour:
   vents_left: {fileID: 452985430743905187, guid: 9b74c466055a1c6408b60b3ca8f84d39,
     type: 3}
   vents_right: {fileID: 7182876955463422255}
+--- !u!114 &3828194740797392203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182876955463422255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Vents
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1

@@ -1,4 +1,3 @@
-
 ﻿/****************************************************************************
  *
  * Copyright (c) 2018 CRI Middleware Co., Ltd.
@@ -11,7 +10,10 @@ public partial class CriProfiler
 {
 	/* CRI Atom Preview connection ver. */
 	private const int CRI_ATOM_PREVIEW_CONNECTION_VERSION = 0x00600000;
-	
+
+	/* the size of the parameter "packet size" in bytes */
+	private const int DATA_LENGTH_PARAM_SIZE = 4;
+
 	protected enum TcpCommandId {
 		CRITCP_MAIL_OPEN = 1,
 		CRITCP_MAIL_OPEN_RESULT,
@@ -886,6 +888,5 @@ public partial class CriProfiler
 		ZERO_LATENCY_STREAM,
 	}
 }
-
 
 #endif

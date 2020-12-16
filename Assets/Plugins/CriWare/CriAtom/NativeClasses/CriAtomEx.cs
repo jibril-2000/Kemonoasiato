@@ -1,4 +1,3 @@
-
 ﻿/****************************************************************************
  *
  * Copyright (c) 2011 CRI Middleware Co., Ltd.
@@ -48,8 +47,11 @@ public class CriStructMemory <Type> : IDisposable
 
 /**
  * <summary>Atomライブラリのグローバルクラスです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * Atomライブラリに対する設定関数や、Atomライブラリ内で共有する変数型を含むクラスです。<br/>
+ * </para>
+ * </remarks>
  */
 public static class CriAtomEx
 {
@@ -60,8 +62,11 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>文字コード</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 文字コード（文字符号化方式）を表します。
+	 * </para>
+	 * </remarks>
 	 */
 	public enum CharacterEncoding : int
 	{
@@ -71,7 +76,15 @@ public static class CriAtomEx
 		Sjis,
 	}
 
-	public enum SoundRendererType {
+	/**
+	 * <summary>サウンドレンダラタイプ</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ::CriAtomExPlayer が内部で作成するサウンドレンダラの種別をを表します。
+	 * </para>
+	 * </remarks>
+	 */
+	 public enum SoundRendererType {
 		Default = 0,
 		Native = 1,
 		Asr = 2,
@@ -81,173 +94,206 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ボイス確保方式</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ::CriAtomExPlayer がボイスを確保する際の動作仕様を指定するためのデータ型です。
-	 * \sa CriAtomExPlayer::CriAtomExPlayer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::CriAtomExPlayer'/>
 	 */
 	public enum VoiceAllocationMethod {
-		Once,						/**< ボイスの確保は1回限り		*/
-		Retry,						/**< ボイスを繰り返し確保する	*/
+		Once,                       /**< ボイスの確保は1回限り        */
+		Retry,                      /**< ボイスを繰り返し確保する   */
 	}
 
 	/**
 	 * <summary>バイクアッドフィルタのタイプ</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * バイクアッドフィルタのタイプを指定するためのデータ型です。<br/>
 	 * ::CriAtomExPlayer::SetBiquadFilterParameters 関数で利用します。
-	 * \sa CriAtomExPlayer::SetBiquadFilterParameters
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::SetBiquadFilterParameters'/>
 	 */
 	public enum BiquadFilterType {
-		Off,						/**<フィルタ無効			*/
-		LowPass,					/**<ローパスフィルタ		*/
-		HighPass,					/**<ハイパスフィルタ		*/
-		Notch,						/**<ノッチフィルタ			*/
-		LowShelf,					/**<ローシェルフフィルタ	*/
-		HighShelf,					/**<ハイシェルフフィルタ	*/
-		Peaking						/**<ピーキングフフィルタ	*/
+		Off,                        /**< フィルタ無効         */
+		LowPass,                    /**< ローパスフィルタ       */
+		HighPass,                   /**< ハイパスフィルタ       */
+		Notch,                      /**< ノッチフィルタ          */
+		LowShelf,                   /**< ローシェルフフィルタ */
+		HighShelf,                  /**< ハイシェルフフィルタ */
+		Peaking                     /**< ピーキングフフィルタ */
 	}
 
 	/**
 	 * <summary>ポーズ解除方法</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ポーズを解除する対象を指定するためのデータ型です。<br/>
 	 * ::CriAtomExPlayer::Resume 関数、および ::CriAtomExPlayback::Resume
 	 * 関数の引数として使用します。
-	 * \sa CriAtomExPlayer::Resume, CriAtomExPlayback::Resume
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::Resume'/>
+	 * <seealso cref='CriAtomExPlayback::Resume'/>
 	 */
 	public enum ResumeMode {
-		AllPlayback = 0,			/**< 一時停止方法に関係なく再生を再開					*/
-		PausedPlayback = 1,			/**< Pause関数でポーズをかけた音声のみ再生を再開		*/
-		PreparedPlayback = 2,		/**< Prepare関数で再生準備を指示した音声の再生を開始	*/
+		AllPlayback = 0,            /**< 一時停止方法に関係なく再生を再開                   */
+		PausedPlayback = 1,         /**< Pause関数でポーズをかけた音声のみ再生を再開     */
+		PreparedPlayback = 2,       /**< Prepare関数で再生準備を指示した音声の再生を開始    */
 	}
 
 	/**
 	 * <summary>パンタイプ</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * どのようにして定位計算を行うかを指定するためのデータ型です。<br/>
 	 * ::CriAtomExPlayer::SetPanType 関数で利用します。<br/>
-	 * \sa criAtomExPlayer::SetPanType
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::SetPanType'/>
 	 */
 	public enum PanType {
-		Pan3d = 0,					/**< パン3Dで定位を計算				*/
-		Pos3d,						/**< 3Dポジショニングで定位を計算	*/
-		Auto,						/**< AtomExプレーヤに3D音源／3Dリスナーが設定されている場合は3Dポジショニングで、
-										 設定されていない場合はパン3Dで、それぞれ定位を計算します。*/
+		Unknown = -1,               /**< パンタイプが判明していない状態    */
+		Pan3d = 0,                  /**< パン3Dで定位を計算             */
+		Pos3d,                      /**< 3Dポジショニングで定位を計算  */
+		Auto,                       /**<
+									 * AtomExプレーヤに3D音源／3Dリスナーが設定されている場合は3Dポジショニングで、
+									 * 設定されていない場合はパン3Dで、それぞれ定位を計算します。
+									 */
 	}
 
 	/**
 	 * <summary>ボイス制御方式</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * AtomExプレーヤで再生する音声の発音制御方法を指定するためのデータ型です。<br/>
 	 * ::CriAtomExPlayer::SetVoiceControlMethod 関数で利用します。<br/>
-	 * \sa CriAtomExPlayer::SetVoiceControlMethod
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::SetVoiceControlMethod'/>
 	 */
 	public enum VoiceControlMethod {
-		PreferLast = 0,				/**< 後着優先	*/
-		PreferFirst,				/**< 先着優先	*/
+		PreferLast = 0,             /**< 後着優先   */
+		PreferFirst,                /**< 先着優先   */
 	}
 
 	/**
 	 * <summary>パラメータID</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * パラメータを指定するためのIDです。<br/>
 	 * ::CriAtomExPlayer::GetParameterFloat32 関数等で利用します。
-	 * \sa CriAtomExPlayer::GetParameterFloat32, CriAtomExPlayer::GetParameterSint32,
-	 * CriAtomExPlayer::GetParameterUint32
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::GetParameterFloat32'/>
+	 * <seealso cref='CriAtomExPlayer::GetParameterSint32'/>
+	 * <seealso cref='CriAtomExPlayer::GetParameterUint32'/>
 	 */
 	public enum Parameter {
-		Volume					=  0,	/**< ボリューム									*/
-		Pitch					=  1,	/**< ピッチ										*/
-		Pan3dAngle				=  2,	/**< パンニング3D角度							*/
-		Pan3dDistance			=  3,	/**< パンニング3D距離							*/
-		Pan3dVolume				=  4,	/**< パンニング3Dボリューム						*/
-		BusSendLevel0			=  9,	/**< バスセンドレベル0							*/
-		BusSendLevel1			= 10,	/**< バスセンドレベル1							*/
-		BusSendLevel2			= 11,	/**< バスセンドレベル2							*/
-		BusSendLevel3			= 12,	/**< バスセンドレベル3							*/
-		BusSendLevel4			= 13,	/**< バスセンドレベル4							*/
-		BusSendLevel5			= 14,	/**< バスセンドレベル5							*/
-		BusSendLevel6			= 15,	/**< バスセンドレベル6							*/
-		BusSendLevel7			= 16,	/**< バスセンドレベル7							*/
-		BandPassFilterCofLow	= 17,	/**< バンドパスフィルタの低域カットオフ周波数	*/
-		BandPassFilterCofHigh	= 18,	/**< バンドパスフィルタの高域カットオフ周波数	*/
-		BiquadFilterType		= 19,	/**< バイクアッドフィルタのフィルタタイプ		*/
-		BiquadFilterFreq		= 20,	/**< バイクアッドフィルタの周波数				*/
-		BiquadFIlterQ			= 21,	/**< バイクアッドフィルタのQ値					*/
-		BiquadFilterGain		= 22,	/**< バイクアッドフィルタのゲイン				*/
-		EnvelopeAttackTime		= 23,	/**< エンベロープのアタックタイム				*/
-		EnvelopeHoldTime		= 24,	/**< エンベロープのホールドタイム				*/
-		EnvelopeDecayTime		= 25,	/**< エンベロープのディケイタイム				*/
-		EnvelopeReleaseTime		= 26,	/**< エンベロープのリリースタイム				*/
-		EnvelopeSustainLevel	= 27,	/**< エンベロープのサスティンレベル				*/
-		StartTime				= 28,	/**< 再生開始位置								*/
-		Priority				= 31,	/**< ボイスプライオリティ						*/
+		Volume                  =  0,   /**< ボリューム                                    */
+		Pitch                   =  1,   /**< ピッチ                                      */
+		Pan3dAngle              =  2,   /**< パンニング3D角度                            */
+		Pan3dDistance           =  3,   /**< パンニング3D距離                            */
+		Pan3dVolume             =  4,   /**< パンニング3Dボリューム                       */
+		BusSendLevel0           =  9,   /**< バスセンドレベル0                          */
+		BusSendLevel1           = 10,   /**< バスセンドレベル1                          */
+		BusSendLevel2           = 11,   /**< バスセンドレベル2                          */
+		BusSendLevel3           = 12,   /**< バスセンドレベル3                          */
+		BusSendLevel4           = 13,   /**< バスセンドレベル4                          */
+		BusSendLevel5           = 14,   /**< バスセンドレベル5                          */
+		BusSendLevel6           = 15,   /**< バスセンドレベル6                          */
+		BusSendLevel7           = 16,   /**< バスセンドレベル7                          */
+		BandPassFilterCofLow    = 17,   /**< バンドパスフィルタの低域カットオフ周波数   */
+		BandPassFilterCofHigh   = 18,   /**< バンドパスフィルタの高域カットオフ周波数   */
+		BiquadFilterType        = 19,   /**< バイクアッドフィルタのフィルタタイプ     */
+		BiquadFilterFreq        = 20,   /**< バイクアッドフィルタの周波数             */
+		BiquadFIlterQ           = 21,   /**< バイクアッドフィルタのQ値                  */
+		BiquadFilterGain        = 22,   /**< バイクアッドフィルタのゲイン             */
+		EnvelopeAttackTime      = 23,   /**< エンベロープのアタックタイム             */
+		EnvelopeHoldTime        = 24,   /**< エンベロープのホールドタイム             */
+		EnvelopeDecayTime       = 25,   /**< エンベロープのディケイタイム             */
+		EnvelopeReleaseTime     = 26,   /**< エンベロープのリリースタイム             */
+		EnvelopeSustainLevel    = 27,   /**< エンベロープのサスティンレベル              */
+		StartTime               = 28,   /**< 再生開始位置                             */
+		Priority                = 31,   /**< ボイスプライオリティ                     */
 	}
 
-	/*JP
+	/**
 	 * <summary>スピーカーID</summary>
-	 * \par 説明:
-	 * 音声を出力するスピーカーを指定するためのIDです。<br>
+	 * <remarks>
+	 * <para header='説明'>
+	 * 音声を出力するスピーカーを指定するためのIDです。<br/>
 	 * ::CriAtomExPlayer::SetSendLevel 関数で利用します。
-	 * \sa CriAtomExPlayer::SetSendLevel
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::SetSendLevel'/>
 	 */
 	public enum Speaker {
-		FrontLeft			= 0,	/**< フロントレフトスピーカー			*/
-		FrontRight			= 1,	/**< フロントライトスピーカー			*/
-		FrontCenter			= 2,	/**< フロントセンタースピーカー			*/
-		LowFrequency		= 3,	/**< LFE（≒サブウーハー）				*/
-		SurroundLeft		= 4,	/**< サラウンドレフトスピーカー			*/
-		SurroundRight		= 5,	/**< サラウンドライトスピーカー			*/
-		SurroundBackLeft	= 6,	/**< サラウンドバックレフトスピーカー	*/
-		SurroundBackRight	= 7,	/**< サラウンドバックライトスピーカー	*/
+		FrontLeft           = 0,    /**< フロントレフトスピーカー           */
+		FrontRight          = 1,    /**< フロントライトスピーカー           */
+		FrontCenter         = 2,    /**< フロントセンタースピーカー            */
+		LowFrequency        = 3,    /**< LFE（≒サブウーハー）             */
+		SurroundLeft        = 4,    /**< サラウンドレフトスピーカー            */
+		SurroundRight       = 5,    /**< サラウンドライトスピーカー            */
+		SurroundBackLeft    = 6,    /**< サラウンドバックレフトスピーカー   */
+		SurroundBackRight   = 7,    /**< サラウンドバックライトスピーカー   */
 	}
 
 	/**
 	 * <summary>フォーマット種別</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * AtomExプレーヤで再生する音声のフォーマットを指定するためのデータ型です。<br/>
 	 * ::CriAtomExPlayer::SetFormat 関数で利用します。<br/>
-	 * \sa CriAtomExPlayer::SetFormat
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::SetFormat'/>
 	 */
 	public enum Format : uint {
-		ADX			= 0x00000001,		/**< ADX				*/
-		HCA			= 0x00000003,		/**< HCA				*/
-		HCA_MX		= 0x00000004,		/**< HCA-MX				*/
-		WAVE		= 0x00000005,		/**< Wave				*/
+		ADX         = 0x00000001,       /**< ADX                */
+		HCA         = 0x00000003,       /**< HCA                */
+		HCA_MX      = 0x00000004,       /**< HCA-MX             */
+		WAVE        = 0x00000005,       /**< Wave               */
+		RAW_PCM     = 0x00000006,       /**< RawPCM             */
 	}
 
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct FormatInfo {
-		public Format format;			/**< フォーマット種別		*/
-		public int samplingRate;		/**< サンプリング周波数		*/
-		public long numSamples;			/**< 総サンプル数			*/
-		public long loopOffset;			/**< ループ開始サンプル		*/
-		public long loopLength;			/**< ループ区間サンプル数	*/
-		public int numChannels;			/**< チャンネル数			*/
-		public uint reserved;			/**< 予約領域				*/
+		public Format format;           /**< フォーマット種別       */
+		public int samplingRate;        /**< サンプリング周波数        */
+		public long numSamples;         /**< 総サンプル数         */
+		public long loopOffset;         /**< ループ開始サンプル        */
+		public long loopLength;         /**< ループ区間サンプル数 */
+		public int numChannels;         /**< チャンネル数         */
+		public uint reserved;           /**< 予約領域               */
 	}
 
 	/**
 	 * <summary>AISACコントロール情報取得用構造体</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * AISACコントロール情報を取得するための構造体です。<br/>
 	 * ::CriAtomExAcb::GetUsableAisacControl 関数に引数として渡します。<br/>
-	 * \sa CriAtomExAcb::GetUsableAisacControl
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcb::GetUsableAisacControl'/>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct AisacControlInfo {
 		[MarshalAs(UnmanagedType.LPStr)]
-		public readonly string	name;		/**< AISACコントロール名	*/
-		public uint				id;			/**< AISACコントロールID	*/
+		public readonly string  name;       /**< AISACコントロール名 */
+		public uint             id;         /**< AISACコントロールID  */
 
 		public AisacControlInfo(byte[] data, int startIndex)
 		{
 			if (IntPtr.Size == 4) {
-				this.name	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 0)));
-				this.id	= BitConverter.ToUInt32(data, startIndex + 4);
+				this.name   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 0)));
+				this.id = BitConverter.ToUInt32(data, startIndex + 4);
 			} else {
-				this.name	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 0)));
-				this.id	= BitConverter.ToUInt32(data, startIndex + 8);
+				this.name   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 0)));
+				this.id = BitConverter.ToUInt32(data, startIndex + 8);
 			}
 		}
 	}
@@ -255,21 +301,23 @@ public static class CriAtomEx
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct CuePos3dInfo
 	{
-		public float coneInsideAngle;					/**< コーン内部角度				*/
-		public float coneOutsideAngle;					/**< コーン外部角度				*/
-		public float minAttenuationDistance;			/**< 最小減衰距離				*/
-		public float maxAttenuationDistance;			/**< 最大減衰距離				*/
-		public float sourceRadius;						/**< Zero距離InteriorPan適用距離	*/
-		public float interiorDistance;					/**< InteriorPan適用境界距離		*/
-		public float dopplerFactor;						/**< ドップラー係数				*/
-		public ushort distanceAisacControl;				/**< 距離減衰AISACコントロール	*/
-		public ushort listenerBaseAngleAisacControl;	/**< リスナー基準角度AISACコントロール	*/
-		public ushort sourceBaseAngleAisacControl;		/**< 音源基準角度AISACコントロール		*/
+		public float coneInsideAngle;                   /**< コーン内部角度              */
+		public float coneOutsideAngle;                  /**< コーン外部角度              */
+		public float minAttenuationDistance;            /**< 最小減衰距離             */
+		public float maxAttenuationDistance;            /**< 最大減衰距離             */
+		public float sourceRadius;                      /**< Zero距離InteriorPan適用距離  */
+		public float interiorDistance;                  /**< InteriorPan適用境界距離      */
+		public float dopplerFactor;                     /**< ドップラー係数              */
+		public ushort distanceAisacControl;             /**< 距離減衰AISACコントロール    */
+		public ushort listenerBaseAngleAisacControl;    /**< リスナー基準角度AISACコントロール    */
+		public ushort sourceBaseAngleAisacControl;      /**< 音源基準角度AISACコントロール      */
+		public ushort listenerBaseElevationAisacControl;/**< リスナー基準仰俯角AISACコントロール */
+		public ushort sourceBaseElevationAisacControl;  /**< 音源基準仰俯角AISACコントロール       */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public ushort[] reserved;						/**< 予約領域		*/
+		public ushort[] reserved;                       /**< 予約領域       */
 
-	public CuePos3dInfo(byte[] data, int startIndex)
-	{
+		public CuePos3dInfo(byte[] data, int startIndex)
+		{
 			this.coneInsideAngle = BitConverter.ToSingle(data, startIndex + 0);
 			this.coneOutsideAngle = BitConverter.ToSingle(data, startIndex + 4);
 			this.minAttenuationDistance = BitConverter.ToSingle(data, startIndex + 8);
@@ -280,10 +328,12 @@ public static class CriAtomEx
 			this.distanceAisacControl = BitConverter.ToUInt16(data, startIndex + 28);
 			this.listenerBaseAngleAisacControl = BitConverter.ToUInt16(data, startIndex + 30);
 			this.sourceBaseAngleAisacControl = BitConverter.ToUInt16(data, startIndex + 32);
+			this.listenerBaseElevationAisacControl = BitConverter.ToUInt16(data, startIndex + 34);
+			this.sourceBaseElevationAisacControl = BitConverter.ToUInt16(data, startIndex + 36);
 			this.reserved = new ushort[1];
 			for (int i = 0; i < 1; ++i)
 			{
-				reserved[i] = BitConverter.ToUInt16(data, startIndex + 34 + (2 * i));
+				reserved[i] = BitConverter.ToUInt16(data, startIndex + 38 + (2 * i));
 			}
 		}
 	}
@@ -292,159 +342,162 @@ public static class CriAtomEx
 	public struct GameVariableInfo
 	{
 		[MarshalAs(UnmanagedType.LPStr)]
-		public readonly string	name;		/**< ゲーム変数名	*/
-		public uint 			id;			/**< ゲーム変数ID	*/
-		public float			gameValue;	/**< ゲーム変数値	*/
+		public readonly string  name;       /**< ゲーム変数名 */
+		public uint             id;         /**< ゲーム変数ID  */
+		public float            gameValue;  /**< ゲーム変数値 */
 
 		public GameVariableInfo(byte[] data, int startIndex)
 		{
 			if (IntPtr.Size == 4) {
-				this.name	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 0)));
-				this.id	= BitConverter.ToUInt32(data, startIndex + 4);
-				this.gameValue	= BitConverter.ToSingle(data, startIndex + 8);
+				this.name = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 0)));
+				this.id = BitConverter.ToUInt32(data, startIndex + 4);
+				this.gameValue  = BitConverter.ToSingle(data, startIndex + 8);
 			} else {
-				this.name	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 0)));
-				this.id	= BitConverter.ToUInt32(data, startIndex + 8);
-				this.gameValue	= BitConverter.ToSingle(data, startIndex + 12);
+				this.name   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 0)));
+				this.id = BitConverter.ToUInt32(data, startIndex + 8);
+				this.gameValue  = BitConverter.ToSingle(data, startIndex + 12);
 			}
 		}
 
 		public GameVariableInfo(string name, uint id, float gameValue)
 		{
-			this.name		= name;
-			this.id			= id;
-			this.gameValue	= gameValue;
+			this.name       = name;
+			this.id         = id;
+			this.gameValue  = gameValue;
 		}
 	}
 
 	/**
 	 * <summary>キュータイプ</summary>
-	 * \sa CriAtomEx::CueInfo
+	 * <seealso cref="CriAtomEx::CueInfo"/>
 	 */
 	public enum CueType
 	{
-		Polyphonic,				/**< ポリフォニック											*/
-		Sequential,				/**< シーケンシャル											*/
-		Shuffle,				/**< シャッフル再生											*/
-		Random,					/**< ランダム												*/
-		RandomNoRepeat,			/**< ランダム非連続（前回再生した音以外をランダムに鳴らす）	*/
-		SwitchGameVariable,		/**< スイッチ再生（ゲーム変数を参照して再生トラックの切り替える）	*/
-		ComboSequential,		/**< コンボシーケンシャル（「コンボ時間」内に連続コンボが決まるとシーケンシャル、最後までいくと「コンボループバック」地点に戻る）*/
-		SwitchSelector,			/**< セレクタ*/
+		Polyphonic,             /**< ポリフォニック                                          */
+		Sequential,             /**< シーケンシャル                                          */
+		Shuffle,                /**< シャッフル再生                                          */
+		Random,                 /**< ランダム                                               */
+		RandomNoRepeat,         /**< ランダム非連続（前回再生した音以外をランダムに鳴らす）  */
+		SwitchGameVariable,     /**< スイッチ再生（ゲーム変数を参照して再生トラックの切り替える） */
+		ComboSequential,        /**< コンボシーケンシャル（「コンボ時間」内に連続コンボが決まるとシーケンシャル、最後までいくと「コンボループバック」地点に戻る） */
+		SwitchSelector,         /**< セレクタ */
 		TrackTransitionBySelector,
 	}
 
 	/**
 	 * <summary>キュー情報</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * キューの詳細情報です。<br/>
-	 * \sa CriAtomExAcb::GetCueInfo
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcb::GetCueInfo'/>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct CueInfo
 	{
-		public int				id;							/**< キューID				*/
-		public CueType			type;						/**< タイプ					*/
+		public int              id;                         /**< キューID                */
+		public CueType          type;                       /**< タイプ                  */
 		[MarshalAs(UnmanagedType.LPStr)]
-		public readonly string	name;						/**< キュー名				*/
+		public readonly string  name;                       /**< キュー名               */
 		[MarshalAs(UnmanagedType.LPStr)]
-		public readonly string	userData;					/**< ユーザーデータ			*/
-		public long				length;						/**< 長さ(msec)				*/
+		public readonly string  userData;                   /**< ユーザーデータ          */
+		public long             length;                     /**< 長さ(msec)               */
 
 		/* 最大再生毎カテゴリ参照数:CRIATOMEXCATEGORY_MAX_CATEGORIES_PER_PLAYBACKは16 */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-		public ushort[]			categories;					/**< カテゴリインデックス			*/
+		public ushort[]         categories;                 /**< カテゴリインデックス         */
 
-		public short			numLimits;					/**< キューリミット					*/
-		public ushort			numBlocks;					/**< ブロック数						*/
-		public ushort			numTracks;					/**< トラック数						*/
-		public ushort[]			reserved;					/**< 予約領域						*/
-		public byte				priority;					/**< カテゴリキュープライオリティ	*/
-		public byte				headerVisibility;			/**< ヘッダー公開フラグ				*/
-		public byte				ignore_player_parameter;	/**< プレーヤパラメータ無効化フラグ	*/
-		public byte				probability;				/**< 再生確率						*/
-		public CuePos3dInfo		pos3dInfo;					/**< 3D情報							*/
-		public GameVariableInfo gameVariableInfo;			/**< ゲーム変数						*/
+		public short            numLimits;                  /**< キューリミット                  */
+		public ushort           numBlocks;                  /**< ブロック数                        */
+		public ushort           numTracks;                  /**< トラック数                        */
+		public ushort           numRelatedWaveForms;        /**< 関連する波形数                  */
+		public byte             priority;                   /**< カテゴリキュープライオリティ */
+		public byte             headerVisibility;           /**< ヘッダー公開フラグ                */
+		public byte             ignore_player_parameter;    /**< プレーヤパラメータ無効化フラグ  */
+		public byte             probability;                /**< 再生確率                       */
+		public PanType          panType;                    /**< パンタイプ                     */
+		public CuePos3dInfo     pos3dInfo;                  /**< 3D情報                           */
+		public GameVariableInfo gameVariableInfo;           /**< ゲーム変数                        */
 
 		public CueInfo(byte[] data, int startIndex)
 		{
 			if (IntPtr.Size == 4) {
-				this.id	= BitConverter.ToInt32(data, startIndex + 0);
-				this.type	= (CueType)BitConverter.ToInt32(data, startIndex + 4);
-				this.name	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 8)));
-				this.userData	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 12)));
-				this.length	= BitConverter.ToInt64(data, startIndex + 16);
-				this.categories	= new ushort[16];
+				this.id = BitConverter.ToInt32(data, startIndex + 0);
+				this.type   = (CueType)BitConverter.ToInt32(data, startIndex + 4);
+				this.name   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 8)));
+				this.userData   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 12)));
+				this.length = BitConverter.ToInt64(data, startIndex + 16);
+				this.categories = new ushort[16];
 				for (int i = 0; i < 16; ++i) {
 					categories[i] = BitConverter.ToUInt16(data, startIndex + 24 + (2 * i));
 				}
-				this.numLimits	= BitConverter.ToInt16(data, startIndex + 56);
-				this.numBlocks	= BitConverter.ToUInt16(data, startIndex + 58);
-				this.numTracks	= BitConverter.ToUInt16(data, startIndex + 60);
-				this.reserved	= new ushort[1];
-				for (int i = 0; i < 1; ++i) {
-					this.reserved[i] = BitConverter.ToUInt16(data, startIndex + 62 + (2 * i));
-				}
-				this.priority					= data[startIndex + 64];
-				this.headerVisibility			= data[startIndex + 65];
-				this.ignore_player_parameter	= data[startIndex + 66];
-				this.probability				= data[startIndex + 67];
-				this.pos3dInfo	= new CuePos3dInfo(data, startIndex + 68);
-				this.gameVariableInfo	= new GameVariableInfo(data, startIndex + 104);
+				this.numLimits  = BitConverter.ToInt16(data, startIndex + 56);
+				this.numBlocks  = BitConverter.ToUInt16(data, startIndex + 58);
+				this.numTracks  = BitConverter.ToUInt16(data, startIndex + 60);
+				this.numRelatedWaveForms        = BitConverter.ToUInt16(data, startIndex + 62);
+				this.priority                   = data[startIndex + 64];
+				this.headerVisibility           = data[startIndex + 65];
+				this.ignore_player_parameter    = data[startIndex + 66];
+				this.probability                = data[startIndex + 67];
+				this.panType                    = (PanType)BitConverter.ToInt32(data, startIndex + 68);
+				this.pos3dInfo  = new CuePos3dInfo(data, startIndex + 72);
+				this.gameVariableInfo   = new GameVariableInfo(data, startIndex + 112); /* padded by 2 bytes */
 			} else {
-				this.id	= BitConverter.ToInt32(data, startIndex + 0);
-				this.type	= (CueType)BitConverter.ToInt32(data, startIndex + 4);
-				this.name	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 8)));
-				this.userData	= Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 16)));
-				this.length	= BitConverter.ToInt64(data, startIndex + 24);
-				this.categories	= new ushort[16];
+				this.id = BitConverter.ToInt32(data, startIndex + 0);
+				this.type   = (CueType)BitConverter.ToInt32(data, startIndex + 4);
+				this.name   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 8)));
+				this.userData   = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 16)));
+				this.length = BitConverter.ToInt64(data, startIndex + 24);
+				this.categories = new ushort[16];
 				for (int i = 0; i < 16; ++i) {
 					categories[i] = BitConverter.ToUInt16(data, startIndex + 32 + (2 * i));
 				}
-				this.numLimits	= BitConverter.ToInt16(data, startIndex + 64);
-				this.numBlocks	= BitConverter.ToUInt16(data, startIndex + 66);
-				this.numTracks	= BitConverter.ToUInt16(data, startIndex + 68);
-				this.reserved	= new ushort[1];
-				for (int i = 0; i < 1; ++i) {
-					this.reserved[i] = BitConverter.ToUInt16(data, startIndex + 70 + (2 * i));
-				}
-				this.priority					= data[startIndex + 72];
-				this.headerVisibility			= data[startIndex + 73];
-				this.ignore_player_parameter	= data[startIndex + 74];
-				this.probability				= data[startIndex + 75];
-				this.pos3dInfo	= new CuePos3dInfo(data, startIndex + 76);
-				this.gameVariableInfo	= new GameVariableInfo(data, startIndex + 112);
+				this.numLimits  = BitConverter.ToInt16(data, startIndex + 64);
+				this.numBlocks  = BitConverter.ToUInt16(data, startIndex + 66);
+				this.numTracks  = BitConverter.ToUInt16(data, startIndex + 68);
+				this.numRelatedWaveForms        = BitConverter.ToUInt16(data, startIndex + 70);
+				this.priority                   = data[startIndex + 72];
+				this.headerVisibility           = data[startIndex + 73];
+				this.ignore_player_parameter    = data[startIndex + 74];
+				this.probability                = data[startIndex + 75];
+				this.panType                    = (PanType)BitConverter.ToInt32(data, startIndex + 76);
+				this.pos3dInfo  = new CuePos3dInfo(data, startIndex + 80);
+				this.gameVariableInfo   = new GameVariableInfo(data, startIndex + 120);
 			}
 		}
 	}
 
 	/**
 	 * <summary>音声波形情報</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 波形情報は、各キューから再生される音声波形の詳細情報です。<br/>
-	 * \sa CriAtomExAcb::GetWaveformInfo
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcb::GetWaveformInfo'/>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct WaveformInfo
 	{
-		public int		waveId;				/**< 波形データID			*/
-		public uint		format;				/**< フォーマット種別		*/
-		public int		samplingRate;		/**< サンプリング周波数		*/
-		public int		numChannels;		/**< チャンネル数			*/
-		public long		numSamples;			/**< トータルサンプル数		*/
-		public bool		streamingFlag;		/**< ストリーミングフラグ	*/
+		public int      waveId;             /**< 波形データID          */
+		public uint     format;             /**< フォーマット種別       */
+		public int      samplingRate;       /**< サンプリング周波数        */
+		public int      numChannels;        /**< チャンネル数         */
+		public long     numSamples;         /**< トータルサンプル数        */
+		public bool     streamingFlag;      /**< ストリーミングフラグ */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public uint[]	reserved;			/**< 予約領域				*/
+		public uint[]   reserved;           /**< 予約領域               */
 
 		public WaveformInfo(byte[] data, int startIndex)
 		{
-			this.waveId	= BitConverter.ToInt32(data, startIndex + 0);
-			this.format	= BitConverter.ToUInt32(data, startIndex + 4);
-			this.samplingRate	= BitConverter.ToInt32(data, startIndex + 8);
-			this.numChannels	= BitConverter.ToInt32(data, startIndex + 12);
-			this.numSamples	= BitConverter.ToInt64(data, startIndex + 16);
-			this.streamingFlag	= BitConverter.ToInt32(data, startIndex + 24) != 0;
-			this.reserved	= new uint[1];
+			this.waveId = BitConverter.ToInt32(data, startIndex + 0);
+			this.format = BitConverter.ToUInt32(data, startIndex + 4);
+			this.samplingRate   = BitConverter.ToInt32(data, startIndex + 8);
+			this.numChannels    = BitConverter.ToInt32(data, startIndex + 12);
+			this.numSamples = BitConverter.ToInt64(data, startIndex + 16);
+			this.streamingFlag  = BitConverter.ToInt32(data, startIndex + 24) != 0;
+			this.reserved   = new uint[1];
 			for (int i = 0; i < 1; ++i) {
 				reserved[i] = BitConverter.ToUInt32(data, startIndex + 28 + (4 * i));
 			}
@@ -452,43 +505,120 @@ public static class CriAtomEx
 	}
 
 	/**
+	 * <summary>AISAC情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * AISAC情報を取得するための構造体です。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExPlayer::GetAttachedAisacInfo'/>
+	 * <seealso cref='CriAtomExCategory::GetAttachedAisacInfoById'/>
+	 * <seealso cref='CriAtomExCategory::GetAttachedAisacInfoByName'/>
+	 */
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct AisacInfo
+	{
+		[MarshalAs(UnmanagedType.LPStr)]
+		public readonly string name;            /**< AISAC名       */
+		public bool defaultControlFlag;         /**< デフォルトコントロール値が設定されているか    */
+		public float defaultControlValue;       /**< デフォルトAISACコントロール値  */
+		public uint controlId;                  /**< ControlId  */
+		[MarshalAs(UnmanagedType.LPStr)]
+		public readonly string controlName;     /**< ControlName    */
+
+		public AisacInfo(byte[] data, int startIndex)
+		{
+			if (IntPtr.Size == 4) {
+				this.name = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 0)));
+				this.defaultControlFlag = BitConverter.ToInt32(data, startIndex + 4) != 0;
+				this.defaultControlValue = BitConverter.ToSingle(data, startIndex + 8);
+				this.controlId = BitConverter.ToUInt32(data, startIndex + 12);
+				this.controlName = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt32(data, startIndex + 16)));
+			} else {
+				this.name = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 0)));
+				this.defaultControlFlag = BitConverter.ToInt32(data, startIndex + 8) != 0;
+				this.defaultControlValue = BitConverter.ToSingle(data, startIndex + 12);
+				this.controlId = BitConverter.ToUInt32(data, startIndex + 16);
+				this.controlName = Marshal.PtrToStringAnsi(new IntPtr(BitConverter.ToInt64(data, startIndex + 20)));
+			}
+		}
+	}
+
+	/**
 	 * <summary>パフォーマンス情報</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * パフォーマンス情報を取得するための構造体です。<br/>
 	 * ::CriAtomEx::GetPerformanceInfo 関数で利用します。
-	 * \sa ::CriAtomEx::GetPerformanceInfo
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='::CriAtomEx::GetPerformanceInfo'/>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct PerformanceInfo
 	{
-		public uint serverProcessCount;		/**<サーバ処理実行回数									*/
-		public uint lastServerTime;			/**<サーバ処理時間の最終計測値（マイクロ秒単位）		*/
-		public uint maxServerTime;			/**<サーバ処理時間の最大値（マイクロ秒単位）			*/
-		public uint averageServerTime;		/**<サーバ処理時間の平均値（マイクロ秒単位）			*/
-		public uint lastServerInterval;		/**<サーバ処理実行間隔の最終計測値（マイクロ秒単位）	*/
-		public uint maxServerInterval;		/**<サーバ処理実行間隔の最大値（マイクロ秒単位）		*/
-		public uint averageServerInterval;	/**<サーバ処理実行間隔の平均値（マイクロ秒単位）		*/
+		public uint serverProcessCount;     /**< サーバ処理実行回数                                    */
+		public uint lastServerTime;         /**< サーバ処理時間の最終計測値（マイクロ秒単位）     */
+		public uint maxServerTime;          /**< サーバ処理時間の最大値（マイクロ秒単位）           */
+		public uint averageServerTime;      /**< サーバ処理時間の平均値（マイクロ秒単位）           */
+		public uint lastServerInterval;     /**< サーバ処理実行間隔の最終計測値（マイクロ秒単位）   */
+		public uint maxServerInterval;      /**< サーバ処理実行間隔の最大値（マイクロ秒単位）     */
+		public uint averageServerInterval;  /**< サーバ処理実行間隔の平均値（マイクロ秒単位）     */
 	}
 
 	/**
 	 * <summary>各種リソースの使用状況</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 各種リソースの使用状況を表わす構造体です。
+	 * </para>
+	 * </remarks>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct ResourceUsage
 	{
-		public uint useCount;		/**< 対象リソースの現在の使用数	*/
-		public uint limit;			/**< 対象リソースの制限数		*/
+		public uint useCount;       /**< 対象リソースの現在の使用数    */
+		public uint limit;          /**< 対象リソースの制限数     */
+	}
+
+	/**
+	 * <summary>3次元ベクター構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * 3次元空間の位置、方向などを表す構造体です。
+	 * </para>
+	 * </remarks>
+	 */
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct NativeVector
+	{
+		public float x;
+		public float y;
+		public float z;
+
+		public NativeVector(float x, float y, float z) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+
+		public NativeVector(UnityEngine.Vector3 vector) {
+			this.x = vector.x;
+			this.y = vector.y;
+			this.z = vector.z;
+		}
 	}
 
 	/**
 	 * <summary>ACFファイルの登録</summary>
-	 * <param name="binder">バインダ</param>
-	 * <param name="acfPath">ACFファイルのファイルパス</param>
-	 * \par 説明:
+	 * <param name='binder'>バインダ</param>
+	 * <param name='acfPath'>ACFファイルのファイルパス</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ACFファイルをロードし、ライブラリに取り込みます。<br/>
-	 * \sa CriAtomEx::UnregisterAcf
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::UnregisterAcf'/>
 	 */
 	public static void RegisterAcf(CriFsBinder binder, string acfPath)
 	{
@@ -498,25 +628,38 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ACFデータの登録</summary>
-	 * <param name="acfData">ACFデータ</param>
-	 * \par 説明:
+	 * <param name='acfData'>ACFデータ</param>
+	 * <param name='dataSize'>ACFデータのサイズ</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * メモリ上に配置されたACFデータをロードし、ライブラリに取り込みます。<br/>
-	 * \par 注意:
+	 * </para>
+	 * <para header='注意'>
 	 * 引数として渡すデータのバッファアドレスは、ガベージコレクターに移動されないように
 	 * アプリケーション側で事前に固定したものを渡してください。<br/>
 	 * また、メモリの固定解除はACFファイルの登録解除後、またはライブラリ終了処理後に行ってください。<br/>
-	 * \sa CriAtomEx::UnregisterAcf
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::UnregisterAcf'/>
 	 */
-	public static void RegisterAcf(byte[] acfData)
+	public static void RegisterAcf(IntPtr acfData, int dataSize)
 	{
+		criAtomEx_RegisterAcfData(acfData, dataSize, IntPtr.Zero, 0);
+	}
+
+	[Obsolete("Use RegisterAcf(IntPtr) instead")]
+	public static void RegisterAcf(byte[] acfData) {
 		criAtomEx_RegisterAcfData(acfData, acfData.Length, IntPtr.Zero, 0);
 	}
 
 	/**
 	 * <summary>ACFファイルの登録解除</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ACFファイルの登録を解除します。<br/>
-	 * \sa CriAtomEx::RegisterAcf
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::RegisterAcf'/>
 	 */
 	public static void UnregisterAcf()
 	{
@@ -525,26 +668,31 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>DSPバス設定のアタッチ</summary>
-	 * <param name="settingName">DSPバス設定の名前</param>
-	 * \par 説明:
+	 * <param name='settingName'>DSPバス設定の名前</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバス設定からDSPバスを構築してサウンドレンダラにアタッチします。<br/>
 	 * 本関数を実行するには、あらかじめ CriAtomEx::RegisterAcf
 	 * 関数でACF情報を登録しておく必要があります<br/>
-	 * \code
-	 *		：
-	 * 	// ACFファイルの読み込みと登録
-	 * 	CriAtomEx.RegisterAcf("Sample.acf");
+	 * <code>
+	 *      ：
+	 *  // ACFファイルの読み込みと登録
+	 *  CriAtomEx.RegisterAcf("Sample.acf");
 	 *
-	 * 	// DSPバス設定の適用
-	 * 	CriAtomEx.AttachDspBusSetting("DspBusSetting_0");
-	 * 		：
-	 * \endcode
-	 * \attention
+	 *  // DSPバス設定の適用
+	 *  CriAtomEx.AttachDspBusSetting("DspBusSetting_0");
+	 *      ：
+	 * </code>
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は完了復帰型の関数です。<br/>
 	 * 本関数を実行すると、しばらくの間Atomライブラリのサーバ処理がブロックされます。<br/>
 	 * 音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、
 	 * 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。<br/>
-	 * \sa CriAtomEx::DetachDspBusSetting, CriAtomEx::RegisterAcf
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::DetachDspBusSetting'/>
+	 * <seealso cref='CriAtomEx::RegisterAcf'/>
 	 */
 	public static void AttachDspBusSetting(string settingName)
 	{
@@ -553,14 +701,18 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>DSPバス設定のデタッチ</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバス設定をデタッチします。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は完了復帰型の関数です。<br/>
 	 * 本関数を実行すると、しばらくの間Atomライブラリのサーバ処理がブロックされます。<br/>
 	 * 音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、
 	 * 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。
-	 * \sa CriAtomEx::AttachDspBusSetting
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::AttachDspBusSetting'/>
 	 */
 	public static void DetachDspBusSetting()
 	{
@@ -568,13 +720,16 @@ public static class CriAtomEx
 	}
 
 	/**
-	 * <summary>DSPバススナップショットの適用 </summary>
-	 * <param name="snapshot_name">DSPバススナップショット名</param>
-	 * <param name="time_ms">スナップショットが完全に反映されるまでの時間（ミリ秒）</param>
-	 * \par 説明:
+	 * <summary>DSPバススナップショットの適用</summary>
+	 * <param name='snapshot_name'>DSPバススナップショット名</param>
+	 * <param name='time_ms'>スナップショットが完全に反映されるまでの時間（ミリ秒）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバススナップショットを適用します。<br/>
 	 * 本関数を呼び出すとスナップショットのパラメータに変化します。
 	 * 完全に変化を終えるまでに、time_ms ミリ秒かかります。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void ApplyDspBusSnapshot(string snapshot_name, int time_ms)
 	{
@@ -584,11 +739,15 @@ public static class CriAtomEx
 	/**
 	 * <summary>ゲーム変数の総数の取得</summary>
 	 * <returns>ゲーム変数の総数</returns>
-	 * \par 説明:
-	 * ACFファイル内に登録されているゲーム変数の総数を取得します。<br>
-	 * \attention
-	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ACFファイル内に登録されているゲーム変数の総数を取得します。<br/>
+	 * </para>
+	 * <para header='注意'>
+	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
 	 * ACFファイルが登録されていない場合、-1が返ります。
+	 * </para>
+	 * </remarks>
 	 */
 	public static int GetNumGameVariables()
 	{
@@ -597,14 +756,18 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ゲーム変数情報の取得（インデックス指定）</summary>
-	 * <param name="index">ゲーム変数インデックス</param>
-	 * <param name="info">ゲーム変数情報</param>
+	 * <param name='index'>ゲーム変数インデックス</param>
+	 * <param name='info'>ゲーム変数情報</param>
 	 * <returns>情報が取得できたかどうか？</returns>
-	 * \par 説明:
-	 * ゲーム変数インデックスからゲーム変数情報を取得します。<br>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ゲーム変数インデックスからゲーム変数情報を取得します。<br/>
 	 * 指定したインデックスのゲーム変数が存在しない場合、falseが返ります。
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool GetGameVariableInfo(ushort index, out GameVariableInfo info)
 	{
@@ -617,12 +780,16 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ゲーム変数の取得</summary>
-	 * <param name="game_variable_id">ゲーム変数ID</param>
+	 * <param name='game_variable_id'>ゲーム変数ID</param>
 	 * <returns>ゲーム変数値</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ACFファイル内に登録されているゲーム変数値を取得します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static float GetGameVariable(uint game_variable_id)
 	{
@@ -631,12 +798,16 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ゲーム変数の取得</summary>
-	 * <param name="game_variable_name">ゲーム変数名</param>
+	 * <param name='game_variable_name'>ゲーム変数名</param>
 	 * <returns>ゲーム変数値</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ACFファイル内に登録されているゲーム変数値を取得します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static float GetGameVariable(string game_variable_name)
 	{
@@ -645,13 +816,17 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ゲーム変数の設定</summary>
-	 * <param name="game_variable_id">ゲーム変数ID</param>
-	 * <param name="game_variable_value">ゲーム変数値</param>
-	 * \par 説明:
-	 * ACFファイル内に登録されているゲーム変数に値を設定します。<br>
+	 * <param name='game_variable_id'>ゲーム変数ID</param>
+	 * <param name='game_variable_value'>ゲーム変数値</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ACFファイル内に登録されているゲーム変数に値を設定します。<br/>
 	 * 設定可能な範囲は0.0f～1.0fの間です。
-	 * \attention
-	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br>
+	 * </para>
+	 * <para header='注意'>
+	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetGameVariable(uint game_variable_id, float game_variable_value)
 	{
@@ -660,13 +835,17 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>ゲーム変数の設定</summary>
-	 * <param name="game_variable_name">ゲーム変数名</param>
-	 * <param name="game_variable_value">ゲーム変数値</param>
-	 * \par 説明:
-	 * ACFファイル内に登録されているゲーム変数に値を設定します。<br>
+	 * <param name='game_variable_name'>ゲーム変数名</param>
+	 * <param name='game_variable_value'>ゲーム変数値</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ACFファイル内に登録されているゲーム変数に値を設定します。<br/>
 	 * 設定可能な範囲は0.0f～1.0fの間です。
-	 * \attention
-	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br>
+	 * </para>
+	 * <para header='注意'>
+	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetGameVariable(string game_variable_name, float game_variable_value)
 	{
@@ -675,19 +854,23 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>乱数種の設定</summary>
-	 * <param name="seed">乱数種</param>
-	 * \par 説明:
-	 * CRI Atomライブラリ全体で共有する疑似乱数生成器に乱数種を設定します。<br>
-	 * 乱数種を設定することにより、各種ランダム再生処理に再現性を持たせることができます。<br>
+	 * <param name='seed'>乱数種</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * CRI Atomライブラリ全体で共有する疑似乱数生成器に乱数種を設定します。<br/>
+	 * 乱数種を設定することにより、各種ランダム再生処理に再現性を持たせることができます。<br/>
 	 * AtomExプレーヤごとに再現性を持たせたい場合は、 ::CriAtomExPlayer::SetRandomSeed 関数を使用してください。
-	 * <br>
+	 * <br/>
 	 * 再現性の必要がなく、実行ごとに乱数種を切り替えたい場合は、本関数
 	 * ではなく、 ::CriAtomConfig::useRandomSeedWithTime プロパティを使用してください。
-	 * <br>
-	 * \attention
+	 * <br/>
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は ::CriAtomSource または ::CriAtomExPlayer の生成前に呼び出す必要が
 	 * あります。乱数種を設定する前に作成されたものについては影響を受けません。
-	 * \sa ::CriAtomExPlayer::SetRandomSeed
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='::CriAtomExPlayer::SetRandomSeed'/>
 	 */
 	public static void SetRandomSeed(uint seed)
 	{
@@ -696,13 +879,16 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>パフォーマンスモニタのリセット</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 現在までの計測結果を破棄します。<br/>
 	 * パフォーマンスモニタは、ライブラリ初期化直後からパフォーマンス情報の取得を開始し、
 	 * 計測結果を累積します。<br/>
 	 * 以前の計測結果を今後の計測に含めたくない場合には、
 	 * 本関数を実行し、累積された計測内容を一旦破棄する必要があります。
-	 * \sa CriAtomEx::GetPerformanceInfo
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::GetPerformanceInfo'/>
 	 */
 	public static void ResetPerformanceMonitor()
 	{
@@ -711,9 +897,13 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>パフォーマンス情報の取得</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * パフォーマンス情報を取得します。<br/>
-	 * \sa CriAtomEx::PerformanceInfo, CriAtomEx::ResetPerformanceMonitor
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::PerformanceInfo'/>
+	 * <seealso cref='CriAtomEx::ResetPerformanceMonitor'/>
 	 */
 	public static void GetPerformanceInfo(out PerformanceInfo info)
 	{
@@ -722,13 +912,17 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>セレクタに対するグローバル参照ラベルの設定</summary>
-	 * <param name="selector_index">セレクタインデックス</param>
-	 * <param name="label_index">ラベルインデックス</param>
-	 * \par 説明:
+	 * <param name='selector_index'>セレクタインデックス</param>
+	 * <param name='label_index'>ラベルインデックス</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ACFファイル内に登録されているセレクタに対してグローバル参照されるラベルを設定します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
-	 * \sa CriAtomEx::SetGlobalLabelToSelectorByName
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::SetGlobalLabelToSelectorByName'/>
 	 */
 	public static void SetGlobalLabelToSelectorByIndex(ushort selector_index, ushort label_index)
 	{
@@ -737,13 +931,17 @@ public static class CriAtomEx
 
 	/**
 	 * <summary>セレクタに対するグローバル参照ラベルの設定</summary>
-	 * <param name="selector_name">セレクタ名</param>
-	 * <param name="label_name">ラベル名</param>
-	 * \par 説明:
+	 * <param name='selector_name'>セレクタ名</param>
+	 * <param name='label_name'>ラベル名</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ACFファイル内に登録されているセレクタに対してグローバル参照されるラベルを設定します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数を実行する前に、ACFファイルを登録しておく必要があります。<br/>
-	 * \sa CriAtomEx::SetGlobalLabelToSelectorByIndex
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::SetGlobalLabelToSelectorByIndex'/>
 	 */
 	public static void SetGlobalLabelToSelectorByName(string selector_name, string label_name)
 	{
@@ -751,16 +949,51 @@ public static class CriAtomEx
 	}
 
 	/**
+	 * <summary>サーバ処理の割り込みの防止</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * サーバ処理の割り込み抑止します。<br/>
+	 * 本関数実行後、 ::CriAtomEx::Unlock 関数実行までの間、サーバ処理の動作が抑止されます。<br/>
+	 * 複数のAPIを同一オーディオフレーム内で確実に実行したい場合には、本関数でサーバ処理の
+	 * 割り込みを防止し、それらの関数を実行してください。
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::Unlock'/>
+	 */
+	public static void Lock()
+	{
+		criAtomEx_Lock();
+	}
+
+	/**
+	 * <summary>サーバ処理の割り込み防止の解除</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ::CriAtomEx::Lock 関数による、サーバ処理の割り込み防止を解除します。
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomEx::Lock'/>
+	 */
+	public static void Unlock()
+	{
+		criAtomEx_Unlock();
+	}
+
+	/**
 	 * <summary>[iOS] サウンド出力停止の確認</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * サウンド出力が停止しているかどうかの確認を行います。<br/>
-	 * trueの場合、サウンド出力が停止しています。<br>
+	 * trueの場合、サウンド出力が停止しています。<br/>
 	 * アプリケーションをポーズしていないにも関わらず本関数がtrueを返した場合は、
-	 * アプリケーションに検知されないシステムの割り込み等により、サウンド出力が妨げられています。<br>
+	 * アプリケーションに検知されないシステムの割り込み等により、サウンド出力が妨げられています。<br/>
 	 * 音声と同期した処理を行う場合には、本関数によりサウンド出力状態を確認し、
 	 * 必要に応じてポーズ処理を追加してください。
-	 *　\par 注意:
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数はiOS専用APIです。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsSoundStopped_IOS()
 	{
@@ -771,12 +1004,20 @@ public static class CriAtomEx
 	#endif
 	}
 
+#if !UNITY_EDITOR && UNITY_ANDROID
+	public static SoundRendererType androidDefaultSoundRendererType = SoundRendererType.Default;
+#endif
+
 	#region DLL Import
 	#if !CRIWARE_ENABLE_HEADLESS_MODE
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern bool criAtomEx_RegisterAcfFile(
 		IntPtr binder, string path, IntPtr work, int workSize);
 
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomEx_RegisterAcfData(
+		IntPtr acfData, int acfDataSize, IntPtr work, int workSize);
+	
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomEx_RegisterAcfData(
 		byte[] acfData, int acfDataSize, IntPtr work, int workSize);
@@ -816,6 +1057,12 @@ public static class CriAtomEx
 	private static extern void criAtomEx_SetRandomSeed(uint seed);
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomEx_Lock();
+
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomEx_Unlock();
+
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtom_ResetPerformanceMonitor();
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
@@ -846,6 +1093,8 @@ public static class CriAtomEx
 	private static bool criAtomEx_RegisterAcfFile(
 		IntPtr binder, string path, IntPtr work, int workSize) { return true; }
 	private static void criAtomEx_RegisterAcfData(
+		IntPtr acfData, int acfDataSize, IntPtr work, int workSize) { }
+	private static void criAtomEx_RegisterAcfData(
 		byte[] acfData, int acfDataSize, IntPtr work, int workSize) { }
 	private static void criAtomEx_UnregisterAcf() { }
 	private static void criAtomEx_AttachDspBusSetting(
@@ -859,6 +1108,8 @@ public static class CriAtomEx
 	private static void criAtomEx_SetGameVariableById(uint game_variable_id, float game_variable_value) { }
 	private static void criAtomEx_SetGameVariableByName(string game_variable_name, float game_variable_value) { }
 	private static void criAtomEx_SetRandomSeed(uint seed) { }
+	private static void criAtomEx_Lock() { }
+	private static void criAtomEx_Unlock() { }
 	private static void criAtom_ResetPerformanceMonitor() { }
 	private static void criAtom_GetPerformanceInfo(out PerformanceInfo info) { info = new PerformanceInfo(); }
 	private static void criAtomExAcf_SetGlobalLabelToSelectorByIndex(ushort selector_index, ushort label_index) { }
@@ -878,17 +1129,210 @@ public static class CriAtomEx
 
 /**
  * <summary>カテゴリ単位のパラメータ制御を行うためのクラスです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * カテゴリ単位のパラメータ制御を行うためのクラスです。<br/>
+ * </para>
+ * </remarks>
  */
 public static class CriAtomExCategory
 {
 	/**
+	 * <summary>REACTタイプ</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTのタイプです。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	public enum ReactType : int
+	{
+		Ducker = 0,                     /**< ダッカー                       */
+		AisacModulationTrigger,         /**< AISACモジュレーショントリガー  */
+	}
+
+	/**
+	 * <summary>REACTによるダッキングのターゲット</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTによるダッキング対象のタイプです。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	public enum ReactDuckerTargetType : int
+	{
+		Volume = 0,                     /**< ボリュームのダッカー         */
+		AisacControlValue,              /**< AISACコントロール値のダッカー  */
+	}
+
+	/**
+	 * <summary>REACTによるダッキングの曲線タイプ</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTによるダッキング曲線のタイプです。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	public enum ReactDuckerCurveType : int
+	{
+		Linear = 0,                     /**< 直線      */
+		Square,                         /**< 低速変化    */
+		SquareReverse,                  /**< 高速変化    */
+		SCurve,                         /**< S字曲線      */
+		FlatAtHalf,                     /**< 逆S字曲線   */
+	}
+
+	/**
+	 * <summary>REACTフェードパラメータ構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTのフェード駆動パラメータ情報を設定取得するための構造体です。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct ReactFadeParameter
+	{
+		public ReactDuckerCurveType     curveType;      /**< 変化曲線タイプ                   */
+		public float                    curveStrength;  /**< 変化曲線の強さ（0.0f ～ 2.0f）    */
+		public System.UInt16            fadeTimeMs;     /**< フェード時間（ミリ秒）           */
+	}
+
+	/**
+	 * <summary>REACTホールドタイプ</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTホールド（減衰時間の維持）タイプです。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	public enum ReactHoldType
+	{
+		WhilePlaying,                   /**< 再生中にホールドを行う       */
+		FixedTime,                      /**< 固定時間でホールドを行う        */
+	}
+
+	/**
+	 * <summary>REACTによるダッカーパラメータ構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTによるダッカーの駆動パラメータ情報を設定取得するための構造体です。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+	public struct ReactDuckerParameter
+	{
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct Volume
+		{
+            public float level;             /**< 減衰ボリュームレベル         */
+		}
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct AisacControl
+		{
+			public System.UInt16 id;        /**< AISACコントロールid               */
+			public float value;             /**< AISACコントロール値              */
+		}
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+		public struct Target
+		{
+			[FieldOffset(0)]
+			public Volume volume;
+			[FieldOffset(0)]
+			public AisacControl aisacControl;
+		}
+        [FieldOffset(0)]
+        public Target target;
+        [FieldOffset(8)]
+        public ReactDuckerTargetType targetType;    /**< ダッカーの操作対象             */
+        [FieldOffset(12)]
+        public ReactFadeParameter entry;            /**< 変化開始フェードパラメータ     */
+        [FieldOffset(24)]
+        public ReactFadeParameter exit;             /**< 変化終了フェードパラメータ     */
+        [FieldOffset(36)]
+        public ReactHoldType holdType;              /**< ホールドタイプ                   */
+        [FieldOffset(40)]
+        public System.UInt16 holdTimeMs;            /**< ホールド時間（ミリ秒）           */
+	}
+
+	/**
+	 * <summary>AISACモジュレーショントリガーパラメータ構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * AISACモジュレーショントリガーの駆動パラメータ情報を設定取得するための構造体です。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct ReactAisacModulationParameter
+	{
+		private System.Int32 _enableDecrementAisacModulationKey;
+		public System.UInt32 decrementAisacModulationKey;            /*< 変化AISACモジュレーションキー               */
+		private System.Int32 _enableIncrementAisacModulationKey;
+		public System.UInt32 incrementAisacModulationKey;            /*< 戻りAISACモジュレーションキー               */
+		public bool enableDecrementAisacModulationKey                /*< 変化AISACモジュレーションキーが有効か否か	*/
+		{
+			get {return _enableDecrementAisacModulationKey != 0 ? true : false;}
+		}
+		public bool enableIncrementAisacModulationKey                /*< 戻りAISACモジュレーションキーが有効か否か	*/
+		{
+			get {return _enableIncrementAisacModulationKey != 0 ? true : false; }
+		}
+	}
+
+	/**
+	 * <summary>REACT駆動パラメータ構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTの駆動パラメータ情報を設定取得するための構造体です。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+	public struct ReactParameter
+	{
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+		public struct Parameter
+		{
+			[FieldOffset(0)]
+			public ReactDuckerParameter ducker;                     /**< ダッカーパラメータ                        */
+			[FieldOffset(0)]
+			public ReactAisacModulationParameter aisacModulation;   /**< AISACモジュレーショントリガーパラメータ */
+		}
+        [FieldOffset(0)]
+        public Parameter parameter;
+        [FieldOffset(44)]
+        public ReactType type;              /**< REACTタイプ                 */
+        [FieldOffset(48)]
+        public bool enablePausingCue;       /**< ポーズ中のキューは適用するか */
+	}
+
+	/**
 	 * <summary>名前指定によるカテゴリに対するボリューム設定</summary>
-	 * <param name="name">カテゴリ名</param>
-	 * <param name="volume">ボリューム値</param>
-	 * \par 説明:
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='volume'>ボリューム値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリに対してボリュームを設定します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetVolume(string name, float volume)
 	{
@@ -897,10 +1341,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリに対するボリューム設定</summary>
-	 * <param name="id">カテゴリID</param>
-	 * <param name="volume">ボリューム値</param>
-	 * \par説明:
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='volume'>ボリューム値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリに対してボリュームを設定します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetVolume(int id, float volume)
 	{
@@ -909,10 +1356,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリボリューム取得</summary>
-	 * <param name="name">カテゴリ名</param>
+	 * <param name='name'>カテゴリ名</param>
 	 * <returns>カテゴリボリューム</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリで適用されるのボリューム値を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static float GetVolume(string name)
 	{
@@ -921,10 +1371,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリボリューム取得</summary>
-	 * <param name="id">カテゴリID</param>
+	 * <param name='id'>カテゴリID</param>
 	 * <returns>カテゴリボリューム</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリで適用されるのボリューム値を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static float GetVolume(int id)
 	{
@@ -933,10 +1386,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリミュート状態設定</summary>
-	 * <param name="name">カテゴリ名</param>
-	 * <param name="mute">ミュート状態（false = ミュート解除、true = ミュート）</param>
-	 * \par説明:
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='mute'>ミュート状態（false = ミュート解除、true = ミュート）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリのミュート状態を設定します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void Mute(string name, bool mute)
 	{
@@ -945,10 +1401,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリミュート状態設定</summary>
-	 * <param name="id">カテゴリID</param>
-	 * <param name="mute">ミュート状態（false = ミュート解除、true = ミュート）</param>
-	 * \par説明:
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='mute'>ミュート状態（false = ミュート解除、true = ミュート）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリのミュート状態を設定します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void Mute(int id, bool mute)
 	{
@@ -957,10 +1416,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリミュート状態取得</summary>
-	 * <param name="name">カテゴリ名</param>
+	 * <param name='name'>カテゴリ名</param>
 	 * <returns>ミュート状態（false = ミュート中ではない、true = ミュート中）</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリのミュート状態を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsMuted(string name)
 	{
@@ -969,10 +1431,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリミュート状態取得</summary>
-	 * <param name="id">カテゴリID</param>
+	 * <param name='id'>カテゴリID</param>
 	 * <returns>ミュート状態（false = ミュート中ではない、true = ミュート中）</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリのミュート状態を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsMuted(int id)
 	{
@@ -981,13 +1446,16 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリソロ状態設定</summary>
-	 * <param name="name">カテゴリ名</param>
-	 * <param name="solo">ソロ状態（false = ソロ解除、true = ソロ）</param>
-	 * <param name="muteVolume">他のカテゴリに適用するミュートボリューム値</param>
-	 * \par説明:
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='solo'>ソロ状態（false = ソロ解除、true = ソロ）</param>
+	 * <param name='muteVolume'>他のカテゴリに適用するミュートボリューム値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリのソロ状態を設定します。<br/>
 	 * muteVolume で指定したボリュームは、
 	 * 同一カテゴリグループに所属するカテゴリに対して適用されます。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void Solo(string name, bool solo, float muteVolume)
 	{
@@ -996,13 +1464,16 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリソロ状態設定</summary>
-	 * <param name="id">カテゴリID</param>
-	 * <param name="solo">ソロ状態（false = ソロ解除、true = ソロ）</param>
-	 * <param name="muteVolume">他のカテゴリに適用するミュートボリューム値</param>
-	 * \par説明:
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='solo'>ソロ状態（false = ソロ解除、true = ソロ）</param>
+	 * <param name='muteVolume'>他のカテゴリに適用するミュートボリューム値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリのソロ状態を設定します。<br/>
 	 * muteVolume で指定したボリュームは、
 	 * 同一カテゴリグループに所属するカテゴリに対して適用されます。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void Solo(int id, bool solo, float muteVolume)
 	{
@@ -1011,10 +1482,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリソロ状態取得</summary>
-	 * <param name="name">カテゴリ名</param>
+	 * <param name='name'>カテゴリ名</param>
 	 * <returns>ソロ状態（false = ソロ中ではない、true = ソロ中）</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリのソロ状態を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsSoloed(string name)
 	{
@@ -1023,10 +1497,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリソロ状態取得</summary>
-	 * <param name="id">カテゴリID</param>
+	 * <param name='id'>カテゴリID</param>
 	 * <returns>ソロ状態（false = ソロ中ではない、true = ソロ中）</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリのソロ状態を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsSoloed(int id)
 	{
@@ -1035,13 +1512,16 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリのポーズ／ポーズ解除</summary>
-	 * <param name="name">カテゴリ名</param>
-	 * <param name="pause">スイッチ（false = ポーズ解除、true = ポーズ）</param>
-	 * \par説明:
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='pause'>スイッチ（false = ポーズ解除、true = ポーズ）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリのポーズ／ポーズ解除を行います。<br/>
 	 * カテゴリを名前で指定する以外は、
 	 * ::CriAtomExCategory::Pause(int, bool)  関数と仕様は同じです。<br/>
-	 * \sa CriAtomExCategory::Pause(int, bool)
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::Pause(int, bool)'/>
 	 */
 	public static void Pause(string name, bool pause)
 	{
@@ -1050,16 +1530,20 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリのポーズ／ポーズ解除</summary>
-	 * <param name="id">カテゴリID</param>
-	 * <param name="pause">スイッチ（false = ポーズ解除、true = ポーズ）</param>
-	 * \par説明:
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='pause'>スイッチ（false = ポーズ解除、true = ポーズ）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリのポーズ／ポーズ解除を行います。<br/>
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * カテゴリのポーズは、AtomExプレーヤ／再生音のポーズ
 	 * （ ::CriAtomExPlayer::Pause 関数や ::CriAtomExPlayback::Pause 関数でのポーズ）とは独立して扱われ、
 	 * 音声の最終的なポーズ状態は、それぞれのポーズ状態を考慮して決まります。<br/>
 	 * すなわち、どちらかがポーズ状態ならポーズ、どちらもポーズ解除状態ならポーズ解除、となります。
-	 * \sa CriAtomExCategory::Pause(string, bool)
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::Pause(string, bool)'/>
 	 */
 	public static void Pause(int id, bool pause)
 	{
@@ -1068,10 +1552,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>ID指定によるカテゴリのポーズ状態取得</summary>
-	 * <param name="name">カテゴリID</param>
+	 * <param name='name'>カテゴリID</param>
 	 * <returns>ポーズ状態（false = ポーズ中ではない、true = ポーズ中）</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリのポーズ状態を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsPaused(string name)
 	{
@@ -1080,10 +1567,13 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリのポーズ／ポーズ解除</summary>
-	 * <param name="id">カテゴリ名</param>
+	 * <param name='id'>カテゴリ名</param>
 	 * <returns>ポーズ状態（false = ポーズ中ではない、true = ポーズ中）</returns>
-	 * \par説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリのポーズ状態を取得します。
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool IsPaused(int id)
 	{
@@ -1092,15 +1582,17 @@ public static class CriAtomExCategory
 
 	/**
 	 * <summary>名前指定によるカテゴリに対するAISACコントロール値設定</summary>
-	 * <param name="name">カテゴリ名</param>
-	 * <param name="controlName">AISACコントロール名</param>
-	 * <param name="value">AISACコントロール値</param>
-	 * \par説明:
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='controlName'>AISACコントロール名</param>
+	 * <param name='value'>AISACコントロール値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 名前指定でカテゴリに対してAISACコントロール値を設定します。<br/>
 	 * カテゴリおよびAISACコントロールを名前で指定する以外は、
 	 * ::CriAtomExCategory::SetAisacControl 関数と仕様は同じです。<br/>
-	 * \sa
-	 * CriAtomExCategory::SetAisacControl(int, int, float)
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::SetAisacControl(int, int, float)'/>
 	 */
 	public static void SetAisacControl(string name, string controlName, float value)
 	{
@@ -1113,22 +1605,24 @@ public static class CriAtomExCategory
 		SetAisacControl(name, controlName, value);
 	}
 
-
 	/**
 	 * <summary>ID指定によるカテゴリに対するAISACコントロール値設定</summary>
-	 * <param name="id">カテゴリID</param>
-	 * <param name="controlId">AISACコントロールID</param>
-	 * <param name="value">AISACコントロール値</param>
-	 * \par説明:
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='controlId'>AISACコントロールID</param>
+	 * <param name='value'>AISACコントロール値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ID指定でカテゴリに対してAISACコントロール値を設定します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * キューやトラックに設定されているAISACに関しては、
 	 * プレーヤでのAISACコントロール値設定よりも、
 	 * <b>カテゴリのAISACコントロール値を優先して</b>参照します。<br/>
 	 * カテゴリにアタッチしたAISACについては、
 	 * 常に<b>カテゴリに設定したAISACコントロール値のみ</b>、参照されます。
-	 * \sa
-	 * CriAtomExCategory::SetAisacControl(string, string, float)
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::SetAisacControl(string, string, float)'/>
 	 */
 	public static void SetAisacControl(int id, int controlId, float value)
 	{
@@ -1139,6 +1633,100 @@ public static class CriAtomExCategory
 	public static void SetAisac(int id, int controlId, float value)
 	{
 		SetAisacControl(id, controlId, value);
+	}
+
+	/**
+	 * <summary>REACT駆動パラメータの設定</summary>
+	 * <param name='name'>REACT名</param>
+	 * <param name='parameter'>REACT駆動パラメータ構造体</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTを駆動させるパラメータを設定します。<br/>
+	 * </para>
+	 * <para header='注意'>
+	 * REACTが動作している間はパラメータを設定することはできません（警告が発生します）。<br/>
+	 * 存在しないREACT名を指定した場合は、エラーコールバックが返ります。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::GetReactParameter'/>
+	 */
+	public static void SetReactParameter(string name, ReactParameter parameter)
+	{
+		criAtomExCategory_SetReactParameter(name, ref parameter);
+	}
+
+	/**
+	 * <summary>REACT駆動パラメータの取得</summary>
+	 * <param name='name'>REACT名</param>
+	 * <param name='parameter'>REACT駆動パラメータ構造体</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * REACTを駆動させるパラメータの現在値を取得します。<br/>
+	 * </para>
+	 * <para header='注意'>
+	 * 存在しないREACT名を指定した場合は、エラーコールバックが発生しCRI_FALSEが返ります。<br/>
+	 * 存在しないREACT名を指定した場合は、エラーコールバックが返ります。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExCategory::SetReactParameter'/>
+	 */
+	public static bool GetReactParameter(string name, out ReactParameter parameter)
+	{
+		return criAtomExCategory_GetReactParameter(name, out parameter);
+	}
+
+	/**
+	 * <summary>ID指定によるAISAC情報の取得</summary>
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='aisacAttachedIndex'>アタッチされているAISACのインデックス</param>
+	 * <param name='aisacInfo'>AISAC情報取得用構造体</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ID指定でカテゴリにアタッチされているAISACの情報を取得します。<br/>
+	 * </para>
+	 * <para header='注意'>
+	 * 存在しないカテゴリを指定した場合や、無効なインデックスを指定した場合、falseが返ります。<br/>
+	 * </para>
+	 * </remarks>
+	 */
+	public static bool GetAttachedAisacInfoById(uint id, int aisacAttachedIndex, out CriAtomEx.AisacInfo aisacInfo)
+	{
+		using (var mem = new CriStructMemory<CriAtomEx.AisacInfo>()) {
+			bool result = criAtomExCategory_GetAttachedAisacInfoById(id, aisacAttachedIndex, mem.ptr);
+			if (result) {
+				aisacInfo = new CriAtomEx.AisacInfo(mem.bytes, 0);
+			} else {
+				aisacInfo = new CriAtomEx.AisacInfo();
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * <summary>名前指定によるAISAC情報の取得</summary>
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='aisacAttachedIndex'>アタッチされているAISACのインデックス</param>
+	 * <param name='aisacInfo'>AISAC情報取得用構造体</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * 名前指定でカテゴリにアタッチされているAISACの情報を取得します。<br/>
+	 * </para>
+	 * <para header='注意'>
+	 * 存在しないカテゴリを指定した場合や、無効なインデックスを指定した場合、falseが返ります。<br/>
+	 * </para>
+	 * </remarks>
+	 */
+	public static bool GetAttachedAisacInfoByName(string name, int aisacAttachedIndex, out CriAtomEx.AisacInfo aisacInfo)
+	{
+		using (var mem = new CriStructMemory<CriAtomEx.AisacInfo>()) {
+			bool result = criAtomExCategory_GetAttachedAisacInfoByName(name, aisacAttachedIndex, mem.ptr);
+			if (result) {
+				aisacInfo = new CriAtomEx.AisacInfo(mem.bytes, 0);
+			} else {
+				aisacInfo = new CriAtomEx.AisacInfo();
+			}
+			return result;
+		}
 	}
 
 	#region DLL Import
@@ -1197,6 +1785,18 @@ public static class CriAtomExCategory
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomExCategory_SetAisacControlByName(string name, string controlName, float value);
 
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomExCategory_SetReactParameter(string react_name, ref ReactParameter parameter);
+
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern bool criAtomExCategory_GetReactParameter(string react_name, out ReactParameter parameter);
+
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern bool criAtomExCategory_GetAttachedAisacInfoById(uint id, int aisacAttachedIndex, IntPtr aisacInfo);
+
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern bool criAtomExCategory_GetAttachedAisacInfoByName(string name, int aisacAttachedIndex, IntPtr aisacInfo);
+
 	#else
 	private static void criAtomExCategory_SetVolumeByName(string name, float volume) { }
 	private static float criAtomExCategory_GetVolumeByName(string name) { return 1.0f; }
@@ -1216,6 +1816,12 @@ public static class CriAtomExCategory
 	private static bool criAtomExCategory_IsPausedByName(string name) { return false; }
 	private static void criAtomExCategory_SetAisacControlById(int id, ushort controlId, float value) { }
 	private static void criAtomExCategory_SetAisacControlByName(string name, string controlName, float value) { }
+	private static void criAtomExCategory_SetReactParameter(string name, ref ReactParameter parameter) { }
+	private static bool criAtomExCategory_GetReactParameter(string name, out ReactParameter parameter) { parameter = new ReactParameter();
+																										 return false; }
+	private static bool criAtomExCategory_GetAttachedAisacInfoById(uint id, int aisacAttachedIndex, IntPtr aisacInfo) { return false; }
+	private static bool criAtomExCategory_GetAttachedAisacInfoByName(string name, int aisacAttachedIndex, IntPtr aisacInfo) { return false; }
+
 	#endif
 
 	#endregion
@@ -1223,15 +1829,19 @@ public static class CriAtomExCategory
 
 /**
  * <summary>シーケンスデータを制御するためのクラスです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * CRI Atom Craft上で作成したシーケンスデータを使用するためのクラスです。<br/>
+ * </para>
+ * </remarks>
  */
 public static class CriAtomExSequencer
 {
 	/**
 	 * <summary>シーケンスコールバック</summary>
-	 * <param name="eventParamsString">イベントパラメタ文字列</param>
-	 * \par 説明:
+	 * <param name='eventParamsString'>イベントパラメタ文字列</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * シーケンスコールバック関数型です。<br/>
 	 * 引数の文字列には以下の情報が含まれます。<br/>
 	 *  -# イベント位置
@@ -1242,22 +1852,29 @@ public static class CriAtomExSequencer
 	 *  .
 	 * 各情報は指定した区切り文字列を挟みながら一つの文字列として連結されて渡ってきます。<br/>
 	 * 必要なパラメタを文字列からパースしてご利用ください。<br/>
-	 * \sa CriAtomExSequencer::SetEventCallback
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExSequencer::SetEventCallback'/>
 	 */
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void EventCbFunc(string eventParamsString);
 
 	/**
 	 * <summary>シーケンスイベントコールバックの登録</summary>
-	 * <param name="func">シーケンスコールバック関数</param>
-	 * <param name="separator">イベントパラメタ区切り文字列(最大15文字)</param>
-	 * \par 説明:
+	 * <param name='func'>シーケンスコールバック関数</param>
+	 * <param name='separator'>イベントパラメタ区切り文字列(最大15文字)</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * シーケンスデータに埋め込まれたコールバック情報を受け取るコールバック関数を登録します。<br/>
 	 * 登録されたコールバック関数は、コールバックイベントを処理した直後の、アプリケーション
 	 * メインスレッドの更新タイミングで実行されます。<br/>
-	 * \par 注意:
+	 * </para>
+	 * <para header='注意'>
 	 * コールバック関数は1つしか登録できません。<br/>
-	 * 登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。<br/>
+	 * 登録操作を複数回行った場合、既に登録済みのコールバック関数が、
+	 * 後から登録したコールバック関数により上書きされてしまいます。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetEventCallback(CriAtomExSequencer.EventCbFunc func, string separator = "\t")
 	{
@@ -1268,46 +1885,63 @@ public static class CriAtomExSequencer
 
 /**
  * <summary>ビート同期データを利用するためのクラスです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * CRI Atom Craft上で設定したビート同期データを使用するためのクラスです。<br/>
+ * </para>
+ * </remarks>
  */
 public static class CriAtomExBeatSync
 {
 	/**
 	 * <summary>ビート同期位置検出コールバック情報</summary>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ビート同期コールバック、ビート同期情報取得メソッドから情報を取得するための構造体です。<br/>
-	 * \sa CriAtomExBeatSync::SetCallback, CriAtomExPlayback::GetBeatSyncInfo
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExBeatSync::SetCallback'/>
+	 * <seealso cref='CriAtomExPlayback::GetBeatSyncInfo'/>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct Info {
-		public IntPtr	playerHn;			/**< プレーヤハンドル			*/
-		public uint		playbackId;			/**< 再生ID					*/
-		public uint		barCount;			/**< 小節数					*/
-		public uint		beatCount;			/**< 拍数					*/
-		public float	beatProgress;		/**< 拍の進捗(0.0f～1.0f)	*/
-		public float	bpm;				/**< テンポ(拍/分)			*/
+		public IntPtr   playerHn;           /**< プレーヤハンドル           */
+		public uint     playbackId;         /**< 再生ID                   */
+		public uint     barCount;           /**< 小節数                  */
+		public uint     beatCount;          /**< 拍数                 */
+		public float    beatProgress;       /**< 拍の進捗(0.0f～1.0f)  */
+		public float    bpm;                /**< テンポ(拍/分)         */
+		public uint     numBeats;           /**< 拍子数                  */
 	}
 
 	/**
 	 * <summary>ビート同期コールバック</summary>
-	 * <param name="info">ビート同期位置検出情報</param>
-	 * \par 説明:
+	 * <param name='info'>ビート同期位置検出情報</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ビート同期コールバック関数型です。<br/>
-	 * \sa CriAtomExBeatSync::SetCallback
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExBeatSync::SetCallback'/>
 	 */
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void CbFunc(ref Info info);
 
 	/**
 	 * <summary>ビート同期コールバックの登録</summary>
-	 * <param name="func">コールバック関数</param>
-	 * \par 説明:
+	 * <param name='func'>コールバック関数</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * キューに埋め込まれたビート同期位置情報を受け取るコールバック関数を登録します。<br/>
 	 * 登録されたコールバック関数は、コールバックイベントを処理した直後の、アプリケーション
 	 * メインスレッドの更新タイミングで実行されます。<br/>
-	 * \par 注意:
+	 * </para>
+	 * <para header='注意'>
 	 * コールバック関数は1つしか登録できません。<br/>
-	 * 登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
+	 * 登録操作を複数回行った場合、既に登録済みのコールバック関数が、
+	 * 後から登録したコールバック関数により上書きされてしまいます。
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetCallback(CriAtomExBeatSync.CbFunc func)
 	{
@@ -1318,8 +1952,11 @@ public static class CriAtomExBeatSync
 
 /**
  * <summary>Atomサウンドレンダラのバス出力を制御するクラスです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * 本クラスでは、Atomサウンドレンダラのバス出力を操作してボリュームを変更したり、レベルを測定することができます。<br/>
+ * </para>
+ * </remarks>
  */
 public class CriAtomExAsr
 {
@@ -1332,24 +1969,29 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>レベル測定情報</summary>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスのレベル測定情報を取得するための構造体です。<br/>
 	 * CriAtomExAsr::GetBusAnalyzerInfo 関数で利用します。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * 各レベル値は音声データの振幅に対する倍率です（単位はデシベルではありません）。<br/>
 	 * 以下のコードでデシベル表記に変換することができます。<br/>
 	 * dB = 10.0f * log10f(level);
-	 * \sa CriAtomExAsr::GetBusAnalyzerInfo
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::GetBusAnalyzerInfo'/>
 	 */
 	[StructLayout(LayoutKind.Sequential)]
 	public struct BusAnalyzerInfo
 	{
-		public int numChannels;					/**< 有効チャンネル数		*/
+		public int numChannels;                 /**< 有効チャンネル数       */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-		public float[] rmsLevels;				/**< RMSレベル				*/
+		public float[] rmsLevels;               /**< RMSレベル               */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-		public float[] peakLevels;				/**< ピークレベル			*/
+		public float[] peakLevels;              /**< ピークレベル         */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-		public float[] peakHoldLevels;			/**< ピークホールドレベル	*/
+		public float[] peakHoldLevels;          /**< ピークホールドレベル */
 
 		public BusAnalyzerInfo(byte[] data)
 		{
@@ -1378,16 +2020,20 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>レベル測定機能の追加</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * <param name="interval">測定間隔（ミリ秒）</param>
-	 * <param name="peakHoldTime">ピークホールドレベルのホールド時間（ミリ秒）</param>
-	 * \par 説明:
+	 * <param name='busName'>DSPバス名</param>
+	 * <param name='interval'>測定間隔（ミリ秒）</param>
+	 * <param name='peakHoldTime'>ピークホールドレベルのホールド時間（ミリ秒）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスにレベル測定機能を追加し、レベル測定処理を開始します。<br/>
 	 * 本関数を実行後、 CriAtomExAsr::GetBusAnalyzerInfo 関数を実行することで、
 	 * RMSレベル（音圧）、ピークレベル（最大振幅）、ピークホールドレベルを
 	 * 取得することが可能です。
 	 * 複数DSPバスのレベルを計測するには、DSPバスごとに本関数を呼び出す必要があります。
-	 * \sa CriAtomExAsr::GetBusAnalyzerInfo, CriAtomExAsr::DetachBusAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::GetBusAnalyzerInfo'/>
+	 * <seealso cref='CriAtomExAsr::DetachBusAnalyzer'/>
 	 */
 	public static void AttachBusAnalyzer(string busName, int interval, int peakHoldTime)
 	{
@@ -1399,14 +2045,18 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>全てのDSPバスへのレベル測定機能の追加</summary>
-	 * <param name="interval">測定間隔（ミリ秒）</param>
-	 * <param name="peakHoldTime">ピークホールドレベルのホールド時間（ミリ秒）</param>
-	 * \par 説明:
+	 * <param name='interval'>測定間隔（ミリ秒）</param>
+	 * <param name='peakHoldTime'>ピークホールドレベルのホールド時間（ミリ秒）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスにレベル測定機能を追加し、レベル測定処理を開始します。<br/>
 	 * 本関数を実行後、 CriAtomExAsr::GetBusAnalyzerInfo 関数を実行することで、
 	 * RMSレベル（音圧）、ピークレベル（最大振幅）、ピークホールドレベルを
 	 * 取得することが可能です。
-	 * \sa CriAtomExAsr::GetBusAnalyzerInfo, CriAtomExAsr::DetachBusAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::GetBusAnalyzerInfo'/>
+	 * <seealso cref='CriAtomExAsr::DetachBusAnalyzer'/>
 	 */
 	public static void AttachBusAnalyzer(int interval, int peakHoldTime)
 	{
@@ -1420,10 +2070,13 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>レベル測定機能の削除</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * \par 説明:
+	 * <param name='busName'>DSPバス名</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 指定のDSPバスからレベル測定機能を削除します。
-	 * \sa CriAtomExAsr::AttachBusAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::AttachBusAnalyzer'/>
 	 */
 	public static void DetachBusAnalyzer(string busName)
 	{
@@ -1432,9 +2085,12 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>全てのDSPバスからのレベル測定機能の削除</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 全てのDSPバスからレベル測定機能を削除します。
-	 * \sa CriAtomExAsr::AttachBusAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::AttachBusAnalyzer'/>
 	 */
 	public static void DetachBusAnalyzer()
 	{
@@ -1445,11 +2101,14 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>レベル測定結果の取得</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * <param name="info">レベル測定結果</param>
-	 * \par 説明:
+	 * <param name='busName'>DSPバス名</param>
+	 * <param name='info'>レベル測定結果</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスからレベル測定機能の結果を取得します。
-	 * \sa CriAtomExAsr::AttachBusAnalyzer
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::AttachBusAnalyzer'/>
 	 */
 	public static void GetBusAnalyzerInfo(string busName, out BusAnalyzerInfo info)
 	{
@@ -1458,7 +2117,7 @@ public class CriAtomExAsr
 			info = new BusAnalyzerInfo(mem.bytes);
 		}
 	}
-	
+
 	[System.Obsolete("Use CriAtomExAsr.GetBusAnalyzerInfo(string busName, out BusAnalyzerInfo info)")]
 	public static void GetBusAnalyzerInfo(int busId, out BusAnalyzerInfo info)
 	{
@@ -1470,9 +2129,10 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>DSPバスのボリュームの設定</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * <param name="volume">ボリューム値</param>
-	 * \par 説明:
+	 * <param name='busName'>DSPバス名</param>
+	 * <param name='volume'>ボリューム値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスのボリュームを設定します。<br/>
 	 * センドタイプがポストボリューム、ポストパンのセンド先に有効です。<br/>
 	 * <br/>
@@ -1483,12 +2143,14 @@ public class CriAtomExAsr
 	 * 音声が出力されます。<br/>
 	 * 0.0fを指定した場合、音声はミュートされます（無音になります）。<br/>
 	 * ボリュームのデフォルト値はCRI Atom Craftで設定した値です。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetBusVolume(string busName, float volume)
 	{
 		criAtomExAsr_SetBusVolumeByName(busName, volume);
 	}
-	
+
 	[System.Obsolete("Use CriAtomExAsr.SetBusVolume(string busName, float volume)")]
 	public static void SetBusVolume(int busId, float volume)
 	{
@@ -1497,10 +2159,11 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>DSPバスのセンドレベルの設定</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * <param name="sendTo">センド先DSPバス名</param>
-	 * <param name="level">レベル値</param>
-	 * \par 説明:
+	 * <param name='busName'>DSPバス名</param>
+	 * <param name='sendTo'>センド先DSPバス名</param>
+	 * <param name='level'>レベル値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * センド先DSPバスに音声データを送る際のレベルを設定します。<br/>
 	 * <br/>
 	 * レベル値には、0.0f～1.0fの範囲で実数値を指定します。<br/>
@@ -1510,6 +2173,8 @@ public class CriAtomExAsr
 	 * 音声が出力されます。<br/>
 	 * 0.0fを指定した場合、音声はミュートされます（無音になります）。<br/>
 	 * レベルのデフォルト値はCRI Atom Craftで設定した値です。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetBusSendLevel(string busName, string sendTo, float level)
 	{
@@ -1524,11 +2189,12 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>DSPバスのレベル行列の設定</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * <param name="inputChannels">入力チャンネル数</param>
-	 * <param name="outputChannels">出力チャンネル数</param>
-	 * <param name="matrix">レベル行列を1次元に表したレベル値の配列</param>
-	 * \par 説明:
+	 * <param name='busName'>DSPバス名</param>
+	 * <param name='inputChannels'>入力チャンネル数</param>
+	 * <param name='outputChannels'>出力チャンネル数</param>
+	 * <param name='matrix'>レベル行列を1次元に表したレベル値の配列</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスのレベル行列を設定します。<br/>
 	 * センドタイプがポストパンのセンド先に有効です。<br/>
 	 * <br/>
@@ -1545,49 +2211,58 @@ public class CriAtomExAsr
 	 * 0.5fを指定した場合、原音波形の振幅を半分にしたデータと同じ音量（-6dB）で
 	 * 音声が出力されます。<br/>
 	 * 0.0fを指定した場合、音声はミュートされます（無音になります）。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetBusMatrix(string busName, int inputChannels, int outputChannels, float[] matrix)
 	{
 		criAtomExAsr_SetBusMatrixByName(busName, inputChannels, outputChannels, matrix);
 	}
-	
+
 	[System.Obsolete("Use CriAtomExAsr.SetBusMatrix(string busName, int inputChannels, int outputChannels, float[] matrix)")]
 	public static void SetBusMatrix(int busId, int inputChannels, int outputChannels, float[] matrix)
 	{
 		criAtomExAsr_SetBusMatrix(busId, inputChannels, outputChannels, matrix);
 	}
 
-    /**
+	/**
 	 * <summary>DSPバスエフェクトのバイパス設定</summary>
-	 * <param name="busName">バス名</param>
-	 * <param name="effectName">エフェクト名</param>
-	 * <param name="bypass">バイパス設定（true:バイパスを行う, false:バイパスを行わない） </param>
-	 * \par 説明:
-     * エフェクトのバイパス設定を行います。<br/>
-     * バイパス設定されたエフェクトは音声処理の際、スルーされるようになります。<br/>
-     * エフェクトのバイパス設定をする際は、本関数呼び出し前にあらかじめ
-     * DSPバス設定をアタッチしている必要があります。<br/>
-     * どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。<br/>
-     * 指定したバスに指定したIDのエフェクトが存在しない場合、関数は失敗します。<br/>
-     * \attention
-     * 音声再生中にバイパス設定を行うとノイズが発生することがあります。<br/>
+	 * <param name='busName'>バス名</param>
+	 * <param name='effectName'>エフェクト名</param>
+	 * <param name='bypass'>バイパス設定（true:バイパスを行う, false:バイパスを行わない）</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * エフェクトのバイパス設定を行います。<br/>
+	 * バイパス設定されたエフェクトは音声処理の際、スルーされるようになります。<br/>
+	 * エフェクトのバイパス設定をする際は、本関数呼び出し前にあらかじめ
+	 * DSPバス設定をアタッチしている必要があります。<br/>
+	 * どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。<br/>
+	 * 指定したバスに指定したIDのエフェクトが存在しない場合、関数は失敗します。<br/>
+	 * </para>
+	 * <para header='注意'>
+	 * 音声再生中にバイパス設定を行うとノイズが発生することがあります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
-    public static void SetEffectBypass(string busName, string effectName, bool bypass)
-    {
-        criAtomExAsr_SetEffectBypass(busName, effectName, bypass);
-    }
+	public static void SetEffectBypass(string busName, string effectName, bool bypass)
+	{
+		criAtomExAsr_SetEffectBypass(busName, effectName, bypass);
+	}
 
 	/**
 	 * <summary>DSPバスエフェクト動作時パラメータの設定</summary>
-	 * <param name="busName">バス名</param>
-	 * <param name="effectName">エフェクト名</param>
-	 * <param name="parameterIndex">エフェクト動作時パラメータインデックス </param>
-	 * <param name="parameterValue">エフェクト動作時パラメータ設定値 </param>
-	 * \par 説明:
+	 * <param name='busName'>バス名</param>
+	 * <param name='effectName'>エフェクト名</param>
+	 * <param name='parameterIndex'>エフェクト動作時パラメータインデックス</param>
+	 * <param name='parameterValue'>エフェクト動作時パラメータ設定値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスエフェクトの動作時パラメータを設定します。<br/>
 	 * <br/>
 	 * どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。<br/>
 	 * 指定したバスに指定したIDのエフェクトが存在しない場合、関数は失敗します。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void SetEffectParameter(string busName, string effectName, uint parameterIndex, float parameterValue)
 	{
@@ -1597,14 +2272,17 @@ public class CriAtomExAsr
 
 	/**
 	 * <summary>DSPバスエフェクト動作時パラメータの取得</summary>
-	 * <param name="busName">バス名</param>
-	 * <param name="effectName">エフェクト名</param>
-	 * <param name="parameterIndex">エフェクト動作時パラメータインデックス </param>
-	 * \par 説明:
+	 * <param name='busName'>バス名</param>
+	 * <param name='effectName'>エフェクト名</param>
+	 * <param name='parameterIndex'>エフェクト動作時パラメータインデックス</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバスエフェクトの動作時パラメータ値を取得します。<br/>
 	 * <br/>
 	 * どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。<br/>
 	 * 指定したバスに指定したIDのエフェクトが存在しない場合、関数は失敗します。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static float GetEffectParameter(string busName, string effectName, uint parameterIndex)
 	{
@@ -1612,44 +2290,56 @@ public class CriAtomExAsr
 	}
 
 
-    /**
-     * <summary>ユーザ定義エフェクトインターフェースの登録</summary>
-     * <param name="afx_interface">ユーザ定義エフェクトのバージョン情報付きインターフェース</param>
+	/**
+	 * <summary>ユーザ定義エフェクトインターフェースの登録</summary>
+	 * <param name='afx_interface'>ユーザ定義エフェクトのバージョン情報付きインターフェース</param>
 	 * <returns>登録に成功したか？（true:登録に成功した, false:登録に失敗した）</returns>
-     * \par 説明:
-     * ユーザ定義エフェクトインターフェースをASRに登録します。<br>
-     * ユーザ定義エフェクトインターフェースを登録したエフェクトはDSPバス設定をアタッチする際に使用できるようになります。<br>
-     * 以下の条件に該当する場合は、ユーザ定義エフェクトインターフェースの登録に失敗し、エラーコールバックが返ります:
-     *  - 同じエフェクト名を持つユーザ定義エフェクトインターフェースが既に登録されている
-     *  - Atomが使用しているユーザ定義エフェクトインターフェースと異なる
-     *  - ユーザ定義エフェクトインターフェースの登録数上限に達した
-     * \par 注意:
-     * 本APIはCRI ADX2 Audio Effect Plugin SDKでユーザ定義エフェクトを登録するときのみ使用可能です。<br>
-     * 本関数を呼び出すタイミングは、必ず CriAtomPlugin::InitializeLibrary の呼び出しから CriAtomEx::AttachDspBusSetting の呼び出しまでの間にしてください。<br>
-     * 一度登録を行ったインターフェースのポインタは、 CriAtomEx::DetachDspBusSetting が呼び出されるまで参照され続けます。<br>
-     * ライブラリ使用中にインターフェースの登録解除を行う場合は、 CriAtomExAsr::UnregisterEffectInterface を使用して下さい。
-     * \sa CriAtomExAsr::UnregisterEffectInterface, CriAtomEx::AttachDspBusSetting, CriAtomEx::DetachDspBusSetting
-     */
-    static public bool RegisterEffectInterface(IntPtr afx_interface)
-    {
-        return criAtomExAsr_RegisterEffectInterface(afx_interface);
-    }
+	 * <remarks>
+	 * <para header='説明'>
+	 * ユーザ定義エフェクトインターフェースをASRに登録します。<br/>
+	 * ユーザ定義エフェクトインターフェースを登録したエフェクトはDSPバス設定をアタッチする際に使用できるようになります。<br/>
+	 * 以下の条件に該当する場合は、ユーザ定義エフェクトインターフェースの登録に失敗し、エラーコールバックが返ります:
+	 *  - 同じエフェクト名を持つユーザ定義エフェクトインターフェースが既に登録されている
+	 *  - Atomが使用しているユーザ定義エフェクトインターフェースと異なる
+	 *  - ユーザ定義エフェクトインターフェースの登録数上限に達した
+	 * </para>
+	 * <para header='注意'>
+	 * 本APIはCRI ADX2 Audio Effect Plugin SDKでユーザ定義エフェクトを登録するときのみ使用可能です。<br/>
+	 * 本関数を呼び出すタイミングは、必ず CriAtomPlugin::InitializeLibrary の呼び出しから
+	 * CriAtomEx::AttachDspBusSetting の呼び出しまでの間にしてください。<br/>
+	 * 一度登録を行ったインターフェースのポインタは、 CriAtomEx::DetachDspBusSetting が呼び出されるまで参照され続けます。<br/>
+	 * ライブラリ使用中にインターフェースの登録解除を行う場合は、 CriAtomExAsr::UnregisterEffectInterface を使用して下さい。
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::UnregisterEffectInterface'/>
+	 * <seealso cref='CriAtomEx::AttachDspBusSetting'/>
+	 * <seealso cref='CriAtomEx::DetachDspBusSetting'/>
+	 */
+	static public bool RegisterEffectInterface(IntPtr afx_interface)
+	{
+		return criAtomExAsr_RegisterEffectInterface(afx_interface);
+	}
 
-    /**
-     * <summary>ユーザ定義エフェクトインターフェースの登録解除</summary>
-     * <param name="afx_interface">ユーザ定義エフェクトのバージョン情報付きインターフェース</param>
-     * \par 説明:
-     * ユーザ定義エフェクトインターフェースの登録を解除します。<br>
-     * 登録を解除したエフェクトはDSPバス設定をアタッチする際に使用できなくなります。<br>
-     * 登録処理を行っていないユーザ定義エフェクトインターフェースの登録を解除することはできません（エラーコールバックが返ります）。
-     * \par 注意:
-     * 本APIはCRI ADX2 Audio Effect Plugin SDKでエフェクトの登録解除をするときのみ使用可能です。
-     * \sa CriAtomExAsr::RegisterEffectInterface
-     */
-    static public void UnregisterEffectInterface(IntPtr afx_interface)
-    {
-    criAtomExAsr_UnregisterEffectInterface(afx_interface);
-    }
+	/**
+	 * <summary>ユーザ定義エフェクトインターフェースの登録解除</summary>
+	 * <param name='afx_interface'>ユーザ定義エフェクトのバージョン情報付きインターフェース</param>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ユーザ定義エフェクトインターフェースの登録を解除します。<br/>
+	 * 登録を解除したエフェクトはDSPバス設定をアタッチする際に使用できなくなります。<br/>
+	 * 登録処理を行っていないユーザ定義エフェクトインターフェースの登録を
+	 * 解除することはできません（エラーコールバックが返ります）。
+	 * </para>
+	 * <para header='注意'>
+	 * 本APIはCRI ADX2 Audio Effect Plugin SDKでエフェクトの登録解除をするときのみ使用可能です。
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAsr::RegisterEffectInterface'/>
+	 */
+	static public void UnregisterEffectInterface(IntPtr afx_interface)
+	{
+	criAtomExAsr_UnregisterEffectInterface(afx_interface);
+	}
 
 	#region DLL Import
 	#if !CRIWARE_ENABLE_HEADLESS_MODE
@@ -1666,7 +2356,7 @@ public class CriAtomExAsr
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomExAsr_DetachBusAnalyzer(int busNo);
-	
+
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomExAsr_GetBusAnalyzerInfoByName(
 		string busName, IntPtr info);
@@ -1707,10 +2397,10 @@ public class CriAtomExAsr
 		[MarshalAs(UnmanagedType.LPArray)] float[] matrix
 		);
 
-    [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
-    private static extern void criAtomExAsr_SetEffectBypass(string busName, string effectName, bool bypass);
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomExAsr_SetEffectBypass(string busName, string effectName, bool bypass);
 
-    [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomExAsr_UpdateEffectParameters(string busName, string effectName);
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
@@ -1719,11 +2409,11 @@ public class CriAtomExAsr
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern float criAtomExAsr_GetEffectParameter(string busName, string effectName, uint parameterIndex);
 
-    [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
-    private static extern bool criAtomExAsr_RegisterEffectInterface(IntPtr afx_interface);
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern bool criAtomExAsr_RegisterEffectInterface(IntPtr afx_interface);
 
-    [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
-    private static extern void criAtomExAsr_UnregisterEffectInterface(IntPtr afx_interface);
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomExAsr_UnregisterEffectInterface(IntPtr afx_interface);
 
 	#else
 	private static void criAtomExAsr_AttachBusAnalyzerByName(
@@ -1755,8 +2445,8 @@ public class CriAtomExAsr
 	private static void criAtomExAsr_UpdateEffectParameters(string busName, string effectName) { }
 	private static void criAtomExAsr_SetEffectParameter(string busName, string effectName, uint parameterIndex, float parameterValue) { }
 	private static float criAtomExAsr_GetEffectParameter(string busName, string effectName, uint parameterIndex) { return 0.0f; }
-    private static bool criAtomExAsr_RegisterEffectInterface(IntPtr afx_interface) { return true; } // fixme
-    private static void criAtomExAsr_UnregisterEffectInterface(IntPtr afx_interface) { }
+	private static bool criAtomExAsr_RegisterEffectInterface(IntPtr afx_interface) { return true; } // fixme
+	private static void criAtomExAsr_UnregisterEffectInterface(IntPtr afx_interface) { }
 	#endif
 
 	#endregion
@@ -1764,56 +2454,70 @@ public class CriAtomExAsr
 
 /**
  * <summary>音声再生の遅延推測値を取得するためのクラスです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * 本クラスでは、Atomサウンドレンダラのバス出力を操作してボリュームを変更したり、
  * レベルを測定することができます。<br/>
+ * </para>
+ * </remarks>
  */
 public static class CriAtomExLatencyEstimator
 {
 	/**
 	 * <summary>ステータス</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 遅延推測処理の状態を示す値です。<br/>
 	 * ::CriAtomExLatencyEstimator::GetCurrentInfo 関数で取得可能です。<br/>
 	 * <br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public enum Status {
-		Stop,						/**<初期状態/停止状態	*/
-		Processing,					/**<遅延時間を推測中	*/
-		Done,						/**<遅延時間の推測完了	*/
-		Error,						/**<エラー				*/
+		Stop,                       /**< 初期状態/停止状態  */
+		Processing,                 /**< 遅延時間を推測中   */
+		Done,                       /**< 遅延時間の推測完了    */
+		Error,                      /**< エラー              */
 	}
 
 	/**
 	 * <summary>ステータス</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 遅延推測処理の情報を表現する構造体です。<br/>
 	 * 推測モジュールの実行状態と、推測結果のレイテンシ(推測値)を保持します。単位はミリ秒です。
 	 * ::CriAtomExLatencyEstimator::GetCurrentInfo 関数で取得可能です。<br/>
 	 * <br/>
+	 * </para>
+	 * </remarks>
 	 */
 	[StructLayout(LayoutKind.Sequential)]
 	public struct EstimatorInfo
 	{
-		public Status status;	/**<遅延推測モジュールの状態	*/
-		public uint estimated_latency;	/**<推測結果のレイテンシ（単位：ミリ秒） */
+		public Status status;   /**< 遅延推測モジュールの状態   */
+		public uint estimated_latency;  /**< 推測結果のレイテンシ（単位：ミリ秒） */
 	}
 
 	/**
 	 * <summary>遅延推測処理の初期化</summary>
-	 * \par 呼び出し条件：
+	 * <remarks>
+	 * <para header='呼び出し条件'>
 	 * 本関数はプラグインの初期化後に呼び出してください。
-	 * \par 説明:
+	 * </para>
+	 * <para header='説明'>
 	 * 音声再生の遅延推測処理を開始します。<br/>
 	 * <br/>
 	 * CriAtomExLatencyEstimatorクラスを使用して音声の遅延推測値を取得する場合、
 	 * 必ず本関数で初期化を行う必要があります。<br/>
 	 * 推測値が取得できた、あるいはエラーが発生した場合は、CriAtomExLatencyEstimator.Finalize
 	 * 関数を呼び出してください。<br/>
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * 本関数の多重呼び出しを許容しますが、呼び出し回数を内部でカウントしており、
 	 * 実際の初期化処理が実行されるのは、最初の呼び出しの時だけになります。<br/>
-	 * \sa CriAtomExLatencyEstimator.FinalizeModule
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExLatencyEstimator.FinalizeModule'/>
 	 */
 	public static void InitializeModule()
 	{
@@ -1824,16 +2528,20 @@ public static class CriAtomExLatencyEstimator
 
 	/**
 	 * <summary>遅延推測処理の終了</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 音声再生の遅延推測処理を終了します。<br/>
 	 * <br/>
 	 * 遅延推測値の取得が完了したら、本関数を呼び出し推測処理を終了させてください。
 	 * また、エラーが発生した場合や、推測処理を中断させる場合にも本関数を呼び出してください。
-	 * \par 備考:
+	 * </para>
+	 * <para header='備考'>
 	 * CriAtomExLatencyEstimator.InitializeModule関数を複数回呼び出した場合、内部で呼び出し回数（参照カウント）が
 	 * インクリメントされます。参照カウントが0になるまで終了処理は呼び出されませんので、複数回初期化を行った
 	 * 場合には参照カウントが0になるまで本関数を呼び出してください。
-	 * \sa CriAtomExLatencyEstimator.InitializeModule
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExLatencyEstimator.InitializeModule'/>
 	 */
 	public static void FinalizeModule()
 	{
@@ -1844,19 +2552,23 @@ public static class CriAtomExLatencyEstimator
 
 	/**
 	 * <summary>遅延推測の情報取得</summary>
-	 * \par 説明：
-	 * 遅延推測処理の現在の情報を取得します。<br>
-	 * 取得できる情報は「遅延推測器の状態」「推測遅延時間(ミリ秒)」の２つです。<br>
-	 * <br>
-	 * 状態が Status.Done になった時に取得できた estimated_latency が、推測値です。<br>
+	 * <remarks>
+	 * <para header='説明'>
+	 * 遅延推測処理の現在の情報を取得します。<br/>
+	 * 取得できる情報は「遅延推測器の状態」「推測遅延時間(ミリ秒)」の２つです。<br/>
+	 * <br/>
+	 * 状態が Status.Done になった時に取得できた estimated_latency が、推測値です。<br/>
 	 * なお、遅延推測値はすぐには取得できません。Status.Processsingから Status.Doneになるまで、
 	 * 数十～数百ミリ秒ほどかかります。（必要な時間はAtomの初期化設定や端末により異なります）
-	 * <br>
+	 * <br/>
 	 * Status.Done以外の時の estmated_latency の値は無効値です。必ず Status.Done であることを
-	 * 確認してから estimated_latency の値を記録してください。<br>
-	 * <br>
+	 * 確認してから estimated_latency の値を記録してください。<br/>
+	 * <br/>
 	 * 本関数を呼び出して推測値を取得したら、riAtomExLatencyEstimator.Finalizeで処理を終了してください。
-	 * \sa CriAtomExLatencyEstimator.InitializeModule CriAtomExLatencyEstimator.FinalizeModule
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExLatencyEstimator.InitializeModule'/>
+	 * <seealso cref='CriAtomExLatencyEstimator.FinalizeModule'/>
 	 */
 	public static CriAtomExLatencyEstimator.EstimatorInfo GetCurrentInfo()
 	{
@@ -1900,4 +2612,3 @@ public static class CriAtomExLatencyEstimator
  */
 
 /* --- end of file --- */
-

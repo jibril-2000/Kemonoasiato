@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 9125880562785448579}
   - component: {fileID: 9125880562785448578}
   - component: {fileID: 9125880562785448637}
+  - component: {fileID: 1043433050497751730}
+  - component: {fileID: 8645940976809384350}
   m_Layer: 0
   m_Name: Net_Close
   m_TagString: Untagged
@@ -190,6 +192,40 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5057316, y: 6.347384}
   m_EdgeRadius: 0
+--- !u!114 &1043433050497751730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125880562785448633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e2c18dfc865784c9bd76e51ce61626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8645940976809384350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125880562785448633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: GameOver
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &9139586323185728842
 GameObject:
   m_ObjectHideFlags: 0

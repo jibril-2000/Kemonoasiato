@@ -1,4 +1,3 @@
-
 ﻿/****************************************************************************
  *
  * Copyright (c) 2011 CRI Middleware Co., Ltd.
@@ -10,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+[Obsolete("Class CriAtomAcfInfo is obsolete and will be removed in the future")]
 public partial class CriAtomAcfInfo
 {
 	#region Variables
@@ -17,6 +17,7 @@ public partial class CriAtomAcfInfo
 	#endregion
 
 	#region InfoBase
+	[Obsolete("Class CriAtomAcfInfo.InfoBase is obsolete and will be removed in the future")]
 	[Serializable]
 	public class InfoBase : System.Object
 	{
@@ -27,6 +28,7 @@ public partial class CriAtomAcfInfo
 	#endregion
 
 	#region AcfInfo
+	[Obsolete("Class CriAtomAcfInfo.AcfInfo is obsolete and will be removed in the future")]
 	[Serializable]
 	public class AcfInfo : InfoBase
 	{
@@ -50,7 +52,8 @@ public partial class CriAtomAcfInfo
 			this.dspBusSetting = _dspBusSetting;
 		}
 
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
+		[Obsolete("Class CriAtomAcfInfo.AcfInfo is obsolete. Its member methods will be unvailable in the future")]
 		public AcbInfo[] GetAcbInfoList(bool foreceReload, string searchPath)
 		{
 			if (tmpAcbInfoList.Count == 0 || foreceReload){
@@ -91,7 +94,7 @@ public partial class CriAtomAcfInfo
 							if (found == false){
 								acbInfo.cueInfoList.Add(tmpCueInfo);
 							} else {
-								//	inGame時のサブシーケンスの場合あり
+								//  inGame時のサブシーケンスの場合あり
 								//Debug.Log("already exists in the dictionay id:" + cueInfo.id.ToString() +"name:" + cueInfo.name);
 							}
 						}
@@ -104,7 +107,7 @@ public partial class CriAtomAcfInfo
 				}
 			}
 
-			//	directory
+			//  directory
 			string[] directories = System.IO.Directory.GetDirectories(searchPath);
 			foreach(string directory in directories){
 				GetAcbInfoListCore(directory, ref acbIndex);
@@ -112,10 +115,11 @@ public partial class CriAtomAcfInfo
 		}
 #endif
 
-    } /* end of class */
+	} /* end of class */
 	#endregion
 
 	#region AcbInfo
+	[Obsolete("Class CriAtomAcfInfo.AcbInfo is obsolete and will be removed in the future")]
 	[Serializable]
 	public class AcbInfo : InfoBase
 	{
@@ -138,6 +142,7 @@ public partial class CriAtomAcfInfo
 	#endregion
 
 	#region CueInfo
+	[Obsolete("Class CriAtomAcfInfo.CueInfo is obsolete and will be removed in the future")]
 	[Serializable]
 	public class CueInfo : InfoBase
 	{
@@ -151,6 +156,7 @@ public partial class CriAtomAcfInfo
 	#endregion
 
 
+	[Obsolete("Class CriAtomAcfInfo is obsolete. Its methods will be unvailable in the future")]
 	public static bool GetCueInfo(ref AcfInfo acfInfo, bool forceReload, string searchPath)
 	{
 		/* もしACFInfoが無い場合、acfがあるか検索 */

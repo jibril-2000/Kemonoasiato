@@ -18,19 +18,17 @@ public class TruckAnim : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsTag("TruckUP"))
         {
-            //animator.SetBool("Truck", false);
+            animator.SetBool("Truck", false);
             return;
         }
     }
 
-    void OnCollisionStay2D(Collision2D other)
+     private void OnMouseOver()
     {
-        if (other.gameObject.CompareTag("Namakemono"))
+        if (Input.GetMouseButtonDown(1))
         {
-            if (Input.GetMouseButton(1))
-            {
-                animator.SetBool("Truck", true);
-            }
+            animator.SetBool("Truck", true);
         }
     }
 }
+

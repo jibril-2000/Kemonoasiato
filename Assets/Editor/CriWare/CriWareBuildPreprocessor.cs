@@ -1,4 +1,3 @@
-
 ﻿/****************************************************************************
  *
  * Copyright (c) 2017 CRI Middleware Co., Ltd.
@@ -22,7 +21,7 @@ public class CriWareBuildPreprocessor : ScriptableObject,
 #endif
 {
 	private static string prefsFilePath = "Assets/Editor/CriWare/CriWareBuildPreprocessorPrefs.asset";
-	public bool muteOtherAudio	= true;
+	public bool muteOtherAudio  = true;
 
 	public int callbackOrder { get { return 0; } }
 
@@ -102,6 +101,5 @@ public class CriWareBuildPreprocessor : ScriptableObject,
 }
 
 #endif
-
 
 /* end of file */

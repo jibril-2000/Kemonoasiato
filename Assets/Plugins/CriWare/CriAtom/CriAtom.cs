@@ -1,4 +1,3 @@
-
 ﻿/****************************************************************************
  *
  * Copyright (c) 2011 CRI Middleware Co., Ltd.
@@ -8,6 +7,10 @@
 /*---------------------------
  * Force Load Data with Async Method Defines
  *---------------------------*/
+#if UNITY_WEBGL
+	#define CRIWARE_FORCE_LOAD_ASYNC
+#endif
+
 #if !(!UNITY_EDITOR && UNITY_IOS && ENABLE_MONO)
 	#define CRIWARE_SUPPORT_NATIVE_CALLBACK
 #endif
@@ -46,20 +49,21 @@ public static class CriAtomPlugin
 
 	public static bool isInitialized { get { return initializationCount > 0; } }
 
-    private static List<IntPtr> effectInterfaceList = null;
-    public static bool GetAudioEffectInterfaceList(out List<IntPtr> effect_interface_list) {
-        if (CriAtomPlugin.IsLibraryInitialized() == true) {
-            effect_interface_list = null;
-            return false;
-        }
-        if (effectInterfaceList == null) {
-            effectInterfaceList = new List<IntPtr>();
-        }
-        effect_interface_list = effectInterfaceList;
-        return true;
-    }
+	private static List<IntPtr> effectInterfaceList = null;
+	public static bool GetAudioEffectInterfaceList(out List<IntPtr> effect_interface_list)
+	{
+		if (CriAtomPlugin.IsLibraryInitialized() == true) {
+			effect_interface_list = null;
+			return false;
+		}
+		if (effectInterfaceList == null) {
+			effectInterfaceList = new List<IntPtr>();
+		}
+		effect_interface_list = effectInterfaceList;
+		return true;
+	}
 
-    public static void SetConfigParameters(int max_virtual_voices,
+	public static void SetConfigParameters(int max_virtual_voices,
 		int max_voice_limit_groups, int max_categories,
 		int max_sequence_events_per_frame, int max_beatsync_callbacks_per_frame,
 		int num_standard_memory_voices, int num_standard_streaming_voices,
@@ -68,8 +72,8 @@ public static class CriAtomPlugin
 		bool uses_in_game_preview, float server_frequency,
 		int max_parameter_blocks,  int categories_per_playback,
 		int num_buses, bool vr_mode)
-    {
-        criAtomUnity_SetConfigParameters(max_virtual_voices,
+	{
+		criAtomUnity_SetConfigParameters(max_virtual_voices,
 			max_voice_limit_groups, max_categories, 
 			max_sequence_events_per_frame, max_beatsync_callbacks_per_frame,
 			num_standard_memory_voices, num_standard_streaming_voices,
@@ -94,12 +98,23 @@ public static class CriAtomPlugin
 	}
 
 	public static void SetConfigAdditionalParameters_ANDROID(int num_low_delay_memory_voices, int num_low_delay_streaming_voices,
-															 int sound_buffering_time,		  int sound_start_buffering_time,
-                                                             IntPtr android_context)
+															 int sound_buffering_time,        int sound_start_buffering_time,
+															 bool use_fast_mixer,             bool use_aaudio)
 	{
 		criAtomUnity_SetConfigAdditionalParameters_ANDROID(num_low_delay_memory_voices, num_low_delay_streaming_voices,
-														   sound_buffering_time,		sound_start_buffering_time,
-														   android_context);
+														   sound_buffering_time,        sound_start_buffering_time,
+														   use_fast_mixer);
+#if !UNITY_EDITOR && UNITY_ANDROID
+		if (use_fast_mixer == true) {
+			IntPtr android_context = IntPtr.Zero;
+			using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+			using (AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity")) {
+				android_context = activity.GetRawObject();
+				criAtomUnity_ApplyHardwareProperty_ANDROID(android_context);
+			}
+		}
+		criAtomUnity_EnableAAudio_ANDROID(use_aaudio);
+#endif
 	}
 
 	public static void SetMaxSamplingRateForStandardVoicePool(int sampling_rate_for_memory, int sampling_rate_for_streaming)
@@ -165,11 +180,11 @@ public static class CriAtomPlugin
 		CriAtomListener.CreateSharedNativeListener();
 	}
 
-    public static bool IsLibraryInitialized()
-    {
-        /* ライブラリが初期化済みかチェック */
-        return criAtomUnity_IsInitialized();
-    }
+	public static bool IsLibraryInitialized()
+	{
+		/* ライブラリが初期化済みかチェック */
+		return criAtomUnity_IsInitialized();
+	}
 
 	public static void FinalizeLibrary()
 	{
@@ -194,11 +209,11 @@ public static class CriAtomPlugin
 		/* 未破棄のDisposableを破棄 */
 		CriDisposableObjectManager.CallOnModuleFinalization(CriDisposableObjectManager.ModuleType.Atom);
 
-        /* ユーザエフェクトインタフェースのリストをクリア */
-        if (effectInterfaceList != null) {
-            effectInterfaceList.Clear();
-            effectInterfaceList = null;
-        }
+		/* ユーザエフェクトインタフェースのリストをクリア */
+		if (effectInterfaceList != null) {
+			effectInterfaceList.Clear();
+			effectInterfaceList = null;
+		}
 
 		/* ライブラリの終了 */
 		CriAtomPlugin.criAtomUnity_Finalize();
@@ -255,17 +270,17 @@ public static class CriAtomPlugin
 
 	#region DLL Import
 	#if !CRIWARE_ENABLE_HEADLESS_MODE
-    [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
-    private static extern void criAtomUnity_SetConfigParameters(int max_virtual_voices,
-        int max_voice_limit_groups, int max_categories,
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomUnity_SetConfigParameters(int max_virtual_voices,
+		int max_voice_limit_groups, int max_categories,
 		int max_sequence_events_per_frame, int max_beatsync_callbacks_per_frame,
-        int num_standard_memory_voices, int num_standard_streaming_voices,
-        int num_hca_mx_memory_voices, int num_hca_mx_streaming_voices,
-        int output_sampling_rate, int num_asr_output_channels,
-        bool uses_in_game_preview, float server_frequency,
-        int max_parameter_blocks, int categories_per_playback,
-        int num_buses, bool use_ambisonics,
-        IntPtr spatializer_core_interface);
+		int num_standard_memory_voices, int num_standard_streaming_voices,
+		int num_hca_mx_memory_voices, int num_hca_mx_streaming_voices,
+		int output_sampling_rate, int num_asr_output_channels,
+		bool uses_in_game_preview, float server_frequency,
+		int max_parameter_blocks, int categories_per_playback,
+		int num_buses, bool use_ambisonics,
+		IntPtr spatializer_core_interface);
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomUnity_SetConfigAdditionalParameters_PC(long buffering_time_pc);
@@ -275,14 +290,22 @@ public static class CriAtomPlugin
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomUnity_SetConfigAdditionalParameters_ANDROID(int num_low_delay_memory_voices, int num_low_delay_streaming_voices,
-																				  int sound_buffering_time,		   int sound_start_buffering_time,
-																				  IntPtr android_context);
+																				  int sound_buffering_time,        int sound_start_buffering_time,
+																				  bool apply_hw_property);
+
+	#if !UNITY_EDITOR && UNITY_ANDROID
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomUnity_ApplyHardwareProperty_ANDROID(IntPtr android_context);
+
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	private static extern void criAtomUnity_EnableAAudio_ANDROID(bool flag);
+	#endif
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomUnity_Initialize();
 
-    [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
-    public static extern bool criAtomUnity_IsInitialized();
+	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
+	public static extern bool criAtomUnity_IsInitialized();
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomUnity_Finalize();
@@ -338,8 +361,12 @@ public static class CriAtomPlugin
 	private static void criAtomUnity_SetConfigAdditionalParameters_PC(long buffering_time_pc) { }
 	private static void criAtomUnity_SetConfigAdditionalParameters_IOS(uint buffering_time_ios, bool override_ipod_music_ios) { }
 	private static void criAtomUnity_SetConfigAdditionalParameters_ANDROID(int num_low_delay_memory_voices, int num_low_delay_streaming_voices,
-																			int sound_buffering_time,		   int sound_start_buffering_time,
-																			IntPtr android_context) { }
+																			int sound_buffering_time,          int sound_start_buffering_time,
+																			bool apply_hw_property) { }
+	#if !UNITY_EDITOR && UNITY_ANDROID
+	private static void criAtomUnity_ApplyHardwareProperty_ANDROID(IntPtr android_context) { }
+	private static void criAtomUnity_EnableAAudio_ANDROID(bool flag) { }
+	#endif
 	private static bool _dummyInitialized = false;
 	private static void criAtomUnity_Initialize() { _dummyInitialized = true; }
 	public static bool criAtomUnity_IsInitialized() { return _dummyInitialized; }
@@ -373,20 +400,23 @@ public class CriAtomCueSheet
 	public CriAtomExAcb acb;
 	public CriAtomExAcbLoader.Status loaderStatus = CriAtomExAcbLoader.Status.Stop;
 	public bool IsLoading { get { return loaderStatus == CriAtomExAcbLoader.Status.Loading; } }
-    public bool IsError { get { return (loaderStatus == CriAtomExAcbLoader.Status.Error) || (!IsLoading && acb == null); } }
+	public bool IsError { get { return (loaderStatus == CriAtomExAcbLoader.Status.Error) || (!IsLoading && acb == null); } }
 }
 
 /// \addtogroup CRIATOM_UNITY_COMPONENT
 /// @{
 /**
  * <summary>サウンド再生全体を制御するためのコンポーネントです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * 各シーンにひとつ用意しておく必要があります。<br/>
  * UnityEditor上でCRI Atomウィンドウを使用して CriAtomSource を作成した場合、
  * 「CRIWARE」という名前を持つオブジェクトとして自動的に作成されます。通常はユーザーが作成する必要はありません。
+ * </para>
+ * </remarks>
  */
 [AddComponentMenu("CRIWARE/CRI Atom")]
-public class CriAtom : MonoBehaviour
+public class CriAtom : CriMonoBehaviour
 {
 
 	/* @cond DOXYGEN_IGNORE */
@@ -412,17 +442,21 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>DSPバス設定のアタッチ</summary>
-	 * <param name="settingName">DSPバス設定の名前</param>
-	 * \par 説明:
+	 * <param name='settingName'>DSPバス設定の名前</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバス設定からDSPバスを構築してサウンドレンダラにアタッチします。<br/>
 	 * 現在設定中のDSPバス設定を切り替える場合は、一度デタッチしてから再アタッチしてください。
 	 * <br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は完了復帰型の関数です。<br/>
 	 * 本関数を実行すると、しばらくの間Atomライブラリのサーバ処理がブロックされます。<br/>
 	 * 音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、
 	 * 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。<br/>
-	 * \sa CriAtom::DetachDspBusSetting
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtom::DetachDspBusSetting'/>
 	 */
 	public static void AttachDspBusSetting(string settingName)
 	{
@@ -436,15 +470,19 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>DSPバス設定のデタッチ</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * DSPバス設定をデタッチします。<br/>
 	 * <br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は完了復帰型の関数です。<br/>
 	 * 本関数を実行すると、しばらくの間Atomライブラリのサーバ処理がブロックされます。<br/>
 	 * 音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、
 	 * 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。<br/>
-	 * \sa CriAtom::DetachDspBusSetting
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtom::DetachDspBusSetting'/>
 	 */
 	public static void DetachDspBusSetting()
 	{
@@ -454,10 +492,13 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>キューシートの取得</summary>
-	 * <param name="name">キューシート名</param>
+	 * <param name='name'>キューシート名</param>
 	 * <returns>キューシートオブジェクト</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 引数に指定したキューシート名を元に登録済みのキューシートオブジェクトを取得します。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static CriAtomCueSheet GetCueSheet(string name)
 	{
@@ -466,12 +507,13 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>キューシートの追加</summary>
-	 * <param name="name">キューシート名</param>
-	 * <param name="acbFile">ACBファイルパス</param>
-	 * <param name="awbFile">AWBファイルパス</param>
-	 * <param name="binder">バインダオブジェクト(オプション)</param>
+	 * <param name='name'>キューシート名</param>
+	 * <param name='acbFile'>ACBファイルパス</param>
+	 * <param name='awbFile'>AWBファイルパス</param>
+	 * <param name='binder'>バインダオブジェクト(オプション)</param>
 	 * <returns>キューシートオブジェクト</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 引数に指定したファイルパス情報を元にキューシートの追加を行います。<br/>
 	 * 同時に複数のキューシートを登録することが可能です。<br/>
 	 * <br/>
@@ -481,6 +523,8 @@ public class CriAtom : MonoBehaviour
 	 * CPKファイルにパッキングされたACBファイルとAWBファイルからキューシートを追加する場合は、
 	 * binder引数にCPKをバインドしたバインダを指定してください。<br/>
 	 * なお、バインダ機能はADX2LEではご利用になれません。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static CriAtomCueSheet AddCueSheet(string name, string acbFile, string awbFile, CriFsBinder binder = null)
 	{
@@ -497,13 +541,14 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>非同期でのキューシートの追加</summary>
-	 * <param name="name">キューシート名</param>
-	 * <param name="acbFile">ACBファイルパス</param>
-	 * <param name="awbFile">AWBファイルパス</param>
-	 * <param name="binder">バインダオブジェクト(オプション)</param>
-	 * <param name="loadAwbOnMemory">AWBファイルをメモリ上にロードするか(オプション)</param>
+	 * <param name='name'>キューシート名</param>
+	 * <param name='acbFile'>ACBファイルパス</param>
+	 * <param name='awbFile'>AWBファイルパス</param>
+	 * <param name='binder'>バインダオブジェクト(オプション)</param>
+	 * <param name='loadAwbOnMemory'>AWBファイルをメモリ上にロードするか(オプション)</param>
 	 * <returns>キューシートオブジェクト</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 引数に指定したファイルパス情報を元に、非同期でキューシートの追加を行います。<br/>
 	 * 同時に複数のキューシートを登録することが可能です。<br/>
 	 * <br/>
@@ -519,6 +564,8 @@ public class CriAtom : MonoBehaviour
 	 * <br/>
 	 * loadAwbOnMemory が false の場合、AWBファイルのヘッダ部分のみをメモリ上にロードしストリーム再生を行います。<br/>
 	 * loadAwbOnMemory を true に設定すると、AWBファイル全体をメモリ上にロードするため実質メモリ再生になります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static CriAtomCueSheet AddCueSheetAsync(string name, string acbFile, string awbFile, CriFsBinder binder = null, bool loadAwbOnMemory = false)
 	{
@@ -534,12 +581,13 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>キューシートの追加（メモリからの読み込み）</summary>
-	 * <param name="name">キューシート名</param>
-	 * <param name="acbData">ACBデータ</param>
-	 * <param name="awbFile">AWBファイルパス</param>
-	 * <param name="awbBinder">AWB用バインダオブジェクト(オプション)</param>
+	 * <param name='name'>キューシート名</param>
+	 * <param name='acbData'>ACBデータ</param>
+	 * <param name='awbFile'>AWBファイルパス</param>
+	 * <param name='awbBinder'>AWB用バインダオブジェクト(オプション)</param>
 	 * <returns>キューシートオブジェクト</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 引数に指定したデータとファイルパス情報からキューシートの追加を行います。<br/>
 	 * 同時に複数のキューシートを登録することが可能です。<br/>
 	 * <br/>
@@ -549,6 +597,8 @@ public class CriAtom : MonoBehaviour
 	 * CPKファイルにパッキングされたAWBファイルからキューシートを追加する場合は、
 	 * awbBinder引数にCPKをバインドしたバインダを指定してください。<br/>
 	 * なお、バインダ機能はADX2LEではご利用になれません。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static CriAtomCueSheet AddCueSheet(string name, byte[] acbData, string awbFile, CriFsBinder awbBinder = null)
 	{
@@ -565,13 +615,14 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>非同期でのキューシートの追加（メモリからの読み込み）</summary>
-	 * <param name="name">キューシート名</param>
-	 * <param name="acbData">ACBデータ</param>
-	 * <param name="awbFile">AWBファイルパス</param>
-	 * <param name="awbBinder">AWB用バインダオブジェクト(オプション)</param>
- 	 * <param name="loadAwbOnMemory">AWBファイルをメモリ上にロードするか(オプション)</param>
+	 * <param name='name'>キューシート名</param>
+	 * <param name='acbData'>ACBデータ</param>
+	 * <param name='awbFile'>AWBファイルパス</param>
+	 * <param name='awbBinder'>AWB用バインダオブジェクト(オプション)</param>
+	 * <param name='loadAwbOnMemory'>AWBファイルをメモリ上にロードするか(オプション)</param>
 	 * <returns>キューシートオブジェクト</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 引数に指定したデータとファイルパス情報からキューシートの追加を行います。<br/>
 	 * 同時に複数のキューシートを登録することが可能です。<br/>
 	 * <br/>
@@ -587,6 +638,8 @@ public class CriAtom : MonoBehaviour
 	 * <br/>
 	 * loadAwbOnMemory が false の場合、AWBファイルのヘッダ部分のみをメモリ上にロードしストリーム再生を行います。<br/>
 	 * loadAwbOnMemory を true に設定すると、AWBファイル全体をメモリ上にロードするため実質メモリ再生になります。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static CriAtomCueSheet AddCueSheetAsync(string name, byte[] acbData, string awbFile, CriFsBinder awbBinder = null, bool loadAwbOnMemory = false)
 	{
@@ -602,22 +655,28 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>キューシートの削除</summary>
-	 * <param name="name">キューシート名</param>
-	 * \par 説明:
+	 * <param name='name'>キューシート名</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 追加済みのキューシートを削除します。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static void RemoveCueSheet(string name)
 	{
-        if (CriAtom.instance == null) {
-            return;
-        }
+		if (CriAtom.instance == null) {
+			return;
+		}
 		CriAtom.instance.RemoveCueSheetInternal(name);
 	}
 
 	/**
 	 * <summary>キューシートのロード完了チェック</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 全てのキューシートのロード完了をチェックします。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static bool CueSheetsAreLoading {
 		get {
@@ -635,10 +694,13 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>ACBオブジェクトの取得</summary>
-	 * <param name="cueSheetName">キューシート名</param>
+	 * <param name='cueSheetName'>キューシート名</param>
 	 * <returns>ACBオブジェクト</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 指定したキューシートに対応するACBオブジェクトを取得します。<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public static CriAtomExAcb GetAcb(string cueSheetName)
 	{
@@ -653,8 +715,8 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>カテゴリ名指定でカテゴリボリュームを設定します。</summary>
-	 * <param name="name">カテゴリ名</param>
-	 * <param name="volume">ボリューム</param>
+	 * <param name='name'>カテゴリ名</param>
+	 * <param name='volume'>ボリューム</param>
 	 */
 	public static void SetCategoryVolume(string name, float volume)
 	{
@@ -663,8 +725,8 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>カテゴリID指定でカテゴリボリュームを設定します。</summary>
-	 * <param name="id">カテゴリID</param>
-	 * <param name="volume">ボリューム</param>
+	 * <param name='id'>カテゴリID</param>
+	 * <param name='volume'>ボリューム</param>
 	 */
 	public static void SetCategoryVolume(int id, float volume)
 	{
@@ -673,7 +735,7 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>カテゴリ名指定でカテゴリボリュームを取得します。</summary>
-	 * <param name="name">カテゴリ名</param>
+	 * <param name='name'>カテゴリ名</param>
 	 * <returns>ボリューム</returns>
 	 */
 	public static float GetCategoryVolume(string name)
@@ -682,7 +744,7 @@ public class CriAtom : MonoBehaviour
 	}
 	/**
 	 * <summary>カテゴリID指定でカテゴリボリュームを取得します。</summary>
-	 * <param name="id">カテゴリID</param>
+	 * <param name='id'>カテゴリID</param>
 	 * <returns>ボリューム</returns>
 	 */
 	public static float GetCategoryVolume(int id)
@@ -692,8 +754,8 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>バス情報取得を有効にします。</summary>
-	 * <param name="busName">DSPバス名</param>
-	 * <param name="sw">true: 取得を有効にする。 false: 取得を無効にする</param>
+	 * <param name='busName'>DSPバス名</param>
+	 * <param name='sw'>true: 取得を有効にする。 false: 取得を無効にする</param>
 	 */
 	public static void SetBusAnalyzer(string busName, bool sw)
 	{
@@ -706,7 +768,7 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>全てのバス情報取得を有効にします。</summary>
-	 * <param name="sw">true: 取得を有効にする。 false: 取得を無効にする</param>
+	 * <param name='sw'>true: 取得を有効にする。 false: 取得を無効にする</param>
 	 */
 	public static void SetBusAnalyzer(bool sw)
 	{
@@ -719,7 +781,7 @@ public class CriAtom : MonoBehaviour
 
 	/**
 	 * <summary>バス情報を取得します。</summary>
-	 * <param name="busName">DSPバス名</param>
+	 * <param name='busName'>DSPバス名</param>
 	 * <returns>DSPバス情報</returns>
 	 */
 	public static CriAtomExAsr.BusAnalyzerInfo GetBusAnalyzerInfo(string busName)
@@ -787,7 +849,7 @@ public class CriAtom : MonoBehaviour
 		}
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		if (CriAtom.instance != null && CriAtom.instance != this) {
 			if (CriAtom.instance.acfFile != this.acfFile) {
@@ -805,8 +867,9 @@ public class CriAtom : MonoBehaviour
 		}
 	}
 
-	private void OnEnable()
+	protected override void OnEnable()
 	{
+		base.OnEnable();
 	#if UNITY_EDITOR
 		if (CriAtomPlugin.previewCallback != null) {
 			CriAtomPlugin.previewCallback();
@@ -823,7 +886,7 @@ public class CriAtom : MonoBehaviour
 	#endif
 	}
 
-	private void OnDestroy()
+	void OnDestroy()
 	{
 		if (this != CriAtom.instance) {
 			return;
@@ -831,11 +894,13 @@ public class CriAtom : MonoBehaviour
 		this.Shutdown();
 	}
 
-	private void Update()
+	public override void CriInternalUpdate()
 	{
 		CriAtomPlugin.criAtomUnitySequencer_ExecuteQueuedEventCallbacks();
 		CriAtomPlugin.criAtomUnity_ExecuteQueuedBeatSyncCallbacks();
 	}
+
+	public override void CriInternalLateUpdate() { }
 
 	public CriAtomCueSheet GetCueSheetInternal(string name)
 	{
@@ -1025,7 +1090,7 @@ public class CriAtom : MonoBehaviour
 		}
 
 		while (this.acfIsLoading) {
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		using (var asyncLoader = CriAtomExAcbLoader.LoadAcbFileAsync(binder, acbPath, awbPath, loadAwbOnMemory)) {
@@ -1043,7 +1108,7 @@ public class CriAtom : MonoBehaviour
 				} else if (status == CriAtomExAcbLoader.Status.Error) {
 					break;
 				}
-				yield return new WaitForEndOfFrame();
+				yield return null;
 			}
 		}
 	}
@@ -1064,7 +1129,7 @@ public class CriAtom : MonoBehaviour
 		}
 
 		while (this.acfIsLoading) {
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		using (var asyncLoader = CriAtomExAcbLoader.LoadAcbDataAsync(acbData, awbBinder, awbPath, loadAwbOnMemory)) {
@@ -1082,7 +1147,7 @@ public class CriAtom : MonoBehaviour
 				} else if (status == CriAtomExAcbLoader.Status.Error) {
 					break;
 				}
-				yield return new WaitForEndOfFrame();
+				yield return null;
 			}
 		}
 	}
@@ -1138,7 +1203,7 @@ public class CriAtom : MonoBehaviour
 		}
 		CriAtomPlugin.criAtomUnity_SetBeatSyncCallback(ptr);
 #else
-        Debug.LogError("[CRIWARE] Beat sync callback is not supported for this scripting backend.");
+		Debug.LogError("[CRIWARE] Beat sync callback is not supported for this scripting backend.");
 #endif
 	}
 
@@ -1149,4 +1214,3 @@ public class CriAtom : MonoBehaviour
 
 /// @}
 /* end of file */
-

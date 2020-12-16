@@ -1,4 +1,3 @@
-
 ﻿/****************************************************************************
  *
  * Copyright (c) 2011 CRI Middleware Co., Ltd.
@@ -14,12 +13,15 @@ using System.Collections;
 
 /**
  * <summary>3Dリスナーを表すコンポーネントです。</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * 通常、カメラやメインキャラクタのGameObjectに付与して使用します。
  * 現在位置の更新は自動的に行われるため、特に操作や設定を行う必要はありません。
+ * </para>
+ * </remarks>
  */
 [AddComponentMenu("CRIWARE/CRI Atom Listener")]
-public class CriAtomListener : MonoBehaviour
+public class CriAtomListener : CriMonoBehaviour
 {
 	#region CRIWARE internals
 	public static CriAtomListener activeListener {
@@ -29,7 +31,7 @@ public class CriAtomListener : MonoBehaviour
 	public static CriAtomEx3dListener sharedNativeListener {
 		get; private set;
 	}
-	
+
 	public static void CreateSharedNativeListener()
 	{
 		if (sharedNativeListener == null) {
@@ -46,30 +48,64 @@ public class CriAtomListener : MonoBehaviour
 	}
 	#endregion
 
-	#region Variables
+	#region Fields & Properties
+	[SerializeField] CriAtomRegion regionOnStart = null;
+
 	/**
 	 * <summary>OnEnable 時に常にアクティブリスナーにするか</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * true の場合、 OnEnable 時に他のリスナーがアクティブな場合でもアクティブリスナーになります。
 	 * false の場合、アクティブリスナーが存在しない場合のみアクティブリスナーになります。
+	 * </para>
+	 * </remarks>
 	 */
 	public bool activateListenerOnEnable = false;
+
+	/**
+	 * <summary>音源の3Dリージョンの設定及び取得</summary>
+	 */
+	public CriAtomRegion region3d
+	{
+		get { return currentRegion; }
+		set {
+			CriAtomEx3dRegion regionHandle = (value == null) ? null : value.region3dHn;
+			if (sharedNativeListener != null) {
+				sharedNativeListener.Set3dRegion(regionHandle);
+				sharedNativeListener.Update();
+				this.currentRegion = value;
+			} else {
+				Debug.LogError("[CRIWARE] Internal: CriAtomListener is not initialized correctly.");
+				this.currentRegion = null;
+			}
+		}
+	}
 	#endregion
-	
+
 	#region Internal Variables
 	private Vector3 lastPosition;
+	private CriAtomRegion currentRegion = null;
 	#endregion
 
 	#region Functions
-	void OnEnable()
+	private void Start()
 	{
+		if (regionOnStart != null) {
+			region3d = this.regionOnStart;
+		}
+	}
+
+	protected override void OnEnable()
+	{
+		base.OnEnable();
 		if ((activeListener == null) || activateListenerOnEnable) {
 			ActivateListener();
 		}
 	}
 
-	void OnDisable()
+	protected override void OnDisable()
 	{
+		base.OnDisable();
 		if (activeListener == this) {
 			if (sharedNativeListener != null) {
 				sharedNativeListener.ResetParameters();
@@ -79,7 +115,24 @@ public class CriAtomListener : MonoBehaviour
 		}
 	}
 
-	void LateUpdate()
+	private void OnDrawGizmos()
+	{
+		if (this.enabled == false) { return; }
+		var criWareLightBlue = new Color(0.332f, 0.661f, 0.991f);
+
+		Gizmos.color = criWareLightBlue;
+		Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.forward);
+		Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.up);
+#if UNITY_EDITOR
+		UnityEditor.Handles.color = criWareLightBlue;
+		UnityEditor.Handles.ArrowHandleCap(1, this.transform.position + this.transform.forward, this.transform.rotation, 1f, EventType.Repaint);
+		UnityEditor.Handles.RectangleHandleCap(1, this.transform.position, this.transform.rotation * Quaternion.LookRotation(Vector3.up), 1f, EventType.Repaint);
+#endif
+	}
+
+	public override void CriInternalUpdate() { }
+
+	public override void CriInternalLateUpdate()
 	{
 		if (activeListener != this) {
 			return;
@@ -97,11 +150,14 @@ public class CriAtomListener : MonoBehaviour
 		}
 	}
 	#endregion
-	
+
 	/**
 	 * <summary>アクティブリスナーにする</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * アクティブリスナーになると、 ::CriAtomSource の3Dリスナーとして動作します。
+	 * </para>
+	 * </remarks>
 	 */
 	public void ActivateListener()
 	{
@@ -117,6 +173,8 @@ public class CriAtomListener : MonoBehaviour
 			sharedNativeListener.SetOrientation(front.x, front.y, front.z, up.x, up.y, up.z);
 			sharedNativeListener.Update();
 		}
+
+		this.region3d = this.currentRegion;
 	}
 } // end of class
 

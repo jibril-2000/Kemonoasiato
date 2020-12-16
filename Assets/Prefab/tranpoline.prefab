@@ -224,8 +224,6 @@ GameObject:
   - component: {fileID: 6334573864489366623}
   - component: {fileID: 4832650947564132692}
   - component: {fileID: 6199242143643046254}
-  - component: {fileID: 3565875898240986671}
-  - component: {fileID: 4029409531445980206}
   - component: {fileID: 1561022188646218435}
   m_Layer: 0
   m_Name: tranpoline
@@ -345,7 +343,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3565875898240986671}
+        - m_Target: {fileID: 0}
           m_MethodName: PlaySound
           m_Mode: 1
           m_Arguments:
@@ -356,40 +354,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &3565875898240986671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6334573864489366620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  criAtomSource: {fileID: 4029409531445980206}
---- !u!114 &4029409531445980206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6334573864489366620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 0
-  _cueName: Drag
-  _cueSheet: SFX
-  _use3dPositioning: 1
-  _loop: 0
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
 --- !u!114 &1561022188646218435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,7 +380,7 @@ GameObject:
   - component: {fileID: 6334573865038289456}
   - component: {fileID: 6334573865038289457}
   - component: {fileID: 6334573865038289462}
-  - component: {fileID: 3272317490244940982}
+  - component: {fileID: 2128990116397230948}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -477,7 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animobj: {fileID: 6334573865986425210}
---- !u!114 &3272317490244940982
+--- !u!114 &2128990116397230948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -492,6 +456,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Bound_tra
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1

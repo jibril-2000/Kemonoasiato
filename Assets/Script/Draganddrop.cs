@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Draganddrop : MonoBehaviour
 {
+    private Renderer _renderer;
+    public GameObject RotationUI;
+    public GameObject MoveArea;
     public Vector3 minVec;
     public Vector3 maxVec;
     private Vector3 Pos;
     public bool Moveobj;
     void Start()
     {
+        MoveArea.SetActive(false);
+        _renderer = RotationUI.GetComponent<Renderer>(); 
         Pos = this.gameObject.transform.position;
         maxVec.x = Pos.x+maxVec.x ;
         minVec.x = Pos.x - minVec.x;
+        _renderer.enabled = false; //trueで表示
     }
 
     private void Update()
@@ -58,6 +64,15 @@ public class Draganddrop : MonoBehaviour
             Moveobj = true;
         }
     }
+    void OnMouseEnter()
+    {
+        _renderer.enabled = true;
+        MoveArea.SetActive(true);
+    }
+    void OnMouseExit()
+    {
+        StartCoroutine("Negative");
+    }
     void OnMouseDrag()
     {
         if (Moveobj == true)
@@ -74,6 +89,16 @@ public class Draganddrop : MonoBehaviour
             mousePointInWorld.z = this.transform.position.z;
             this.transform.position = mousePointInWorld;
         }
+    }
+   
+    public IEnumerator Negative()
+    {
+
+
+        yield return new WaitForSeconds(0.2f);
+        _renderer.enabled = false;
+        MoveArea.SetActive(false);
+
     }
 
 }

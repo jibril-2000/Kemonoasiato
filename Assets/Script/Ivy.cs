@@ -5,6 +5,9 @@ using UnityEngine;
 public class Ivy : MonoBehaviour
 {
     Rigidbody2D Rigid;
+    Vector3 bulletDir ;
+    public float speed;
+    public bool a;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +19,16 @@ public class Ivy : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
             Rigid.bodyType = RigidbodyType2D.Dynamic;
+        switch (a)
+        {
+            case true:
+                bulletDir = new Vector3(-1, 0, 0);
+                break;
+
+            case false:
+                bulletDir = new Vector3(1, 0, 0);
+                break;
+        }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -39,8 +52,10 @@ public class Ivy : MonoBehaviour
         {
             other.transform.parent = null;
             Rigid.gravityScale = 1;
+            Rigid.AddForce(bulletDir * speed);
             var box=this.GetComponent<BoxCollider2D>();
             box.enabled = false;
+           
             //StartCoroutine("MOVE", other.gameObject);
 
         }

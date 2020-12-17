@@ -17,7 +17,7 @@ public class NeckCon : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Neckanim"))
         {
-            //animator.SetBool("Neckstart", false);
+            animator.SetBool("Neckstart", false);
             return;
         }
     }

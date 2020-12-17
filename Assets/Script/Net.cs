@@ -11,8 +11,7 @@ public class Net : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Net_open.SetActive(true);
-        Net_close.SetActive(false);
+        
     }
 
     // Update is called once per frame

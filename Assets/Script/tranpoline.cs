@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class tranpoline : MonoBehaviour
 {
+    [SerializeField] GameObject Tranpoline;
     private Animator Animcon;
     [SerializeField] GameObject Animobj;
     private int Count = 0;
@@ -29,6 +30,7 @@ public class tranpoline : MonoBehaviour
             //サウンド再生
             CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
             audio.Play();
+            Tranpoline.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 }

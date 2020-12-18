@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class Truck : MonoBehaviour
 {
+    GameObject StageObj;
     public GameObject stageclear;
     public GameObject truck_body;
     GameObject MainBGM;
     // Start is called before the first frame update
     void Start()
     {
-
+        StageObj=GameObject.Find("StageObj");
     }
 
     // Update is called once per frame
@@ -40,9 +41,13 @@ public class Truck : MonoBehaviour
     {
 
         yield return new WaitForSeconds(3);//何秒待つのか
-
+        SceneManager.sceneLoaded += SceneLoaded;
         SceneManager.LoadScene("Game2");
 
+    }
+    void SceneLoaded(Scene nextScene, LoadSceneMode mode)
+    {
+        StageObj.GetComponent<StageSelect>().Stage2Flag = true;
     }
 }
 

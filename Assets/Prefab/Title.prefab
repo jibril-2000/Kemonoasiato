@@ -407,6 +407,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Retry
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -562,6 +563,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Resume
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -717,6 +719,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Pose
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1

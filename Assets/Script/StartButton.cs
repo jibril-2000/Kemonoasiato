@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class StartButton : MonoBehaviour
 {
+   
+    public bool GameStart;
+    public bool Stage1; 
+    public bool Stage2;
+    public bool Stage3;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -15,11 +21,27 @@ public class StartButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
+
 
     public void OnClick()
     {
-        SceneManager.LoadScene("Game");
+        if (GameStart == true)
+        { 
+            SceneManager.LoadScene("StageSelect");
+        }
+        if (Stage1 == true)
+        {
+            SceneManager.LoadScene("Game");
+        }
+        if (Stage2 == true)
+        {
+            SceneManager.LoadScene("Game2");
+        }
+        if (Stage3 == true)
+        {
+            SceneManager.LoadScene("Game3");
+        }
     }
 }

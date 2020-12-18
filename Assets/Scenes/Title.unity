@@ -320,6 +320,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.88
       objectReference: {fileID: 0}
+    - target: {fileID: 9151098628775462874, guid: c872cc5c02b01934688d61a8c8571bfb,
+        type: 3}
+      propertyPath: GameStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9151098628775462875, guid: c872cc5c02b01934688d61a8c8571bfb,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -809,7 +814,7 @@ SpriteRenderer:
   m_Size: {x: 21.06, y: 12.062198}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1101678814

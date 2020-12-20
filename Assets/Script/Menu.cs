@@ -27,6 +27,7 @@ public class Menu : MonoBehaviour
 
     }
 
+    [System.Obsolete]
     public void Pause()
     {
         Time.timeScale = 0; //時間停止
@@ -34,11 +35,10 @@ public class Menu : MonoBehaviour
         TitlePanel.SetActive(true);
 
         //サウンドAISAC設定
-        MainBGM = GameObject.Find("Main Camera");
-        MainBGM.GetComponent<CriAtomSource>().SetAisacControl("Menu", 1.0f);
-        //SE.GetComponent<CriAtomSource>().SetAisacControl("SE", 1.0f); 
+        CriAtomExCategory.SetAisac(1, 0, 1.0f); //カテゴリID 1のAISACControlID0にAISAC値をセット
     }
 
+    [System.Obsolete]
     public void Resume()
     {
         Time.timeScale = 1; //時間再開
@@ -46,8 +46,6 @@ public class Menu : MonoBehaviour
         TitlePanel.SetActive(true);
 
         //サウンドAISAC設定
-        MainBGM = GameObject.Find("Main Camera");
-        MainBGM.GetComponent<CriAtomSource>().SetAisacControl("Menu", 0.0f);
-        //SE.GetComponent<CriAtomSource>().SetAisacControl("SE", 0.0f); 
+        CriAtomExCategory.SetAisac(1, 0, 0.0f); //カテゴリID 1のAISACControlID0にAISAC値をセット
     }
 }

@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Namakemono : MonoBehaviour
 {
-    public GameObject namakemono;
-    public GameObject gameover;
-    public GameObject find;
+    
     public Rigidbody2D rb2D;
     public Vector3 Resporn;
+    Animation anim;
+    public GameObject Groud;
+    public GameObject CatchNet;
     // Start is called before the first frame update
     void Start()
     {
+        anim = CatchNet.gameObject.GetComponent<Animation>();
         rb2D = GetComponent<Rigidbody2D>();
         Resporn = this.gameObject.transform.position;
     }
@@ -31,9 +33,9 @@ public class Namakemono : MonoBehaviour
 
     void Vanish()
     {
-        gameover.SetActive(true);
-        namakemono.SetActive(false);
-        find.SetActive(false);
+        anim.Play();
+        Groud.GetComponent<Ground>().StartCoroutine("Resporn");
+
     }
 
     private void OnCollisionStay2D(Collision2D other)

@@ -96,9 +96,9 @@ public class gondola : MonoBehaviour
         this.GetComponent<Animator>().enabled = false;***/
         yield return new WaitForSeconds(0.5f);//何秒待つのか
         degree = this.transform.localEulerAngles.z - 90;
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 36; i++)
         {
-            transform.Rotate(new Vector3(0, 0, -5));
+            transform.Rotate(new Vector3(0, 0, -2.5f));
             yield return new WaitForSeconds(0.01f);//何秒待つのか
         }
         Touch = false;

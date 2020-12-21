@@ -61,16 +61,17 @@ public class Ivy : MonoBehaviour
             var box=this.GetComponent<BoxCollider2D>();
             box.enabled = false;
            
-            //StartCoroutine("MOVE", other.gameObject);
+            StartCoroutine("MOVE");
 
         }
     }
-    private IEnumerator MOVE(GameObject other)
+    private IEnumerator MOVE()
     {
         
         
-        yield return new WaitForSeconds(10);
-        
+        yield return new WaitForSeconds(3);
+        var box = this.GetComponent<BoxCollider2D>();
+        box.enabled = true;
 
     }
        

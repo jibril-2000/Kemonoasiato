@@ -6,10 +6,13 @@ using UnityEngine.UI;
 public class Keeper : MonoBehaviour
 {
     bool Keepermove = true;
+    public float Maxx;
+    public float Minx;
     // Start is called before the first frame update
     void Start()
     {
-
+        Maxx = this.transform.position.x + Maxx;
+        Minx = this.transform.position.x - Minx;
     }
 
     // Update is called once per frame
@@ -19,7 +22,7 @@ public class Keeper : MonoBehaviour
         {
             case true:
                 transform.position += new Vector3(1.0f * Time.deltaTime, 0.0f, 0.0f);
-                if (transform.position.x >= 26)
+                if (transform.position.x >= Maxx)
                 {
                     Keepermove = false;
 
@@ -30,7 +33,7 @@ public class Keeper : MonoBehaviour
 
             case false:
                 transform.position -= new Vector3(1.0f * Time.deltaTime, 0.0f, 0.0f);
-                if (transform.position.x <= 19)
+                if (transform.position.x <= Minx)
                 {
                     Keepermove = true;
 

@@ -26,6 +26,7 @@ public class Namakemonopachinko : MonoBehaviour
         if (other.gameObject.tag == "Pachinkobody")
         {
             transform.position = pachinkostart.transform.position;
+            other.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
     private void OnCollisionEnter2D(Collision2D other)

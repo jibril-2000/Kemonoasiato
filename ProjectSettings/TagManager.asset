@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Namakemono
+  - Elephant
+  - Pachinko
+  - Pachinkobody
+  - Flashlight
   layers:
   - Default
   - TransparentFX

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4826728733089677555}
   - component: {fileID: 4826728733089677553}
   - component: {fileID: 4826728733089677559}
-  - component: {fileID: 4826728733089677552}
   - component: {fileID: 4826728733089677558}
+  - component: {fileID: 3527314036050268681}
   m_Layer: 0
   m_Name: Ground_
   m_TagString: Untagged
@@ -233,7 +233,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e2c18dfc865784c9bd76e51ce61626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4826728733089677552
+--- !u!114 &4826728733089677558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826728733089677324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b06f7294271bc3428e3df13abd9a72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  Crow: {fileID: 0}
+  Canvas: {fileID: 0}
+  fade: {fileID: 0}
+--- !u!114 &3527314036050268681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,24 +265,9 @@ MonoBehaviour:
   _cueName: Fall
   _cueSheet: SFX
   _regionOnStart: {fileID: 0}
-  _use3dPositioning: 0
+  _use3dPositioning: 1
   _loop: 0
   _volume: 1
   _pitch: 0
   _androidUseLowLatencyVoicePool: 0
   need_to_player_update_all: 1
---- !u!114 &4826728733089677558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4826728733089677324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b06f7294271bc3428e3df13abd9a72f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  Canvas: {fileID: 0}
-  fade: {fileID: 0}

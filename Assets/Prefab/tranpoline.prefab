@@ -306,6 +306,7 @@ GameObject:
   - component: {fileID: 4832650947564132692}
   - component: {fileID: 6199242143643046254}
   - component: {fileID: 1561022188646218435}
+  - component: {fileID: 9124222881786349078}
   m_Layer: 0
   m_Name: tranpoline
   m_TagString: Untagged
@@ -453,6 +454,21 @@ MonoBehaviour:
   minVec: {x: 5, y: 0, z: 0}
   maxVec: {x: 5, y: 0, z: 0}
   Moveobj: 1
+--- !u!114 &9124222881786349078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6334573864489366620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91852884bd5ac704db2c148e01905fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 0}
+  interval: 1.5
+  speed: 0.01
 --- !u!1 &6334573865038289463
 GameObject:
   m_ObjectHideFlags: 0

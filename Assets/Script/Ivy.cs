@@ -8,6 +8,7 @@ public class Ivy : MonoBehaviour
     Vector3 bulletDir ;
     public float speed;
     public bool a;
+    bool Touch;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,8 +18,11 @@ public class Ivy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1))
-            Rigid.bodyType = RigidbodyType2D.Dynamic;
+        if (Touch == true)
+        {
+            if (Input.GetMouseButton(1))
+                Rigid.bodyType = RigidbodyType2D.Dynamic;
+        }
         switch (a)
         {
             case true:
@@ -35,6 +39,7 @@ public class Ivy : MonoBehaviour
         Debug.Log("a");
         if (other.gameObject.tag == "Namakemono")
         {
+            Touch = true;
             other.gameObject.transform.parent = this.gameObject.transform;
             Rigid=other.gameObject.GetComponent<Rigidbody2D>();
             Rigid.bodyType = RigidbodyType2D.Static;

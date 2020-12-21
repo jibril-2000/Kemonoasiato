@@ -11,6 +11,7 @@ public class Draganddrop : MonoBehaviour
     public Vector3 maxVec;
     private Vector3 Pos;
     public bool Moveobj;
+    bool Move;
     void Start()
     {
         MoveArea.SetActive(false);
@@ -35,6 +36,13 @@ public class Draganddrop : MonoBehaviour
             this.gameObject.transform.position = new Vector3(Pos.x, Pos.y, Pos.z);
         }
 
+        if (Move == true)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                MoveArea.SetActive(true);
+            }
+        }
     }
     private void OnCollisionStay2D(Collision2D other)
     {
@@ -67,7 +75,7 @@ public class Draganddrop : MonoBehaviour
     void OnMouseEnter()
     {
         _renderer.enabled = true;
-        MoveArea.SetActive(true);
+        
     }
     void OnMouseExit()
     {
@@ -77,6 +85,9 @@ public class Draganddrop : MonoBehaviour
     {
         if (Moveobj == true)
         {
+            
+            Move = true;
+            _renderer.enabled = true;
             Vector3 objectPointInScreen
                 = Camera.main.WorldToScreenPoint(this.transform.position);
 
@@ -94,11 +105,11 @@ public class Draganddrop : MonoBehaviour
     public IEnumerator Negative()
     {
 
-
+        
         yield return new WaitForSeconds(0.2f);
         _renderer.enabled = false;
         MoveArea.SetActive(false);
-
+        Move = false;
     }
 
 }

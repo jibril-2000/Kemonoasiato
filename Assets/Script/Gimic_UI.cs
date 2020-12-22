@@ -9,11 +9,11 @@ public class Gimic_UI : MonoBehaviour
     public float interval = 1.5f;
     float timer;
     public float speed = 0.01f;
+    /*
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -33,6 +33,12 @@ public class Gimic_UI : MonoBehaviour
 
     //マウスが乗っている間、呼び出され続ける
     void OnMouseOver()
+    {
+        UI.SetActive(true);
+    }
+    */
+
+    void OnMouseEnter()
     {
         UI.SetActive(true);
     }

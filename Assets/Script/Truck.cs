@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Truck : MonoBehaviour
 {
     GameObject StageObj;
-    
+
     public GameObject truck_body;
     GameObject MainBGM;
     // Start is called before the first frame update

@@ -77,7 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b431c138c501242b15ffb62a26e06b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageclear: {fileID: 0}
   truck_body: {fileID: 1796874487931037556}
 --- !u!114 &2721470287858124618
 MonoBehaviour:
@@ -126,8 +125,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670699112466503763}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.054, y: 0.24, z: 0}
-  m_LocalScale: {x: 10.389314, y: 4.969466, z: 1}
+  m_LocalPosition: {x: 0.04, y: -0.03, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1796874487931037558}
   m_RootOrder: 5
@@ -171,7 +170,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: fa749da5ef0face42b60cf8e63c27cc2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4aa7f79af7186419f9a6e6795cf98ea0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -591,6 +590,7 @@ GameObject:
   - component: {fileID: 1796874488008478055}
   - component: {fileID: 1796874488008478056}
   - component: {fileID: 1796874488008478057}
+  - component: {fileID: 6256725559804691807}
   m_Layer: 0
   m_Name: Truck_tire (1)
   m_TagString: Untagged
@@ -606,8 +606,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796874488008478054}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1000004, y: -1.9000001, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalPosition: {x: -1.3299999, y: -1.7699997, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1796874487931037558}
   m_RootOrder: 1
@@ -650,7 +650,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 9e868b711be85874a9705418ad7d1ea5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -725,6 +725,25 @@ PolygonCollider2D:
       - {x: 0.31, y: -0.53}
       - {x: 0.39, y: -0.45}
       - {x: 0.42999998, y: -0.42999998}
+--- !u!95 &6256725559804691807
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796874488008478054}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1796874488813755048
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,6 +5509,7 @@ GameObject:
   - component: {fileID: 1796874489460199949}
   - component: {fileID: 1796874489460199950}
   - component: {fileID: 1796874489460199951}
+  - component: {fileID: 6789690949419526290}
   m_Layer: 0
   m_Name: Truck_tire (2)
   m_TagString: Untagged
@@ -5505,8 +5525,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796874489460199948}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5, y: -1.9000001, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalPosition: {x: -2.53, y: -1.74, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1796874487931037558}
   m_RootOrder: 2
@@ -5549,7 +5569,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 9e868b711be85874a9705418ad7d1ea5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5624,6 +5644,25 @@ PolygonCollider2D:
       - {x: 0.31, y: -0.53}
       - {x: 0.39, y: -0.45}
       - {x: 0.42999998, y: -0.42999998}
+--- !u!95 &6789690949419526290
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796874489460199948}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1796874489688312626
 GameObject:
   m_ObjectHideFlags: 0
@@ -5635,6 +5674,7 @@ GameObject:
   - component: {fileID: 1796874489688312627}
   - component: {fileID: 1796874489688312628}
   - component: {fileID: 1796874489688312629}
+  - component: {fileID: 5740555227763710110}
   m_Layer: 0
   m_Name: Truck_tire
   m_TagString: Untagged
@@ -5650,8 +5690,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796874489688312626}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5, y: -1.9000001, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalPosition: {x: 2.56, y: -1.84, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1796874487931037558}
   m_RootOrder: 0
@@ -5694,7 +5734,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 9e868b711be85874a9705418ad7d1ea5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5769,3 +5809,22 @@ PolygonCollider2D:
       - {x: 0.31, y: -0.53}
       - {x: 0.39, y: -0.45}
       - {x: 0.42999998, y: -0.42999998}
+--- !u!95 &5740555227763710110
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796874489688312626}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

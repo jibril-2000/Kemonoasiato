@@ -33,10 +33,14 @@ public class Gimic_UI : MonoBehaviour
     //マウスが乗っている間、呼び出され続ける
     void OnMouseOver()
     {
-        UI.SetActive(true);
+        Invoke("Vanish", 1);
+        
     }
 
-
+    void Vanish()
+    {
+        UI.SetActive(true);
+    }
 
     //マウスが離れたとき
     void OnMouseExit()

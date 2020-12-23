@@ -43,7 +43,7 @@ public class Namakemonopachinko : MonoBehaviour
 
             if (Input.GetMouseButton(1))
             {
-                GetComponent<Rigidbody2D>().velocity = (transform.up*9);//ナマケモノから見て上方向に力を加える
+                GetComponent<Rigidbody2D>().velocity = (transform.up*12);//ナマケモノから見て上方向に力を加える
             }
         }
     }

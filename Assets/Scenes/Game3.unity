@@ -2729,6 +2729,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5328236083339663351, guid: e85d389f6918a8d48b361f43aab131a1,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5328236083339663351, guid: e85d389f6918a8d48b361f43aab131a1,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5328236083339663352, guid: e85d389f6918a8d48b361f43aab131a1,
         type: 3}
       propertyPath: m_Name
@@ -3794,7 +3804,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603728893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.07541, y: -4.3629847, z: -10}
+  m_LocalPosition: {x: -44.980354, y: -4.3629847, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225494599}

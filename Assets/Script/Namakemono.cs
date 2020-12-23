@@ -42,7 +42,7 @@ public class Namakemono : MonoBehaviour
     {
         if (other.gameObject.tag == "Elephant")
         {
-            rb2D.AddForce(new Vector2(10, 75));
+            rb2D.AddForce(new Vector2(100, 100));
         }
     }
 }

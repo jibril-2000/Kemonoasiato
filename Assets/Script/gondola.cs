@@ -12,6 +12,7 @@ public class gondola : MonoBehaviour
     float Velocity;
     float degree;
     public GameObject parentObj;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,7 @@ public class gondola : MonoBehaviour
     void Update()
     {
         
-        GondolaPos = this.gameObject.transform.position;
+        GondolaPos = parentObj.gameObject.transform.position;
         //GondolaPos.y += 0.00001f;
         if (Touch == true)
         {
@@ -38,7 +39,8 @@ public class gondola : MonoBehaviour
         }
         if (Return == true)
         {
-            transform.Rotate(new Vector3(0, 0, 90));
+            StartCoroutine("Godolafinish");
+            
             Return = false;
         }
         //if (GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsTag("Gondola"))
@@ -104,6 +106,22 @@ public class gondola : MonoBehaviour
         Touch = false;
         yield return new WaitForSeconds(1f);//何秒待つのか
         Return = true;
+        
+    }
+    public IEnumerator Godolafinish()
+    {
+        
+        yield return new WaitForSeconds(0.5f);//何秒待つのか
+        degree = this.transform.localEulerAngles.z - 90;
+        for (int i = 0; i < 36; i++)
+        {
+            transform.Rotate(new Vector3(0, 0, 2.5f));
+            yield return new WaitForSeconds(0.01f);//何秒待つのか
+        }
+        Touch = false;
+        yield return new WaitForSeconds(1f);//何秒待つのか
         this.GetComponent<PolygonCollider2D>().enabled = true;
+       
+        
     }
 }

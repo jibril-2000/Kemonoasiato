@@ -95,7 +95,7 @@ public class Draganddrop : MonoBehaviour
     void OnMouseEnter()
     {
         _renderer.enabled = true;
-        
+        StopCoroutine("Negative");
     }
     void OnMouseExit()
     {
@@ -105,7 +105,7 @@ public class Draganddrop : MonoBehaviour
     {
         if (Moveobj == true)
         {
-            
+            StopCoroutine("Negative");
             Move = true;
             _renderer.enabled = true;
             Vector3 objectPointInScreen
@@ -119,6 +119,7 @@ public class Draganddrop : MonoBehaviour
             Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
             mousePointInWorld.z = this.transform.position.z;
             this.transform.position = mousePointInWorld;
+            
         }
     }
    

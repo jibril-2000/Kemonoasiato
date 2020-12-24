@@ -1030,7 +1030,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: -0.3242662}
+  m_Offset: {x: 0, y: 0.7198949}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1041,7 +1041,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60.000004, y: 13.355373}
+  m_Size: {x: 60.000004, y: 15.443696}
   m_EdgeRadius: 0
 --- !u!212 &726174727
 SpriteRenderer:
@@ -1198,12 +1198,12 @@ PrefabInstance:
     - target: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -64.54
+      value: -63.24
       objectReference: {fileID: 0}
     - target: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.3
+      value: -4.95
       objectReference: {fileID: 0}
     - target: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
         type: 3}
@@ -1575,7 +1575,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1562517894}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 10
+    OrthographicSize: 11.55
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -1596,7 +1596,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972369999}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -64.54, y: -3.3, z: -10}
+  m_LocalPosition: {x: -63.24, y: -4.95, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2087574485}
@@ -1874,16 +1874,16 @@ CompositeCollider2D:
     - - X: 497623963
         Y: -162819536
       - X: 497623963
-        Y: 37511064
+        Y: 68835904
       - X: -402375840
-        Y: 37510771
+        Y: 68835611
       - X: -402375547
         Y: -162819536
   m_CompositePaths:
     m_Paths:
     - - {x: 49.762367, y: -16.281954}
-      - {x: 49.762367, y: 3.7511065}
-      - {x: -40.237583, y: 3.751048}
+      - {x: 49.762367, y: 6.8835907}
+      - {x: -40.237583, y: 6.883532}
       - {x: -40.237526, y: -16.281954}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
@@ -3869,7 +3869,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 11.55
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3893,7 +3893,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603728893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.056084, y: -4.3629847, z: -10}
+  m_LocalPosition: {x: -41.591778, y: -2.8459864, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225494599}

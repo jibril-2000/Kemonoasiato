@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 public class Truck : MonoBehaviour
 {
     GameObject StageObj;
-
+    public GameObject WindowLight;
     public GameObject truck_body;
     GameObject MainBGM;
     // Start is called before the first frame update
     void Start()
     {
         StageObj=GameObject.Find("StageObj");
+        WindowLight.SetActive(false);
     }
 
     // Update is called once per frame
@@ -26,6 +27,7 @@ public class Truck : MonoBehaviour
     {
         if (other.gameObject.tag == "Namakemono")
         {
+            WindowLight.SetActive(true);
             //サウンド再生
             CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
             audio.Play();

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class SoundAISAC_BGM_Control : MonoBehaviour
 {
-    private Slider BGM_Slider;
-    private float Slider_num;
+    private  Slider BGM_Slider;
+    private static float  Slider_num;
 
     // Start is called before the first frame update
     void Start()
@@ -21,17 +21,14 @@ public class SoundAISAC_BGM_Control : MonoBehaviour
         BGM_Slider.maxValue = MaxVolume;
         BGM_Slider.minValue = MinVolume;
 
-
-        //BGM音量のデフォルト値
-        Slider_num = 0.5f;
     }
 
     // Update is called once per frame
     [System.Obsolete]
     void Update()
     {
-       //スライダーの値をAISACに入れる
         Slider_num = GetComponent<Slider>().value;
+       //スライダーの値をAISACに入れる
         CriAtomExCategory.SetAisac(2, 1, Slider_num); //カテゴリID 3のAISACControlID3にAISAC値をセット
     }
 }

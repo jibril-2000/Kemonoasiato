@@ -2169,6 +2169,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5271213050986586513, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: m_Value
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6620763583205811458, guid: f59daaf21003f7c4fa19b5302a161374,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3374,7 +3379,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305968781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.21289, y: -0.56399965, z: -10}
+  m_LocalPosition: {x: -33.21364, y: -0.56399965, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1728186135}
@@ -8526,7 +8531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095507755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.21289, y: 1.1300883, z: -10}
+  m_LocalPosition: {x: -33.21364, y: 1.1300883, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1346257019}
@@ -8619,6 +8624,80 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1001 &2101967696
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5760302931559656276, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_Name
+      value: Kamihubuki
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656276, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5760302931559656299, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: df3dc4fc5efce4a6995bcf3ccdcd53e4, type: 3}
 --- !u!61 &6971589384502212650
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 5747065154118657738}
   - component: {fileID: 116384727081082248}
   - component: {fileID: 4087001535341344662}
+  - component: {fileID: 4578531740048074365}
   m_Layer: 0
   m_Name: Vents_Down
   m_TagString: Untagged
@@ -341,6 +342,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationUI: {fileID: 1210407892274641423}
+--- !u!114 &4578531740048074365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5747065154118657734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6012c0951490f442930543384e1d810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationUI: {fileID: 0}
+  MoveArea: {fileID: 0}
+  Hide01: {fileID: 0}
+  Hide02: {fileID: 0}
+  Hide03: {fileID: 0}
+  Hide04: {fileID: 0}
+  NoHide: {fileID: 0}
+  minVec: {x: 0, y: 10, z: 0}
+  maxVec: {x: 0, y: 10, z: 0}
+  Moveobj: 1
 --- !u!1 &5747065154131924103
 GameObject:
   m_ObjectHideFlags: 0

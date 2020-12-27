@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ivy : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Ivy : MonoBehaviour
     public float speed;
     public bool a;
     bool Touch;
+    public GameObject UI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +46,6 @@ public class Ivy : MonoBehaviour
             other.gameObject.transform.parent = this.gameObject.transform;
             Rigid=other.gameObject.GetComponent<Rigidbody2D>();
             Rigid.bodyType = RigidbodyType2D.Static;
-            
 
         }
         
@@ -64,6 +66,15 @@ public class Ivy : MonoBehaviour
             StartCoroutine("MOVE");
 
         }
+
+        if (other.gameObject.tag == "Namakemono")
+        {
+            UI.SetActive(true);
+        }
+    }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        UI.SetActive(false);
     }
     private IEnumerator MOVE()
     {

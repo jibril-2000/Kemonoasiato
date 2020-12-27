@@ -9,6 +9,7 @@ public class Ferriswheel_spin : MonoBehaviour
     public GameObject yellow;
     public GameObject green;
     public GameObject lightblue;
+    public GameObject Area;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,8 @@ public class Ferriswheel_spin : MonoBehaviour
 
     private void OnMouseOver()
     {
+        Area.SetActive(true);
+
         if (Input.GetMouseButton(1))
         {
             transform.Rotate(new Vector3(0, 0, 0.3f));
@@ -46,5 +49,10 @@ public class Ferriswheel_spin : MonoBehaviour
         {
             
         }
+    }
+
+    private void OnMouseExit()
+    {
+        Area.SetActive(false);
     }
 }

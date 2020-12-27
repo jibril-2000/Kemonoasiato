@@ -34,6 +34,13 @@ public class Net : MonoBehaviour
             Net_close.SetActive(true);
             anim.Play();
             Groud.GetComponent<Ground>().StartCoroutine("Resporn");
+            Invoke("Vanish", 1);
         }
+    }
+
+    void Vanish()
+    {
+        Net_open.SetActive(true);
+        Net_close.SetActive(false);
     }
 }

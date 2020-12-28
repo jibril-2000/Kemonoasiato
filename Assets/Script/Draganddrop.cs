@@ -26,7 +26,7 @@ public class Draganddrop : MonoBehaviour
 
         //αを０にしておく
         H05 = NoHide.GetComponent<SpriteRenderer>();
-        H05.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        H05.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
     }
 
@@ -52,15 +52,15 @@ public class Draganddrop : MonoBehaviour
 
                 //αの値を変えて見えるオブジェクトを変更する
                 H01 = Hide01.GetComponent<SpriteRenderer>();
-                H01.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H01.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 H02 = Hide02.GetComponent<SpriteRenderer>();
-                H02.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H02.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 H03 = Hide03.GetComponent<SpriteRenderer>();
-                H03.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H03.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 H04 = Hide04.GetComponent<SpriteRenderer>();
-                H04.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H04.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 H05 = NoHide.GetComponent<SpriteRenderer>();
-                H05.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                H05.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             }
         }
     }
@@ -134,15 +134,15 @@ public class Draganddrop : MonoBehaviour
 
         //αの値を変えて見えるオブジェクトを変更する
         H01 = Hide01.GetComponent<SpriteRenderer>();
-        H01.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H01.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         H02 = Hide02.GetComponent<SpriteRenderer>();
-        H02.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H02.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         H03 = Hide03.GetComponent<SpriteRenderer>();
-        H03.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H03.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         H04 = Hide04.GetComponent<SpriteRenderer>();
-        H04.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H04.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         H05 = NoHide.GetComponent<SpriteRenderer>();
-        H05.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        H05.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
 }

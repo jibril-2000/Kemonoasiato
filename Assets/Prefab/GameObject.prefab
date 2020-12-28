@@ -49,7 +49,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c62cd86da5338444793463d2c113ce0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,7 +135,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c62cd86da5338444793463d2c113ce0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 7820480188400906250}
   - component: {fileID: 7820480188400906251}
   - component: {fileID: 6754558345997843955}
+  - component: {fileID: 2260923139296669626}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -477,6 +478,43 @@ MonoBehaviour:
   UI: {fileID: 0}
   interval: 1.5
   speed: 0.01
+--- !u!114 &2260923139296669626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7820480188400906253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -1.5753134, y: -1.7182456, z: 0}
+  - {x: -1.1676432, y: -1.9417624, z: 0}
+  - {x: 0.005857995, y: -2.1162019, z: 0}
+  - {x: 1.1316884, y: -1.9878339, z: 0}
+  - {x: 1.7343938, y: -1.4977348, z: 0}
+  - {x: 1.9722657, y: 0.9761328, z: 0}
+  - {x: 2.2417576, y: 1.2132052, z: 0}
+  - {x: 2.1784215, y: 1.6738906, z: 0}
+  - {x: 2.0356987, y: 1.9434786, z: 0}
+  - {x: 1.322082, y: 2.3240736, z: 0}
+  - {x: -0.77119005, y: 2.3399317, z: 0}
+  - {x: -1.7385359, y: 2.0703433, z: 0}
+  - {x: -2.2096386, y: 1.6889486, z: 0}
+  - {x: -2.1667051, y: 1.1981468, z: 0}
+  - {x: -1.9288332, y: 0.7065448, z: 0}
+  m_ShapePathHash: 1453028135
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -158558
 --- !u!1 &8248458245641622926
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +564,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c62cd86da5338444793463d2c113ce0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

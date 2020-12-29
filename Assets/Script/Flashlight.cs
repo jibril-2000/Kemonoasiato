@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Flashlight : MonoBehaviour
 {
-    public GameObject namakemono;
+   
     public GameObject find;
     public Keeper keeper; //Keeperをアタッチ
     // Start is called before the first frame update

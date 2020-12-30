@@ -952,6 +952,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elephant
       objectReference: {fileID: 0}
+    - target: {fileID: 2511046602738064776, guid: 9f253a2334356483b9451585bd30e0cc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2511046602738064776, guid: 9f253a2334356483b9451585bd30e0cc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2511046602738064776, guid: 9f253a2334356483b9451585bd30e0cc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5387289
+      objectReference: {fileID: 0}
+    - target: {fileID: 2511046602738064776, guid: 9f253a2334356483b9451585bd30e0cc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.84247917
+      objectReference: {fileID: 0}
+    - target: {fileID: 2511046602738064776, guid: 9f253a2334356483b9451585bd30e0cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: -7458708537368723469, guid: 9f253a2334356483b9451585bd30e0cc,
     type: 3}

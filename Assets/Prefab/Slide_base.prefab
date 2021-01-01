@@ -387,6 +387,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RotationUI: {fileID: 8123944772713896222}
   MoveArea: {fileID: 0}
+  Hide01: {fileID: 0}
+  Hide02: {fileID: 0}
+  Hide03: {fileID: 0}
+  Hide04: {fileID: 0}
+  NoHide: {fileID: 0}
   minVec: {x: 0, y: 0, z: 0}
   maxVec: {x: 0, y: 0, z: 0}
   Moveobj: 0
@@ -465,7 +470,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c62cd86da5338444793463d2c113ce0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -546,7 +551,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c62cd86da5338444793463d2c113ce0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

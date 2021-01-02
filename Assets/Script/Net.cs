@@ -21,7 +21,7 @@ public class Net : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //ナマケモノが網を通過したら
@@ -33,7 +33,7 @@ public class Net : MonoBehaviour
             Net_open.SetActive(false);
             Net_close.SetActive(true);
             anim.Play();
-            Groud.GetComponent<Ground>().StartCoroutine("Resporn");
+
             Invoke("Vanish", 1);
         }
     }
@@ -42,5 +42,11 @@ public class Net : MonoBehaviour
     {
         Net_open.SetActive(true);
         Net_close.SetActive(false);
+        Invoke("Resporn", 2);
+
+    }
+    void Resporn()
+    {
+        Groud.GetComponent<Ground>().StartCoroutine("Resporn");
     }
 }

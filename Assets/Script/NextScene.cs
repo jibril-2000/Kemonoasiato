@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class NextScene : MonoBehaviour
 {
     GameObject StageObj;
+    public bool Game2;
+    public bool TranpolineOnly;
+    public bool TranandBelt;
     void Start()
     {
         StageObj = GameObject.Find("StageObj");
@@ -14,16 +17,42 @@ public class NextScene : MonoBehaviour
     {
         if (other.gameObject.tag == "Namakemono")
         {
-            StartCoroutine("NextStage");//コルーチンを使いたいところにこれを入れる
+            if (Game2 == true)
+            {
+                StartCoroutine("Game3Load");//コルーチンを使いたいところにこれを入れる
+            }
+            if (TranpolineOnly == true)
+            {
+                StartCoroutine("TranandBeltLoad");
+                
+            }
+            if (TranandBelt == true)
+            {
+                StartCoroutine("GameLoad");
+                
+            }
         }
-
     }
-    public IEnumerator NextStage()
+    public IEnumerator Game3Load()
     {
 
         yield return new WaitForSeconds(3);//何秒待つのか
         SceneManager.sceneLoaded += SceneLoaded;
         SceneManager.LoadScene("Game3");
+
+    }
+    public IEnumerator TranandBeltLoad()
+    {
+
+        yield return new WaitForSeconds(3);//何秒待つのか
+        SceneManager.LoadScene("TranandBelt");
+
+    }
+    public IEnumerator GameLoad()
+    {
+
+        yield return new WaitForSeconds(3);//何秒待つのか
+        SceneManager.LoadScene("Game");
 
     }
     void SceneLoaded(Scene nextScene, LoadSceneMode mode)

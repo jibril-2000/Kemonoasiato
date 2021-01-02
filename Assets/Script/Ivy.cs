@@ -11,6 +11,7 @@ public class Ivy : MonoBehaviour
     public bool a;
     bool Touch;
     public GameObject UI;
+    float alpha = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +43,12 @@ public class Ivy : MonoBehaviour
         Debug.Log("a");
         if (other.gameObject.tag == "Namakemono")
         {
+            StartCoroutine("Pop");
             Touch = true;
             other.gameObject.transform.parent = this.gameObject.transform;
             Rigid=other.gameObject.GetComponent<Rigidbody2D>();
             Rigid.bodyType = RigidbodyType2D.Static;
-
+            
         }
         
             
@@ -67,14 +69,16 @@ public class Ivy : MonoBehaviour
 
         }
 
-        if (other.gameObject.tag == "Namakemono")
-        {
-            UI.SetActive(true);
-        }
+        
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        UI.SetActive(false);
+       
+
+            StartCoroutine("Negate");
+            
+
+        
     }
     private IEnumerator MOVE()
     {
@@ -85,5 +89,40 @@ public class Ivy : MonoBehaviour
         box.enabled = true;
 
     }
-       
+    public IEnumerator Pop()
+    {
+        StopCoroutine("Negate");
+        for (float i = 0; i < 1f; i = i + 0.1f)
+        {
+            UI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, alpha += 0.1f);
+
+            Debug.Log(UI.GetComponent<Image>().color);
+            alpha = alpha + i;
+            if (alpha > 1.1f)
+            {
+                alpha = 1f;
+            }
+            yield return new WaitForSeconds(0.1f);//何秒待つのか
+
+        }
+
+    }
+    public IEnumerator Negate()
+    {
+        yield return new WaitForSeconds(0.5f);//何秒待つのか
+        for (float i = 0; i < 100000; i = i + 0.1f)
+        {
+            UI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, alpha -= i);
+            Debug.Log(UI.GetComponent<Image>().color);
+            alpha = alpha - i;
+            if (alpha < -0.1f)
+            {
+                alpha = 0;
+                //StopCoroutine("Negate");
+            }
+            yield return new WaitForSeconds(0.1f);//何秒待つのか
+        }
+
+    }
+
 }

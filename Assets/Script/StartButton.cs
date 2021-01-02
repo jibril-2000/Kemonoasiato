@@ -33,7 +33,7 @@ public class StartButton : MonoBehaviour
         }
         if (Stage1 == true)
         {
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene("TranpolineOnly");
         }
         if (Stage2 == true)
         {

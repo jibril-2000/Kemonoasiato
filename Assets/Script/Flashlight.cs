@@ -8,6 +8,7 @@ public class Flashlight : MonoBehaviour
    
     public GameObject find;
     public Keeper keeper; //Keeperをアタッチ
+    public GameObject KeeperAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class Flashlight : MonoBehaviour
         if (other.gameObject.tag == "Namakemono")
         {
             find.SetActive(true); //「！」画像を出す
-
+            KeeperAnim.GetComponent<Animator>().enabled = false;
             keeper = keeper.GetComponent<Keeper>();
             keeper.enabled = false; //Keeperに付いたスクリプトを無効化する
 
@@ -36,5 +37,6 @@ public class Flashlight : MonoBehaviour
     {
         keeper.enabled = true;
         find.SetActive(false);
+        KeeperAnim.GetComponent<Animator>().enabled = true ;
     }
 }

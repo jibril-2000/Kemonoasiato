@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HaikeiMove : MonoBehaviour
+public class HaikeiMove02 : MonoBehaviour
 {
     public GameObject Haikei01, Haikei02, Haikei03, Camera;
 
@@ -17,8 +17,8 @@ public class HaikeiMove : MonoBehaviour
     {
         Vector3 CameraPos = Camera.transform.position;
 
-        Haikei01.transform.position = new Vector3(CameraPos.x/2 + 15f, CameraPos.y, 0f);
-        Haikei02.transform.position = new Vector3(CameraPos.x / 3 + 5f, CameraPos.y, 0f);
-        Haikei03.transform.position = new Vector3(CameraPos.x / 4 + 5f, CameraPos.y, 0f);
+        Haikei01.transform.position = new Vector3(CameraPos.x / 2f + 15f, CameraPos.y+0.5f, 0f);
+        Haikei02.transform.position = new Vector3(CameraPos.x / 3 + 5f, CameraPos.y-1, 0f);
+        Haikei03.transform.position = new Vector3(CameraPos.x / 4 + 5f, CameraPos.y-1, 0f);
     }
 }

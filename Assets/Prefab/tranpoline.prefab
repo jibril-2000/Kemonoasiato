@@ -649,7 +649,7 @@ GameObject:
   - component: {fileID: 6334573865038289456}
   - component: {fileID: 6334573865038289457}
   - component: {fileID: 6334573865038289462}
-  - component: {fileID: 2128990116397230948}
+  - component: {fileID: 4540772551994580929}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tranpoline: {fileID: 6334573865986425210}
   Animobj: {fileID: 6334573865986425210}
---- !u!114 &2128990116397230948
+--- !u!114 &4540772551994580929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

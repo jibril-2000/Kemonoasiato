@@ -225,6 +225,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6334573865986425204, guid: ade9aadca2b6a5143b51146063ebc8e3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9124222881786349078, guid: ade9aadca2b6a5143b51146063ebc8e3,
         type: 3}
       propertyPath: UI
@@ -927,7 +932,7 @@ PrefabInstance:
         type: 3}
       propertyPath: UI
       value: 
-      objectReference: {fileID: 1112207631}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0481472ee515f14ca497bcd6ef596ce, type: 3}
 --- !u!1 &968830078
@@ -1107,12 +1112,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 621d4641390fb1d49a5b5dbb76643538, type: 3}
---- !u!1 &1112207631 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5132460829169523105, guid: bf4368038259fb846b3ba29b9d452a0f,
-    type: 3}
-  m_PrefabInstance: {fileID: 2075502529}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1228343450
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,7 +1812,7 @@ PrefabInstance:
         type: 3}
       propertyPath: UI
       value: 
-      objectReference: {fileID: 1112207631}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0481472ee515f14ca497bcd6ef596ce, type: 3}
 --- !u!1 &1980529770
@@ -2175,7 +2174,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.5346336, y: 5.2581873}
+  m_Offset: {x: 10.969532, y: 16.506569}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2186,7 +2185,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3463478, y: 11.516375}
+  m_Size: {x: 18.216148, y: 34.013138}
   m_EdgeRadius: 0
 --- !u!4 &2109752317
 Transform:
@@ -2196,7 +2195,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2109752313}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.460155, y: 0.5, z: -90.786995}
+  m_LocalPosition: {x: 12.460155, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

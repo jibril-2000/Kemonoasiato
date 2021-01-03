@@ -27,10 +27,11 @@ public class tranpoline : MonoBehaviour
         if (other.gameObject.tag == "Namakemono")
         {
             Animcon.SetBool("TouchTranpoline", true);
+            Tranpoline.GetComponent<BoxCollider2D>().enabled = true;
             //サウンド再生
             CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
             audio.Play();
-            Tranpoline.GetComponent<BoxCollider2D>().enabled = true;
+            
         }
     }
 }

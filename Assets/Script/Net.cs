@@ -15,7 +15,7 @@ public class Net : MonoBehaviour
     {
         Net_open.SetActive(true);
         Net_close.SetActive(false);
-        anim = karigoal.gameObject.GetComponent<Animation>();
+        //anim = karigoal.gameObject.GetComponent<Animation>();
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class Net : MonoBehaviour
         {
             Net_open.SetActive(false);
             Net_close.SetActive(true);
-            anim.Play();
+            //anim.Play();
 
             Invoke("Vanish", 1);
         }
@@ -40,13 +40,14 @@ public class Net : MonoBehaviour
 
     void Vanish()
     {
-        Net_open.SetActive(true);
-        Net_close.SetActive(false);
+        
         Invoke("Resporn", 2);
 
     }
     void Resporn()
     {
         Groud.GetComponent<Ground>().StartCoroutine("Resporn");
+        Net_open.SetActive(true);
+        Net_close.SetActive(false);
     }
 }

@@ -36,8 +36,8 @@ public class Fountain : MonoBehaviour
         //左クリックで
         if(Input.GetMouseButton(0))
         {
-            animator.SetBool("Reverse", true);
             animator.SetBool("Water", false);
+            animator.SetBool("Reverse", true);           
         }
         else
         {

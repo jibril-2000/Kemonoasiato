@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1210407892274641423}
   m_LocalRotation: {x: -0, y: -0, z: 0.28663725, w: 0.9580392}
   m_LocalPosition: {x: 1.04, y: -1.69, z: -0}
-  m_LocalScale: {x: 0.4288, y: 0.5026, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5026, z: 1}
   m_Children: []
   m_Father: {fileID: 5747065154118657736}
   m_RootOrder: 0
@@ -220,7 +220,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5747065154118657734}
-  m_LocalRotation: {x: -0.70710695, y: 0.70710665, z: -0.00000013240826, w: 0.0000001324082}
+  m_LocalRotation: {x: -0.7071068, y: 0.7071068, z: -0.00000013240823, w: 0.00000013240823}
   m_LocalPosition: {x: 7.45, y: -5.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -230,7 +230,7 @@ Transform:
   - {fileID: 6427309725935582042}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -180, y: -0.000015258789, z: 89.99999}
+  m_LocalEulerAnglesHint: {x: -180, y: -0.000015258789, z: 90}
 --- !u!212 &5747065154118657737
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -393,8 +393,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5747065154131924103}
-  m_LocalRotation: {x: 0.70710695, y: -0.70710665, z: 0.00000013240826, w: 0.0000001324082}
-  m_LocalPosition: {x: 0.6499977, y: 8.880003, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5747065154118657736}
@@ -413,7 +413,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 8.612787, y: -1.5957222}
+  m_Offset: {x: 2.6303596, y: 0.24270636}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -424,7 +424,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9591484, y: 1.7364883}
+  m_Size: {x: 2.375636, y: 1.3748274}
   m_EdgeRadius: 0
 --- !u!114 &5747065154131924105
 MonoBehaviour:
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde157eb96c822f498752b95715ae2de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 10
+  intensity: 100
   velocity: {x: 0, y: -10}
 --- !u!1001 &7359998089399426645
 PrefabInstance:

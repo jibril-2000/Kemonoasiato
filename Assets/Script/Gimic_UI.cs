@@ -88,7 +88,7 @@ public class Gimic_UI : MonoBehaviour
     public IEnumerator Negate()
     {
         yield return new WaitForSeconds(0.5f);//何秒待つのか
-        for (float i = 0; i <100000; i = i + 0.1f)
+        for (float i = 0; i <1f; i = i + 0.1f)
         {
             UI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, alpha-=i);
             Debug.Log(UI.GetComponent<Image>().color);

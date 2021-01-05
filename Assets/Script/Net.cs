@@ -34,16 +34,11 @@ public class Net : MonoBehaviour
             Net_close.SetActive(true);
             //anim.Play();
 
-            Invoke("Vanish", 1);
+            Invoke("Resporn", 1);
         }
     }
 
-    void Vanish()
-    {
-        
-        Invoke("Resporn", 2);
-
-    }
+    
     void Resporn()
     {
         Groud.GetComponent<Ground>().StartCoroutine("Resporn");

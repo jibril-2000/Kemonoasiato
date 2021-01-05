@@ -9,7 +9,8 @@ public class Wind : MonoBehaviour
     //風の向きと大きさ
     public Vector2 velocity;
     new Rigidbody2D rigidbody;
-
+    Vector3 canonAngle;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,10 @@ public class Wind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+        
+       
+        
         
     }
 
@@ -29,11 +34,13 @@ public class Wind : MonoBehaviour
         {
             return;
         }
-
+        float canonRad = transform.parent.eulerAngles.z * Mathf.Deg2Rad;        // canonの傾きからラジアンを求めます
+        Vector3 canonAngle = new Vector3(Mathf.Cos(canonRad), Mathf.Sin(canonRad), 0).normalized;
         //相対速度
         var relativeVelocity = velocity - rigidbody.velocity;
-
+        
+        
         //空気抵抗
-        rigidbody.AddForce(intensity * relativeVelocity);
+        rigidbody.AddForce(canonAngle * intensity);
     }
 }

@@ -29,7 +29,7 @@ public class Goal : MonoBehaviour
     {
 
         yield return new WaitForSeconds(3);//何秒待つのか
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("Goal");
 
     }
 }

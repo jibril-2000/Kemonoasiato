@@ -32,4 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game3.unity
     guid: 549f9148c1af3ea44badb087f743f518
+  - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: b0a9eaca62e9bc04ea3b22d627b9ed43
+  - enabled: 1
+    path: Assets/Scenes/Goal.unity
+    guid: 140f536e67ba4c94b87103076ca936e7
   m_configObjects: {}

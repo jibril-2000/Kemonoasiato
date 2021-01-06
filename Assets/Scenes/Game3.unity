@@ -498,13 +498,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99444262}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 362bb580e331ad349a571d31a8d2cf91, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.33086318, y: 0.061988592}
+  m_Offset: {x: -0.30939513, y: 0.061988592}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -515,7 +515,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.608873, y: 0.13215876}
+  m_Size: {x: 2.6518092, y: 0.13215876}
   m_EdgeRadius: 0
 --- !u!60 &99444265
 PolygonCollider2D:
@@ -542,13 +542,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.5583935, y: 1.402759}
+    - - {x: 1.6126308, y: 0.69105303}
       - {x: 0.9695838, y: 0.011564173}
       - {x: -1.3554258, y: 0.0631208}
-      - {x: -1.4873185, y: 0.124499336}
-      - {x: -1.6293559, y: 0.20148116}
-      - {x: -1.6953286, y: 0.34188825}
-      - {x: -1.7097683, y: 0.44885352}
+      - {x: -1.592211, y: 0.039785318}
+      - {x: -1.6397098, y: 0.07962376}
+      - {x: -1.7523459, y: 0.2303987}
+      - {x: -1.7575458, y: 0.3446637}
+      - {x: -1.7625968, y: 0.39884308}
+      - {x: -1.7723464, y: 0.46097913}
       - {x: -1.7669928, y: 0.5310804}
       - {x: -2.101119, y: 2.119955}
       - {x: -1.7271284, y: -0.0021728426}
@@ -4299,11 +4301,11 @@ PolygonCollider2D:
     - - {x: -26.953127, y: -4.335938}
       - {x: -26.982424, y: -3.8671877}
       - {x: -26.953127, y: -3.8671877}
-      - {x: -26.953127, y: 0.52296853}
-      - {x: -26.993824, y: 0.52787393}
-      - {x: -27.158205, y: 0.5273438}
-      - {x: -29.970705, y: 0.5273438}
-      - {x: -30.000002, y: 0.4980469}
+      - {x: -26.978056, y: 0.34850785}
+      - {x: -27.027058, y: 0.36172098}
+      - {x: -27.174822, y: 0.32796043}
+      - {x: -29.987316, y: 0.2781147}
+      - {x: -30.008308, y: 0.3485095}
       - {x: -30.000002, y: -6.240235}
       - {x: -27.39258, y: -6.240235}
       - {x: -27.363283, y: -6.2695317}
@@ -5714,6 +5716,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pachinkostart: {fileID: 1879946585}
+  canonPos: {fileID: 1562517894}
+  speed: 200
 --- !u!4 &1562517894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
@@ -5996,7 +6000,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603728893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -61.305634, y: -3.8355339, z: -10}
+  m_LocalPosition: {x: -61.31375, y: -3.8355339, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225494599}

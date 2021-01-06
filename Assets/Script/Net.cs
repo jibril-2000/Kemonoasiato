@@ -31,16 +31,17 @@ public class Net : MonoBehaviour
         if (collision.gameObject.CompareTag("Namakemono"))
         {
             Net_open.SetActive(false);
-            Net_close.SetActive(true);
+            
             //anim.Play();
 
-            Invoke("Resporn", 1);
+            Invoke("Resporn", 0.5f);
         }
     }
 
     
     void Resporn()
     {
+        Net_close.SetActive(true);
         Groud.GetComponent<Ground>().StartCoroutine("Resporn");
         Invoke("open", 1);
         

@@ -34,7 +34,7 @@ public class Net : MonoBehaviour
             
             //anim.Play();
 
-            Invoke("Resporn", 0.5f);
+            Invoke("Resporn", 0.1f);
         }
     }
 

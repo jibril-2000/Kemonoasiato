@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 public class SoundAISAC_BGM_Control : MonoBehaviour
 {
-    private   Slider BGM_Slider;
+    private  Slider BGM_Slider;
     private static float  Slider_num;
 
     // Start is called before the first frame update
     void Start()
     {
-
         BGM_Slider = GetComponent<Slider>();
 
         //スライダーの最大値最小値設定

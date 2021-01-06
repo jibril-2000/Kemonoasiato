@@ -16,9 +16,9 @@ public class FallSound : MonoBehaviour
         
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        if(other.gameObject.tag == "Namakemono")
+        if(collision.gameObject.CompareTag("Namakemono"))
         {
             //サウンド再生
             CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");

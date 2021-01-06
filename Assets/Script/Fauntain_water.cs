@@ -19,11 +19,17 @@ public class Fauntain_water : MonoBehaviour
         {
             GetComponent<Collider2D>().enabled = true;
         }
-        //左クリックで当たり判定消す
-        if (Input.GetMouseButton(0))
-        {
-            GetComponent<Collider2D>().enabled = false;
-        }
     }
 
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Namakemono"))
+        {
+            //左クリックで当たり判定消す
+            if (Input.GetMouseButton(0))
+            {
+                GetComponent<Collider2D>().enabled = false;
+            }
+        }       
+    }
 }

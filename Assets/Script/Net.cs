@@ -42,6 +42,11 @@ public class Net : MonoBehaviour
     void Resporn()
     {
         Groud.GetComponent<Ground>().StartCoroutine("Resporn");
+        Invoke("open", 1);
+        
+    }
+    void open()
+    {
         Net_open.SetActive(true);
         Net_close.SetActive(false);
     }

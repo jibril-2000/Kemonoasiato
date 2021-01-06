@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SoundAISAC_BGM_Control : MonoBehaviour
 {
-    private  Slider BGM_Slider;
+    private   Slider BGM_Slider;
     private static float  Slider_num;
 
     // Start is called before the first frame update
@@ -20,6 +20,8 @@ public class SoundAISAC_BGM_Control : MonoBehaviour
 
         BGM_Slider.maxValue = MaxVolume;
         BGM_Slider.minValue = MinVolume;
+
+        //BGM_Slider.value = Slider_num;
 
     }
 

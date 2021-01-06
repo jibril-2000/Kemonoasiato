@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 6.953003, y: -3.725006}
+  m_AnchoredPosition: {x: 7.119995, y: -3.7999878}
   m_SizeDelta: {x: 2.7422152, y: 1.6148207}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &109987183
@@ -258,8 +258,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fd05fbaddf3d1ba4fb347cc1caf69c27, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: bf64f5dbfef80cd46aa8bd8f2c26c1f8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -291,6 +291,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Resume
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1
@@ -464,6 +465,7 @@ MonoBehaviour:
       streamingVoices: 0
     outputSamplingRate: 0
     usesInGamePreview: 0
+    inGamePreviewMode: 3
     serverFrequency: 60
     asrOutputChannels: 0
     useRandomSeedWithTime: 0
@@ -471,6 +473,7 @@ MonoBehaviour:
     maxBuses: 8
     maxParameterBlocks: 1024
     vrMode: 0
+    keepPlayingSoundOnPause: 1
     pcBufferingTime: 0
     iosBufferingTime: 50
     iosOverrideIPodMusic: 0
@@ -480,6 +483,8 @@ MonoBehaviour:
       memoryVoices: 0
       streamingVoices: 0
     androidUsesAndroidFastMixer: 1
+    androidForceToUseAsrForDefaultPlayback: 1
+    androidUsesAAudio: 0
   initializesMana: 1
   manaConfig:
     numberOfDecoders: 8
@@ -752,7 +757,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 00b4ea439f99b1a4ba8803ccf6e0d46c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f028115f5ab59e145a5ba972a33e8d05, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -875,6 +880,7 @@ MonoBehaviour:
   _playOnStart: 0
   _cueName: Resume
   _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
   _use3dPositioning: 1
   _loop: 0
   _volume: 1

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3524,7 +3524,7 @@ PrefabInstance:
     - target: {fileID: 8464291474724339334, guid: 84b86810f5a54e04580902ea179f9216,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.44
+      value: 19.9
       objectReference: {fileID: 0}
     - target: {fileID: 8464291474724339334, guid: 84b86810f5a54e04580902ea179f9216,
         type: 3}
@@ -6217,7 +6217,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603728893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -61.30564, y: -3.8355336, z: -10}
+  m_LocalPosition: {x: -61.31376, y: -3.8355336, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225494599}
@@ -6893,6 +6893,7 @@ GameObject:
   - component: {fileID: 1860925230}
   - component: {fileID: 1860925229}
   - component: {fileID: 1860925228}
+  - component: {fileID: 1860925231}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Untagged
@@ -6913,7 +6914,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 6.316307, y: 1.874567}
+  m_Offset: {x: 9.593924, y: 1.874567}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6924,7 +6925,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8.1368065, y: 22.568287}
+  m_Size: {x: 1.5815735, y: 22.568287}
   m_EdgeRadius: 0
 --- !u!114 &1860925229
 MonoBehaviour:
@@ -6955,6 +6956,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1860925231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860925227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc84f0753a470af40bc9e8fea5851c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1878189384
 GameObject:
   m_ObjectHideFlags: 0

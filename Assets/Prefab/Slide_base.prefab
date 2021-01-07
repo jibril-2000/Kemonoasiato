@@ -394,7 +394,8 @@ MonoBehaviour:
   NoHide: {fileID: 0}
   minVec: {x: 0, y: 0, z: 0}
   maxVec: {x: 0, y: 0, z: 0}
-  Moveobj: 0
+  Moveobj: 1
+  Tranpoline: 0
 --- !u!61 &6547454499764842876
 BoxCollider2D:
   m_ObjectHideFlags: 0

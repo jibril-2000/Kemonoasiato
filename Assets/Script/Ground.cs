@@ -35,11 +35,13 @@ public class Ground : MonoBehaviour
     }
     public IEnumerator Resporn()
     {
+        
         Canvas.GetComponent<FadeTest>().FadeStart();
         yield return new WaitForSeconds(1);//何秒待つのか
-        
+        Player.gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Player.gameObject.transform.position = script.Resporn;
         Player.gameObject.transform.rotation=Quaternion.Euler(0, 0, 0);
+        Player.gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         Crow.gameObject.transform.position = CrowOri;
     }
 }

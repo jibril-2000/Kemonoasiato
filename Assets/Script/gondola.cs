@@ -27,8 +27,8 @@ public class gondola : MonoBehaviour
         //GondolaPos.y += 0.00001f;
         if (Touch == true)
         {
-            if (Input.GetMouseButton(1))
-                Rigid.bodyType = RigidbodyType2D.Dynamic;
+            if (Input.GetMouseButton(1)) { }
+                
             
           
             
@@ -71,6 +71,7 @@ public class gondola : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
+                Rigid.bodyType = RigidbodyType2D.Dynamic;
                 //StartCoroutine("GodolaStart");
 
 

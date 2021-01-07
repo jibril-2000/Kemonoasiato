@@ -12,6 +12,7 @@ public class Draganddrop : MonoBehaviour
     public Vector3 maxVec;
     private Vector3 Pos;
     public bool Moveobj;
+    public bool Tranpoline;
     bool Move;
     SpriteRenderer H01, H02, H03, H04, H05;
 
@@ -66,31 +67,47 @@ public class Draganddrop : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Namakemono")
-        {
-            Moveobj = false;
-        }
+       
+            if (other.gameObject.tag == "Namakemono")
+            {
+                if (Tranpoline == false)
+                {
+                    Moveobj = false;
+                }
+            }
     }
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Namakemono")
-        {
-            Moveobj = true;
-        }
+        
+            if (other.gameObject.tag == "Namakemono")
+            {
+                if (Tranpoline == false)
+                {
+                    Moveobj = true;
+                }
+            }
     }
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Namakemono")
-        {
-            Moveobj = false;
-        }
+        
+            if (other.gameObject.tag == "Namakemono")
+            {
+                if (Tranpoline == false)
+                {
+                    Moveobj = false;
+                }
+            }
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Namakemono")
-        {
-            Moveobj = true;
-        }
+        
+            if (other.gameObject.tag == "Namakemono")
+            {
+                if (Tranpoline == false)
+                {
+                    Moveobj = true;
+                }
+            }
     }
     void OnMouseEnter()
     {

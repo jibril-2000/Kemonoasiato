@@ -91,7 +91,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5589036848650903685}
   - component: {fileID: 5589036848650903682}
-  - component: {fileID: 9066201182913657579}
   m_Layer: 0
   m_Name: Ferris_wheel_frame
   m_TagString: Untagged
@@ -166,21 +165,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9066201182913657579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5589036848650903683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91852884bd5ac704db2c148e01905fc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UI: {fileID: 0}
-  interval: 1.5
-  speed: 0.01
 --- !u!1 &7231719683059971252
 GameObject:
   m_ObjectHideFlags: 0

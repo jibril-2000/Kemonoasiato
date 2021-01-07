@@ -27,7 +27,7 @@ public class Namakemono : MonoBehaviour
     {
         if (other.gameObject.tag == "Flashlight")
         {
-            Invoke("Vanish", 1);
+            Invoke("Vanish", 0.1f);
         }
     }
 

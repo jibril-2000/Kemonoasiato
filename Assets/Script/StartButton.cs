@@ -11,7 +11,8 @@ public class StartButton : MonoBehaviour
     public bool Stage1; 
     public bool Stage2;
     public bool Stage3;
-    
+    public bool TitleBack;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +43,10 @@ public class StartButton : MonoBehaviour
         if (Stage3 == true)
         {
             SceneManager.LoadScene("Game3");
+        }
+        if (TitleBack == true)
+        {
+            SceneManager.LoadScene("Title");
         }
     }
 }

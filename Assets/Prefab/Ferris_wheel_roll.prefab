@@ -883,6 +883,7 @@ GameObject:
   - component: {fileID: 1425069461464240344}
   - component: {fileID: 1425069461464240348}
   - component: {fileID: 1450307687366148763}
+  - component: {fileID: 6306718500350035122}
   m_Layer: 0
   m_Name: Ferris_wheel_roll
   m_TagString: Untagged
@@ -1026,6 +1027,21 @@ MonoBehaviour:
   _pitch: 0
   _androidUseLowLatencyVoicePool: 0
   need_to_player_update_all: 1
+--- !u!114 &6306718500350035122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425069461464240345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91852884bd5ac704db2c148e01905fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 0}
+  interval: 1.5
+  speed: 0.01
 --- !u!1 &1425069461498760117
 GameObject:
   m_ObjectHideFlags: 0

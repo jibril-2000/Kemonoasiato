@@ -57,16 +57,19 @@ public class Ivy : MonoBehaviour
     }
     void OnTriggerStay2D(Collider2D other) 
     {
+        UI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f,1.0f);
         if (Input.GetMouseButton(1))
         {
+            
             other.transform.parent = null;
             Rigid.gravityScale = 1;
             Rigid.AddForce(bulletDir * speed);
+            other.transform.eulerAngles = new Vector3(0, 0, 0);
             var box=this.GetComponent<BoxCollider2D>();
             box.enabled = false;
-           
+            StartCoroutine("Negate");
             StartCoroutine("MOVE");
-
+            
         }
 
         
@@ -75,7 +78,7 @@ public class Ivy : MonoBehaviour
     {
        
 
-            StartCoroutine("Negate");
+            //
             
 
         
@@ -84,7 +87,7 @@ public class Ivy : MonoBehaviour
     {
         
         
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         var box = this.GetComponent<BoxCollider2D>();
         box.enabled = true;
 

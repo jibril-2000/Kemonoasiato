@@ -623,6 +623,7 @@ MonoBehaviour:
   minVec: {x: 5, y: 0, z: 0}
   maxVec: {x: 5, y: 0, z: 0}
   Moveobj: 1
+  Tranpoline: 1
 --- !u!114 &9124222881786349078
 MonoBehaviour:
   m_ObjectHideFlags: 0

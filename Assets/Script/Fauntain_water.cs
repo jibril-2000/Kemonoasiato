@@ -8,7 +8,7 @@ public class Fauntain_water : MonoBehaviour
     void Start()
     {
         //噴水の水の当たり判定を消す
-        GetComponent<Collider2D>().enabled = false;
+        //GetComponent<Collider2D>().enabled = false;
     }
 
     // Update is called once per frame

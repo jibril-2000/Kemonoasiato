@@ -25,4 +25,14 @@ public class FallSound : MonoBehaviour
             audio.Play();
         }
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Namakemono"))
+        {
+            //サウンド再生
+            CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
+            audio.Play();
+        }
+    }
 }

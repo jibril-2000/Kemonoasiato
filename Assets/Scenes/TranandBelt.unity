@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1705,6 +1705,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2146032910715400687, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: UI
+      value: 
+      objectReference: {fileID: 2048202576}
+    - target: {fileID: 6231392152866133420, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: UI
+      value: 
+      objectReference: {fileID: 2048202576}
+    - target: {fileID: 6570122537253921987, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: RetryButton
+      value: 
+      objectReference: {fileID: 1187655517}
     - target: {fileID: 6620763583205811458, guid: f59daaf21003f7c4fa19b5302a161374,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1810,6 +1825,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6620763583205811462, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: RetryButton
+      value: 
+      objectReference: {fileID: 1187655517}
     - target: {fileID: 6620763583205811465, guid: f59daaf21003f7c4fa19b5302a161374,
         type: 3}
       propertyPath: m_Name
@@ -1867,6 +1887,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f59daaf21003f7c4fa19b5302a161374, type: 3}
+--- !u!1 &1187655517 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3179914029957947606, guid: f59daaf21003f7c4fa19b5302a161374,
+    type: 3}
+  m_PrefabInstance: {fileID: 1187655516}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1257060567 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3876555372506878050, guid: f59daaf21003f7c4fa19b5302a161374,
@@ -3075,6 +3101,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf4368038259fb846b3ba29b9d452a0f, type: 3}
+--- !u!1 &2048202576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5132460827707680654, guid: bf4368038259fb846b3ba29b9d452a0f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2048202575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2107174413
 PrefabInstance:
   m_ObjectHideFlags: 0

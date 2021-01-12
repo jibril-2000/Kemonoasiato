@@ -909,6 +909,11 @@ PrefabInstance:
       propertyPath: UI
       value: 
       objectReference: {fileID: 2075502530}
+    - target: {fileID: 6570122537253921987, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: RetryButton
+      value: 
+      objectReference: {fileID: 612842747}
     - target: {fileID: 6620763583205811458, guid: f59daaf21003f7c4fa19b5302a161374,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1014,6 +1019,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6620763583205811462, guid: f59daaf21003f7c4fa19b5302a161374,
+        type: 3}
+      propertyPath: RetryButton
+      value: 
+      objectReference: {fileID: 612842747}
     - target: {fileID: 6620763583205811465, guid: f59daaf21003f7c4fa19b5302a161374,
         type: 3}
       propertyPath: m_Name
@@ -1071,6 +1081,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f59daaf21003f7c4fa19b5302a161374, type: 3}
+--- !u!1 &612842747 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3179914029957947606, guid: f59daaf21003f7c4fa19b5302a161374,
+    type: 3}
+  m_PrefabInstance: {fileID: 612842746}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &649980417
 GameObject:
   m_ObjectHideFlags: 0

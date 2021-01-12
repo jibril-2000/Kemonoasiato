@@ -34,7 +34,7 @@ public class Net : MonoBehaviour
             
             //anim.Play();
 
-            Invoke("Resporn", 0.5f);
+            Invoke("Resporn", 0.3f);
         }
     }
 
@@ -43,7 +43,7 @@ public class Net : MonoBehaviour
     {
         Net_close.SetActive(true);
         Groud.GetComponent<Ground>().StartCoroutine("Resporn");
-        Invoke("open", 1);
+        Invoke("open", 1f);
         
     }
     void open()

@@ -25,7 +25,7 @@ public class Crow: MonoBehaviour
 		switch (Keepermove)
 		{
 			case true:
-				transform.position -= new Vector3(0.1f, 0.0f, 0.0f);
+				transform.position -= new Vector3(0.05f, 0.0f, 0.0f);
 				if (transform.position.x <= Minx)
 				{
 					Keepermove = false;				
@@ -35,7 +35,7 @@ public class Crow: MonoBehaviour
 				break;
 
 			case false:
-				transform.position += new Vector3(0.1f, 0.0f, 0.0f);
+				transform.position += new Vector3(0.05f, 0.0f, 0.0f);
 				if (transform.position.x >= Maxx)
 				{
 					Keepermove = true;

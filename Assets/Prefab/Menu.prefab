@@ -825,7 +825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2775454, g: 0.42995226, b: 0.7264151, a: 1}
+  m_Color: {r: 0.7254902, g: 0.4630305, b: 0.27843142, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -899,7 +899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2627451, g: 0.4156863, b: 0.69803923, a: 1}
+  m_Color: {r: 0.8490566, g: 0.7881298, b: 0.5486828, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1336,6 +1336,7 @@ MonoBehaviour:
   TitlePanel: {fileID: 6379066114072182953}
   resumeButton: {fileID: 6620763584278599569}
   TitleButton: {fileID: 5745734705514707572}
+  RetryButton: {fileID: 0}
 --- !u!1 &6620763583299912652
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,6 +1532,7 @@ MonoBehaviour:
   TitlePanel: {fileID: 6379066114072182953}
   resumeButton: {fileID: 6620763584278599569}
   TitleButton: {fileID: 5745734705514707572}
+  RetryButton: {fileID: 0}
 --- !u!1 &6620763583803019566
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5162093298128250526}
   - component: {fileID: 5162093298128250524}
   - component: {fileID: 5162093298128250525}
+  - component: {fileID: 3661558206210255427}
   m_Layer: 0
   m_Name: Belt_conveyor_nomove_haguruma (2)
   m_TagString: Untagged
@@ -101,6 +102,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3661558206210255427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5162093298128250527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Roll02
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &5162093298191738977
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,6 +135,7 @@ GameObject:
   - component: {fileID: 5162093298191738976}
   - component: {fileID: 5162093298191738982}
   - component: {fileID: 5162093298191738983}
+  - component: {fileID: 193322429115785191}
   m_Layer: 0
   m_Name: Belt_conveyor_nomove_haguruma (1)
   m_TagString: Untagged
@@ -202,6 +226,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &193322429115785191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5162093298191738977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Roll02
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &5162093298581370938
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +341,6 @@ GameObject:
   - component: {fileID: 5162093298947207355}
   - component: {fileID: 5162093298947207353}
   - component: {fileID: 5162093298947207352}
-  - component: {fileID: 5162093298947207359}
   - component: {fileID: 6132514903401010684}
   m_Layer: 0
   m_Name: Belt_conveyor_cage
@@ -416,28 +461,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.779934, y: 0.70971143}
   m_EdgeRadius: 0
---- !u!114 &5162093298947207359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5162093298947207332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 1
-  _cueName: Roll02
-  _cueSheet: SFX
-  _regionOnStart: {fileID: 0}
-  _use3dPositioning: 1
-  _loop: 0
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
 --- !u!61 &6132514903401010684
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -475,6 +498,7 @@ GameObject:
   - component: {fileID: 5162093298988680132}
   - component: {fileID: 5162093298988680154}
   - component: {fileID: 5162093298988680155}
+  - component: {fileID: 7152223462648860999}
   m_Layer: 0
   m_Name: Belt_conveyor_nomove_haguruma
   m_TagString: Untagged
@@ -565,3 +589,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7152223462648860999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5162093298988680133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Roll02
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1

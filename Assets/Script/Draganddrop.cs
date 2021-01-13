@@ -15,6 +15,7 @@ public class Draganddrop : MonoBehaviour
     public bool Tranpoline;
     bool Move;
     SpriteRenderer H01, H02, H03, H04, H05;
+    bool isOnce = true;
 
     void Start()
     {
@@ -62,6 +63,17 @@ public class Draganddrop : MonoBehaviour
                 H04.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 H05 = NoHide.GetComponent<SpriteRenderer>();
                 H05.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+                //1回だけ鳴らす
+                if (isOnce)
+                {
+                    //サウンド再生
+                    CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
+                    audio.Play();
+                    isOnce = false;
+                }
+                
+            
             }
         }
     }
@@ -160,6 +172,8 @@ public class Draganddrop : MonoBehaviour
         H04.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         H05 = NoHide.GetComponent<SpriteRenderer>();
         H05.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+        isOnce = true;
     }
 
 }

@@ -7,11 +7,13 @@ public class VentObj : MonoBehaviour
     private Renderer _renderer;
     public GameObject RotationUI;
     public GameObject MoveArea;
+    public GameObject Hide01, Hide02, Hide03, Hide04, NoHide;
     bool Move;
     public bool Moveobj;
     public Vector3 minVec;
     public Vector3 maxVec;
     private Vector3 Pos;
+    SpriteRenderer H01, H02, H03, H04, H05;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,10 @@ public class VentObj : MonoBehaviour
         minVec.y = Pos.y - minVec.y;
         maxVec.x = Pos.x + maxVec.x;
         minVec.x = Pos.x - minVec.x;
+
+        //αを０にしておく
+        H05 = NoHide.GetComponent<SpriteRenderer>();
+        H05.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     // Update is called once per frame
@@ -53,6 +59,18 @@ public class VentObj : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 MoveArea.SetActive(true);
+
+                //αの値を変えて見えるオブジェクトを変更する
+                H01 = Hide01.GetComponent<SpriteRenderer>();
+                H01.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H02 = Hide02.GetComponent<SpriteRenderer>();
+                H02.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H03 = Hide03.GetComponent<SpriteRenderer>();
+                H03.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H04 = Hide04.GetComponent<SpriteRenderer>();
+                H04.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                H05 = NoHide.GetComponent<SpriteRenderer>();
+                H05.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             }
         }
     }
@@ -92,6 +110,17 @@ public class VentObj : MonoBehaviour
         _renderer.enabled = false;
         MoveArea.SetActive(false);
         Move = false;
-    }
 
+        //αの値を変えて見えるオブジェクトを変更する
+        H01 = Hide01.GetComponent<SpriteRenderer>();
+        H01.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H02 = Hide02.GetComponent<SpriteRenderer>();
+        H02.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H03 = Hide03.GetComponent<SpriteRenderer>();
+        H03.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H04 = Hide04.GetComponent<SpriteRenderer>();
+        H04.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        H05 = NoHide.GetComponent<SpriteRenderer>();
+        H05.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+    }
 }

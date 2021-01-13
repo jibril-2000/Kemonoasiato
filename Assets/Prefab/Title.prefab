@@ -184,6 +184,7 @@ MonoBehaviour:
   Stage1: 0
   Stage2: 0
   Stage3: 1
+  TitleBack: 0
 --- !u!1 &4118876746252175966
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,7 +511,7 @@ GameObject:
   - component: {fileID: 9151098628775462875}
   - component: {fileID: 9151098628775462874}
   - component: {fileID: 7294192108019392111}
-  - component: {fileID: 7458514481942149608}
+  - component: {fileID: 442693083915528692}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -645,6 +646,7 @@ MonoBehaviour:
   Stage1: 0
   Stage2: 0
   Stage3: 0
+  TitleBack: 0
 --- !u!114 &7294192108019392111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,8 +659,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25864c100c5d25840b082b008a118980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  criAtomSource: {fileID: 0}
---- !u!114 &7458514481942149608
+  criAtomSource: {fileID: 442693083915528692}
+--- !u!114 &442693083915528692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -671,7 +673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playOnStart: 0
-  _cueName: Retry
+  _cueName: Pose
   _cueSheet: SFX
   _regionOnStart: {fileID: 0}
   _use3dPositioning: 1

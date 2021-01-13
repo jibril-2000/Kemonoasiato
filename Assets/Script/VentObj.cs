@@ -14,6 +14,8 @@ public class VentObj : MonoBehaviour
     public Vector3 maxVec;
     private Vector3 Pos;
     SpriteRenderer H01, H02, H03, H04, H05;
+    bool isOnce = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +73,15 @@ public class VentObj : MonoBehaviour
                 H04.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 H05 = NoHide.GetComponent<SpriteRenderer>();
                 H05.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+                //1回だけ鳴らす
+                if (isOnce)
+                {
+                    //サウンド再生
+                    CriAtomSource audio = (CriAtomSource)GetComponent("CriAtomSource");
+                    audio.Play();
+                    isOnce = false;
+                }
             }
         }
     }
@@ -122,5 +133,7 @@ public class VentObj : MonoBehaviour
         H04.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         H05 = NoHide.GetComponent<SpriteRenderer>();
         H05.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+        isOnce = true;
     }
 }

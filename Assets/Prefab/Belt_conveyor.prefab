@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 7427692794033431606}
   - component: {fileID: 7427692794033431608}
   - component: {fileID: 7427692794033431609}
+  - component: {fileID: 6062330912508506533}
   m_Layer: 0
   m_Name: Belt_conveyor_move_haguruma (1)
   m_TagString: Untagged
@@ -374,6 +375,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6062330912508506533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427692794033431607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Roll02
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &7427692794362063534
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +519,7 @@ GameObject:
   - component: {fileID: 7427692794514381974}
   - component: {fileID: 7427692794514381976}
   - component: {fileID: 7427692794514381977}
+  - component: {fileID: 7082875680920767563}
   m_Layer: 0
   m_Name: Belt_conveyor_move_haguruma
   m_TagString: Untagged
@@ -586,6 +610,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7082875680920767563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427692794514381975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _cueName: Roll02
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
 --- !u!1 &7427692794557058841
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,8 +646,8 @@ GameObject:
   - component: {fileID: 8517035013748727875}
   - component: {fileID: 1499971889570253436}
   - component: {fileID: 4738908800904884862}
-  - component: {fileID: 51609386536197910}
   - component: {fileID: 2045273007647703432}
+  - component: {fileID: 5787311830637592412}
   m_Layer: 0
   m_Name: Belt_conveyor
   m_TagString: Untagged
@@ -762,28 +808,6 @@ MonoBehaviour:
   UI: {fileID: 0}
   interval: 1.5
   speed: 0.01
---- !u!114 &51609386536197910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7427692794557058841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 1
-  _cueName: Roll02
-  _cueSheet: SFX
-  _regionOnStart: {fileID: 0}
-  _use3dPositioning: 1
-  _loop: 0
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
 --- !u!70 &2045273007647703432
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -800,3 +824,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0.016686188, y: -0.4178951}
   m_Size: {x: 9.60488, y: 1.6141839}
   m_Direction: 1
+--- !u!114 &5787311830637592412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427692794557058841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Seel
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1

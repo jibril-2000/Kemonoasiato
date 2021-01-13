@@ -2272,12 +2272,12 @@ PrefabInstance:
     - target: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -79.8
+      value: -79.66
       objectReference: {fileID: 0}
     - target: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.7
+      value: -2.72
       objectReference: {fileID: 0}
     - target: {fileID: 2676078629948727490, guid: d4bcbd3215a07e74891facf9ca195d53,
         type: 3}
@@ -2779,7 +2779,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972369999}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -79.8, y: -2.7, z: -10}
+  m_LocalPosition: {x: -79.66, y: -2.72, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2087574485}
@@ -3755,7 +3755,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135366357}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -7.4077244, y: -17.159863, z: 364.8507}
+  m_LocalPosition: {x: -9, y: -18.94, z: 364.8507}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1445641406}
@@ -6278,7 +6278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603728893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -61.318695, y: -3.8355339, z: -10}
+  m_LocalPosition: {x: -61.30742, y: -3.8355334, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225494599}
@@ -7078,6 +7078,8 @@ GameObject:
   - component: {fileID: 1860925229}
   - component: {fileID: 1860925228}
   - component: {fileID: 1860925231}
+  - component: {fileID: 1860925233}
+  - component: {fileID: 1860925232}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Untagged
@@ -7150,6 +7152,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc84f0753a470af40bc9e8fea5851c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1860925232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860925227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _cueName: Goal
+  _cueSheet: SFX
+  _regionOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+--- !u!114 &1860925233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860925227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e2c18dfc865784c9bd76e51ce61626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1879946585 stripped
